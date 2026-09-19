@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { videoReviewsData } from '../../data/videoReviewsData';
 
-const VideoGalleryModal = ({ activeVideoIndex, setActiveVideoIndex }) => {
+const VideoGalleryModal = ({ activeVideoIndex, setActiveVideoIndex, videoList = videoReviewsData }) => {
   if (activeVideoIndex === null) return null;
 
   return createPortal(
@@ -66,7 +66,7 @@ const VideoGalleryModal = ({ activeVideoIndex, setActiveVideoIndex }) => {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            setActiveVideoIndex((prev) => (prev > 0 ? prev - 1 : videoReviewsData.length - 1));
+            setActiveVideoIndex((prev) => (prev > 0 ? prev - 1 : videoList.length - 1));
           }}
           style={{
             position: 'absolute',
@@ -97,7 +97,7 @@ const VideoGalleryModal = ({ activeVideoIndex, setActiveVideoIndex }) => {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            setActiveVideoIndex((prev) => (prev < videoReviewsData.length - 1 ? prev + 1 : 0));
+            setActiveVideoIndex((prev) => (prev < videoList.length - 1 ? prev + 1 : 0));
           }}
           style={{
             position: 'absolute',
@@ -127,23 +127,23 @@ const VideoGalleryModal = ({ activeVideoIndex, setActiveVideoIndex }) => {
         {/* Video Player */}
         <div style={{ height: '60vh', minHeight: '300px', width: '100%', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <video
-            key={videoReviewsData[activeVideoIndex].id}
+            key={videoList[activeVideoIndex]?.id}
             controls
             autoPlay
             playsInline
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
           >
-            <source src={videoReviewsData[activeVideoIndex].videoUrl} type="video/mp4" />
+            <source src={videoList[activeVideoIndex]?.videoUrl} type="video/mp4" />
           </video>
         </div>
 
         {/* Video Details */}
         <div style={{ padding: '1.25rem 2rem', background: '#0a2f5e', color: '#fff' }}>
           <h3 style={{ color: '#fff', fontSize: '1.25rem', margin: '0' }}>
-            {videoReviewsData[activeVideoIndex].title}
+            {videoList[activeVideoIndex]?.title}
           </h3>
           <p style={{ color: 'var(--nims-orange)', fontSize: '0.9rem', margin: '0.25rem 0 0 0', fontWeight: 600 }}>
-            Video {activeVideoIndex + 1} of {videoReviewsData.length}
+            Video {activeVideoIndex + 1} of {videoList.length}
           </p>
         </div>
       </div>

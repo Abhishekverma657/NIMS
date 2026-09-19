@@ -19,6 +19,7 @@ import PatientPortal from './pages/PatientPortal';
 import Vacancies from './pages/Vacancies';
 import Contact from './pages/Contact';
 import Reviews from './pages/Reviews';
+import DoctorProfile from './pages/DoctorProfile';
 
 import { PhoneCall } from 'lucide-react';
 
@@ -72,6 +73,7 @@ function AnimatedPageContent({ onOpenBooking, onOpenPackageBooking }) {
           <Route path="/careers" element={<Vacancies />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/reviews" element={<Reviews />} />
+          <Route path="/doctor/:id" element={<DoctorProfile onOpenBooking={onOpenBooking} />} />
           {/* Fallback redirect */}
           <Route path="*" element={<Home onOpenBooking={onOpenBooking} />} />
         </Routes>

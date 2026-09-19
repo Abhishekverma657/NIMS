@@ -12,6 +12,8 @@ export default function Reviews() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(null);
   const [reviewFilter, setReviewFilter] = useState('all');
 
+  const patientVideos = videoReviewsData.filter(v => !v.doctorId);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -29,7 +31,7 @@ export default function Reviews() {
             <Star size={16} color="var(--nims-orange)" fill="var(--nims-orange)" />
             <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.05em' }}>PATIENT REVIEWS</span>
           </div>
-          <h1 style={{ fontSize: '2.5rem', margin: '0 0 1rem 0' }}>Real Stories, Real Healing</h1>
+          <h1 style={{ fontSize: '2.5rem', margin: '0 0 1rem 0', color: '#ffffff' }}>Real Stories, Real Healing</h1>
           <p style={{ maxWidth: '600px', margin: '0 auto', color: '#cbd5e1', lineHeight: 1.6 }}>
             Read and watch the inspiring journeys of our patients who trusted NIMS Hospital for their medical care.
           </p>
@@ -70,8 +72,8 @@ export default function Reviews() {
             gap: '2rem'
           }} key={reviewFilter}>
             
-            {/* Video Reviews */}
-            {(reviewFilter === 'all' || reviewFilter === 'video') && videoReviewsData.map((item, idx) => (
+            {/* Video Reviews (exclude doctor-specific ones) */}
+            {(reviewFilter === 'all' || reviewFilter === 'video') && patientVideos.map((item, idx) => (
               <VideoCard 
                 key={item.id} 
                 item={item} 
@@ -157,6 +159,7 @@ export default function Reviews() {
       <VideoGalleryModal 
         activeVideoIndex={activeVideoIndex} 
         setActiveVideoIndex={setActiveVideoIndex} 
+        videoList={patientVideos}
       />
     </div>
   );

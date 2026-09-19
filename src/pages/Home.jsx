@@ -41,11 +41,10 @@ export default function Home({ onOpenBooking }) {
   const [activeVideoIndex, setActiveVideoIndex] = useState(null);
   
   // Doctor Filter State
-  const [doctorDeptFilter, setDoctorDeptFilter] = useState('All');
+  const [doctorDeptFilter, setDoctorDeptFilter] = useState('Cardiology');
   const doctorTabsRef = useRef(null);
 
   const doctorCategories = [
-    'All Doctors',
     'Cardiology',
     'CTVS',
     'Neurosurgery',
@@ -183,8 +182,8 @@ export default function Home({ onOpenBooking }) {
     }
   ];
 
-  // Video Reviews
-  const videoReviews = videoReviewsData.slice(0, 3);
+  // Video Reviews (exclude doctor-specific ones)
+  const videoReviews = videoReviewsData.filter(v => !v.doctorId).slice(0, 3);
 
   return (
     <div style={{ position: 'relative' }}>
@@ -763,7 +762,7 @@ export default function Home({ onOpenBooking }) {
             
             <div className="speciality-scroll" ref={doctorTabsRef}>
               {doctorCategories.map((dept) => {
-                const isActive = (doctorDeptFilter === dept) || (dept === 'All Doctors' && (doctorDeptFilter === 'All' || doctorDeptFilter === 'All Doctors'));
+                const isActive = doctorDeptFilter === dept;
                 return (
                   <button
                     key={dept}

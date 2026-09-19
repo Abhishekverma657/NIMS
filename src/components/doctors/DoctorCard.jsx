@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, MapPin, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Calendar, Clock, MapPin, CheckCircle2, ArrowRight, User } from 'lucide-react';
 
 export default function DoctorCard({ doctor, onBook }) {
   return (
@@ -15,16 +16,18 @@ export default function DoctorCard({ doctor, onBook }) {
     >
       {/* Photo Column */}
       <div className="doctor-photo-wrap">
-        <img
-          src={doctor.image}
-          alt={doctor.name}
-          className="doctor-photo"
-          loading="lazy"
-          onError={(e) => {
-            // High quality fallback medical doctor avatar
-            e.currentTarget.src = "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80";
-          }}
-        />
+        <Link to={`/doctor/${doctor.id}`} style={{ display: 'block', height: '100%' }}>
+          <img
+            src={doctor.image}
+            alt={doctor.name}
+            className="doctor-photo"
+            loading="lazy"
+            onError={(e) => {
+              // High quality fallback medical doctor avatar
+              e.currentTarget.src = "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80";
+            }}
+          />
+        </Link>
         
         {/* Verified Badge */}
         <div className="doctor-verified-badge" title="NIMS Verified Super Specialist">
@@ -44,9 +47,11 @@ export default function DoctorCard({ doctor, onBook }) {
           </div>
 
           {/* Doctor Name */}
-          <h3 className="doctor-name">
-            {doctor.name}
-          </h3>
+          <Link to={`/doctor/${doctor.id}`} style={{ textDecoration: 'none' }}>
+            <h3 className="doctor-name" style={{ color: 'var(--nims-navy)', transition: 'color 0.2s ease' }} onMouseOver={(e) => e.target.style.color = 'var(--nims-orange)'} onMouseOut={(e) => e.target.style.color = 'var(--nims-navy)'}>
+              {doctor.name}
+            </h3>
+          </Link>
 
           {/* Designation */}
           <div className="doctor-title">
@@ -72,19 +77,29 @@ export default function DoctorCard({ doctor, onBook }) {
         </div>
 
         {/* CTA Button */}
-        {doctor.isOpdAvailable !== false && (
-          <motion.button
-            onClick={() => onBook(doctor)}
-            className="btn btn-primary doctor-book-btn"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+        <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
+          <Link 
+            to={`/doctor/${doctor.id}`} 
+            className="btn btn-outline" 
+            style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', padding: '0.65rem 0', fontSize: '0.85rem' }}
           >
-            <Calendar size={15} />
-            <span>Book OPD Appointment</span>
-            <ArrowRight size={14} className="btn-arrow" />
-          </motion.button>
-        )}
+            <User size={15} />
+            <span>Profile</span>
+          </Link>
+          
+          {doctor.isOpdAvailable !== false && (
+            <motion.button
+              onClick={() => onBook(doctor)}
+              className="btn btn-primary"
+              style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', padding: '0.65rem 0', fontSize: '0.85rem', background: 'var(--nims-orange)', border: 'none' }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <Calendar size={15} />
+              <span>Book</span>
+            </motion.button>
+          )}
+        </div>
       </div>
     </motion.div>
   );

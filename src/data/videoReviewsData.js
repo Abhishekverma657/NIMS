@@ -6,31 +6,37 @@ export const videoReviewsData = [
   },
   {
     id: 'vid-2',
+    doctorId: 'doc-nalin-joshi',
     title: "Dr. Nalin Joshi",
     videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/niims%20video/dr-nalin-joshi.mp4"
   },
   {
     id: 'vid-3',
+    doctorId: 'doc-samanvaya-soni',
     title: "Dr. Samanvaya Soni",
     videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/niims%20video/dr-samanvaya-soni.mp4"
   },
   {
     id: 'vid-4',
+    doctorId: 'doc-ss-dariya',
     title: "Dr. S. S. Dariya",
     videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/niims%20video/dr-ss-dariya.mp4"
   },
   {
     id: 'vid-5',
-    title: "RC Sherawat Testimonial",
+    doctorId: 'doc-rc-sherawat',
+    title: "Dr. R. C. Sherawat Testimonial",
     videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/niims%20video/rc-sherawat-testimonial.mp4"
   },
   {
     id: 'vid-6',
-    title: "Shubhangi Gupta",
+    doctorId: 'doc-shubhangi-gupta',
+    title: "Dr. Shubhangi Gupta",
     videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/niims%20video/shubhangi-gupta.mp4"
   },
   {
     id: 'vid-7',
+    doctorId: 'doc-vinay-singh',
     title: "Dr. Vinay Kumar Singh",
     videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/niims%20video/vinay-kumar-singh.mp4"
   },
