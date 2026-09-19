@@ -142,7 +142,10 @@ export default function App() {
         {/* 3-Step Slide-Over Appointment Booking Drawer (For OPD Doctor Visits) */}
         <BookingDrawer
           isOpen={bookingOpen}
-          onClose={() => setBookingOpen(false)}
+          onClose={() => {
+            setBookingOpen(false);
+            setBookingPrefill(null);
+          }}
           prefill={bookingPrefill}
         />
 

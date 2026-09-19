@@ -72,17 +72,19 @@ export default function DoctorCard({ doctor, onBook }) {
         </div>
 
         {/* CTA Button */}
-        <motion.button
-          onClick={() => onBook(doctor)}
-          className="btn btn-primary doctor-book-btn"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.97 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-        >
-          <Calendar size={15} />
-          <span>Book OPD Appointment</span>
-          <ArrowRight size={14} className="btn-arrow" />
-        </motion.button>
+        {doctor.isOpdAvailable !== false && (
+          <motion.button
+            onClick={() => onBook(doctor)}
+            className="btn btn-primary doctor-book-btn"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+          >
+            <Calendar size={15} />
+            <span>Book OPD Appointment</span>
+            <ArrowRight size={14} className="btn-arrow" />
+          </motion.button>
+        )}
       </div>
     </motion.div>
   );

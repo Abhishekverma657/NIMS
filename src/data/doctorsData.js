@@ -10,7 +10,8 @@ export const doctorsData = [
     opdSchedule: "Mon - Sat (10:00 AM - 02:00 PM)",
     roomNo: "Chancellor Clinic, Quaternary Block",
     image: "/assets/images/resource/Balvir.webp",
-    featured: true
+    featured: true,
+    isOpdAvailable: false
   },
   {
     id: "doc-sitaram",
@@ -23,6 +24,19 @@ export const doctorsData = [
     opdSchedule: "Mon - Fri (09:00 AM - 04:00 PM)",
     roomNo: "Advanced Cath Lab Suite, Level 2",
     image: "/assets/images/team/dr-sitaram.png",
+    featured: true
+  },
+  {
+    id: "doc-rk-gupta",
+    name: "Dr. R. K. Gupta",
+    title: "Senior Consultant & Head, Paediatrics & Neonatology",
+    department: "Paediatrics & Neonatology",
+    specialityId: "paediatrics",
+    qualification: "MBBS, MD (Paediatrics), FIAP, Senior Neonatologist",
+    experience: "24+ Years Clinical Experience",
+    opdSchedule: "Mon - Sat (09:00 AM - 02:00 PM)",
+    roomNo: "Child Health OPD Suite 05, Level 1",
+    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80",
     featured: true
   },
   {

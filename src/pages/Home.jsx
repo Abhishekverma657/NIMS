@@ -210,7 +210,7 @@ export default function Home({ onOpenBooking }) {
       age: 28,
       procedure: 'Pre-Term Baby Care (29 Weeks, NICU Level III)',
       department: 'Paediatrics & Neonatology',
-      doctor: 'Prof. (Dr.) Balvir S. Tomar Team',
+      doctor: 'Dr. R. K. Gupta & NICU Team',
       duration: '4:02 min',
       thumbnail: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=700&q=80',
       quote: "Our twin babies were born premature with very low birth weight. The NICU team cared for them like their own family for 45 days. Today both are healthy.",

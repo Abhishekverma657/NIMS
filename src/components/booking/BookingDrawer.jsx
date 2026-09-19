@@ -24,26 +24,35 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [tokenNumber, setTokenNumber] = useState('');
 
-  // Synchronize prefill when drawer opens
+  // Synchronize prefill and ALWAYS reset step to 1 when drawer opens or closes
   useEffect(() => {
-    if (isOpen && prefill) {
-      if (prefill.speciality) {
-        setSelectedSpeciality(prefill.speciality);
-      }
-      if (prefill.doctor) {
-        const docId = typeof prefill.doctor === 'object' ? prefill.doctor.id : prefill.doctor;
-        setSelectedDoctor(docId);
-        if (!prefill.speciality && typeof prefill.doctor === 'object' && prefill.doctor.specialityId) {
-          setSelectedSpeciality(prefill.doctor.specialityId);
+    if (isOpen) {
+      setStep(1);
+      setBookingConfirmed(false);
+      if (prefill) {
+        if (prefill.speciality) {
+          setSelectedSpeciality(prefill.speciality);
         }
+        if (prefill.doctor) {
+          const docId = typeof prefill.doctor === 'object' ? prefill.doctor.id : prefill.doctor;
+          setSelectedDoctor(docId);
+          if (!prefill.speciality && typeof prefill.doctor === 'object' && prefill.doctor.specialityId) {
+            setSelectedSpeciality(prefill.doctor.specialityId);
+          }
+        }
+      } else {
+        setSelectedSpeciality('all');
       }
+    } else {
+      setStep(1);
+      setBookingConfirmed(false);
     }
   }, [isOpen, prefill]);
 
   // Dynamically filter clinical specialists based on selected department / speciality
   const displayedDoctors = useMemo(() => {
     if (selectedSpeciality === 'all') {
-      return doctorsData;
+      return doctorsData.filter(d => d.isOpdAvailable !== false);
     }
 
     const specObj = specialitiesData.find(s => s.id === selectedSpeciality);
@@ -51,6 +60,7 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
     const cleanSpecId = (selectedSpeciality || '').toLowerCase().replace(/[^a-z]/g, '');
 
     const filtered = doctorsData.filter(doc => {
+      if (doc.isOpdAvailable === false) return false;
       const docSpecClean = (doc.specialityId || '').toLowerCase().replace(/[^a-z]/g, '');
       const docDept = (doc.department || '').toLowerCase();
       const docTitle = (doc.title || '').toLowerCase();
@@ -116,7 +126,7 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
         experience: "15+ Years Clinical Experience",
         opdSchedule: "Mon - Sat (09:00 AM - 03:00 PM)",
         roomNo: `OPD Unit, ${specObj?.category || 'Clinical'} Wing`,
-        image: "/assets/images/resource/Balvir.webp",
+        image: "/assets/images/team/dr-sitaram.png",
         isDutySpecialist: true
       }
     ];
@@ -150,9 +160,17 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
     setBookingConfirmed(true);
   };
 
+  const handleClose = () => {
+    setStep(1);
+    setBookingConfirmed(false);
+    setTokenNumber('');
+    onClose();
+  };
+
   const handleReset = () => {
     setStep(1);
     setBookingConfirmed(false);
+    setTokenNumber('');
     onClose();
   };
 
@@ -182,7 +200,7 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
       animation: 'fadeIn 0.2s ease-out'
     }}>
       {/* Background click to dismiss */}
-      <div style={{ flex: 1 }} onClick={onClose} />
+      <div style={{ flex: 1 }} onClick={handleClose} />
 
       {/* Slide-over Container */}
       <div style={{
@@ -233,7 +251,7 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             style={{
               background: 'rgba(255,255,255,0.12)',
               border: 'none',
@@ -455,7 +473,7 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
                         alt={doc.name}
                         style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
                         onError={(e) => {
-                          e.currentTarget.src = "/assets/images/resource/Balvir.webp";
+                          e.currentTarget.src = "/assets/images/team/dr-sitaram.png";
                         }}
                       />
                       <div style={{ flex: 1, minWidth: 0 }}>

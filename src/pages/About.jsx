@@ -505,16 +505,6 @@ export default function About({ onOpenBooking, initialTab = 'overview' }) {
                 </p>
 
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', flexWrap: 'wrap' }}>
-                  <motion.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={onOpenBooking}
-                    className="btn btn-primary"
-                    style={{ padding: '0.8rem 1.85rem' }}
-                  >
-                    <Calendar size={16} />
-                    <span>Book Consultation</span>
-                  </motion.button>
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                     <Link
                       to="/contact-us"

@@ -17,16 +17,21 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
 
   useEffect(() => {
     if (isOpen) {
+      document.body.style.overflow = 'hidden';
       if (initialJob) {
         setSelectedJob(initialJob);
         setActiveStep(1);
         setFormSubmitted(false);
       }
     } else {
+      document.body.style.overflow = 'unset';
       setSelectedJob(null);
       setFormSubmitted(false);
       setActiveStep(1);
     }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [isOpen, initialJob]);
 
   const [applicant, setApplicant] = useState({
@@ -383,21 +388,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      zIndex: 9999,
-      background: 'rgba(5, 26, 54, 0.72)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '1rem',
-      animation: 'fadeIn 0.2s ease-out'
-    }}>
+    <div className="vacancies-modal-overlay">
       <div 
         style={{ position: 'absolute', inset: 0 }} 
         onClick={handleCloseAll} 
@@ -408,39 +399,12 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 15 }}
         transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-        style={{
-          position: 'relative',
-          background: '#ffffff',
-          width: '100%',
-          maxWidth: '740px',
-          maxHeight: '92vh',
-          borderRadius: '20px',
-          overflow: 'hidden',
-          boxShadow: '0 25px 60px -15px rgba(5, 26, 54, 0.35)',
-          display: 'flex',
-          flexDirection: 'column',
-          zIndex: 1
-        }}
+        className="vacancies-modal-dialog"
       >
         {/* Header */}
-        <div style={{
-          padding: '1.25rem 1.75rem',
-          background: 'linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-light) 100%)',
-          color: '#ffffff',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottom: '3px solid var(--nims-orange)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <div style={{
-              background: '#ffffff',
-              padding: '0.35rem 0.6rem',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-            }}>
+        <div className="vacancies-modal-header">
+          <div className="vacancies-header-brand">
+            <div className="vacancies-header-logo-box">
               <img
                 src="/assets/images/nims-hospital-logo.svg"
                 alt="NIMS Logo"
@@ -450,15 +414,15 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                 }}
               />
             </div>
-            <div>
-              <div style={{ fontSize: '0.74rem', color: 'var(--nims-gold)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                NIMS Hospital & Medical University Careers
+            <div className="vacancies-header-title-box">
+              <div className="vacancies-header-kicker">
+                NIMS Careers &bull; Central Recruitment
               </div>
-              <h3 style={{ color: '#fff', fontSize: '1.25rem', margin: 0, fontWeight: 800 }}>
+              <h3 className="vacancies-header-title">
                 {formSubmitted 
                   ? 'Application Acknowledgment'
                   : selectedJob 
-                    ? `Job Application: ${selectedJob.title}` 
+                    ? `Apply: ${selectedJob.title}` 
                     : 'Current Clinical & Hospital Openings'}
               </h3>
             </div>
@@ -466,26 +430,14 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
           <button
             onClick={handleCloseAll}
             aria-label="Close"
-            style={{
-              background: 'rgba(255,255,255,0.12)',
-              border: 'none',
-              borderRadius: '50%',
-              width: '36px',
-              height: '36px',
-              color: '#fff',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'background 0.2s'
-            }}
+            className="vacancies-header-close-btn"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div style={{ padding: '1.5rem 1.75rem', overflowY: 'auto', flex: 1 }}>
+        <div className="vacancies-modal-body">
           {formSubmitted ? (
             /* Application Success & Slip View */
             <motion.div 
@@ -580,7 +532,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
               </div>
 
               {/* Action Buttons */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+              <div className="v-step-action-row" style={{ justifyContent: 'center', maxWidth: '480px', margin: '0 auto' }}>
                 <button
                   type="button"
                   onClick={handlePrintSlip}
@@ -595,6 +547,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '6px'
                   }}
                 >
@@ -606,7 +559,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                   type="button"
                   onClick={handleCloseAll}
                   className="btn btn-primary"
-                  style={{ padding: '0.75rem 1.5rem', borderRadius: '10px', fontSize: '0.88rem', fontWeight: 700 }}
+                  style={{ padding: '0.75rem 1.5rem', borderRadius: '10px', fontSize: '0.88rem', fontWeight: 700, justifyContent: 'center' }}
                 >
                   Done
                 </button>
@@ -624,11 +577,11 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                 background: 'linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%)',
                 border: '1.5px solid #cbd5e1',
                 borderRadius: '14px',
-                padding: '1rem 1.25rem',
+                padding: '0.85rem 1.15rem',
                 position: 'relative'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                  <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '0.35rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                     <span style={{
                       fontSize: '0.68rem',
                       fontWeight: 800,
@@ -637,8 +590,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                       background: '#ffffff',
                       padding: '0.15rem 0.55rem',
                       borderRadius: 'var(--radius-full)',
-                      border: '1px solid #cbd5e1',
-                      marginRight: '6px'
+                      border: '1px solid #cbd5e1'
                     }}>
                       {selectedJob.department}
                     </span>
@@ -663,11 +615,11 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                   </button>
                 </div>
 
-                <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--nims-navy)', margin: '0 0 0.35rem 0' }}>
+                <h4 style={{ fontSize: '1.12rem', fontWeight: 800, color: 'var(--nims-navy)', margin: '0 0 0.35rem 0' }}>
                   {selectedJob.title}
                 </h4>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', fontSize: '0.78rem', color: '#64748b' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', fontSize: '0.78rem', color: '#64748b' }}>
                   <span>📍 {selectedJob.location}</span>
                   <span>⏱️ Exp: {selectedJob.experience}</span>
                   <span>🎓 {selectedJob.qualification}</span>
@@ -675,17 +627,12 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
               </div>
 
               {/* 3-Step Guided Progress Tabs */}
-              <div style={{ display: 'flex', borderBottom: '2px solid #e2e8f0', paddingBottom: '0.75rem', gap: '1rem' }}>
+              <div className="v-step-nav">
                 <div 
                   onClick={() => setActiveStep(1)}
+                  className="v-step-nav-item"
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '0.82rem',
-                    fontWeight: 800,
-                    color: activeStep === 1 ? 'var(--nims-navy)' : activeStep > 1 ? '#15803d' : '#94a3b8',
-                    cursor: 'pointer'
+                    color: activeStep === 1 ? 'var(--nims-navy)' : activeStep > 1 ? '#15803d' : '#94a3b8'
                   }}
                 >
                   <span style={{
@@ -697,7 +644,8 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '0.75rem'
+                    fontSize: '0.72rem',
+                    flexShrink: 0
                   }}>
                     {activeStep > 1 ? '✓' : '1'}
                   </span>
@@ -706,14 +654,9 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
 
                 <div 
                   onClick={() => { if (applicant.name && applicant.phone) setActiveStep(2); }}
+                  className="v-step-nav-item"
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '0.82rem',
-                    fontWeight: 800,
-                    color: activeStep === 2 ? 'var(--nims-navy)' : activeStep > 2 ? '#15803d' : '#94a3b8',
-                    cursor: 'pointer'
+                    color: activeStep === 2 ? 'var(--nims-navy)' : activeStep > 2 ? '#15803d' : '#94a3b8'
                   }}
                 >
                   <span style={{
@@ -725,23 +668,19 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '0.75rem'
+                    fontSize: '0.72rem',
+                    flexShrink: 0
                   }}>
                     {activeStep > 2 ? '✓' : '2'}
                   </span>
-                  <span>2. Qualifications & Council</span>
+                  <span>2. Qualifications</span>
                 </div>
 
                 <div 
                   onClick={() => { if (applicant.name && applicant.qualification) setActiveStep(3); }}
+                  className="v-step-nav-item"
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '0.82rem',
-                    fontWeight: 800,
-                    color: activeStep === 3 ? 'var(--nims-navy)' : '#94a3b8',
-                    cursor: 'pointer'
+                    color: activeStep === 3 ? 'var(--nims-navy)' : '#94a3b8'
                   }}
                 >
                   <span style={{
@@ -753,7 +692,8 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '0.75rem'
+                    fontSize: '0.72rem',
+                    flexShrink: 0
                   }}>
                     3
                   </span>
@@ -764,7 +704,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
               {/* Step 1 Content */}
               {activeStep === 1 && (
                 <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
+                  <div className="v-form-grid-2">
                     <div>
                       <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
                         Candidate Full Name *
@@ -775,7 +715,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         placeholder="e.g. Dr. Aryan Sharma / Priya Patel"
                         value={applicant.name}
                         onChange={e => setApplicant({ ...applicant, name: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                     <div>
@@ -789,12 +729,12 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         placeholder="10-digit mobile number"
                         value={applicant.phone}
                         onChange={e => setApplicant({ ...applicant, phone: e.target.value.replace(/\D/g, '') })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
+                  <div className="v-form-grid-3">
                     <div>
                       <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
                         Email Address *
@@ -805,7 +745,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         placeholder="name@example.com"
                         value={applicant.email}
                         onChange={e => setApplicant({ ...applicant, email: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                     <div>
@@ -817,7 +757,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         placeholder="e.g. Jaipur, Rajasthan"
                         value={applicant.city}
                         onChange={e => setApplicant({ ...applicant, city: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                     <div>
@@ -827,7 +767,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                       <select
                         value={applicant.gender}
                         onChange={e => setApplicant({ ...applicant, gender: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none', background: '#fff' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none', background: '#fff' }}
                       >
                         <option value="Female">Female</option>
                         <option value="Male">Male</option>
@@ -836,12 +776,12 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+                  <div className="v-step-action-row" style={{ justifyContent: 'flex-end' }}>
                     <button
                       type="button"
                       onClick={handleNextStep}
                       className="btn btn-primary"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.7rem 1.4rem' }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.75rem 1.4rem' }}
                     >
                       <span>Proceed to Qualifications</span>
                       <ArrowRight size={16} />
@@ -853,7 +793,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
               {/* Step 2 Content */}
               {activeStep === 2 && (
                 <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
+                  <div className="v-form-grid-2">
                     <div>
                       <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
                         Highest Academic / Clinical Degree *
@@ -864,7 +804,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         placeholder="e.g. MBBS, MD, B.Sc Nursing, GNM, DMLT"
                         value={applicant.qualification}
                         onChange={e => setApplicant({ ...applicant, qualification: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                     <div>
@@ -876,12 +816,12 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         placeholder="e.g. RMC/NMC/RNC Registration No."
                         value={applicant.councilRegNo}
                         onChange={e => setApplicant({ ...applicant, councilRegNo: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
+                  <div className="v-form-grid-2">
                     <div>
                       <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
                         College / University Name
@@ -891,7 +831,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         placeholder="e.g. RUHS Jaipur, AIIMS, SMS Medical College"
                         value={applicant.university}
                         onChange={e => setApplicant({ ...applicant, university: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                     <div>
@@ -904,16 +844,16 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         max="2026"
                         value={applicant.passingYear}
                         onChange={e => setApplicant({ ...applicant, passingYear: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}>
+                  <div className="v-step-action-row">
                     <button
                       type="button"
                       onClick={() => setActiveStep(1)}
-                      style={{ padding: '0.7rem 1.2rem', borderRadius: '10px', border: '1px solid #cbd5e1', background: '#fff', cursor: 'pointer', fontWeight: 700, fontSize: '0.84rem' }}
+                      style={{ padding: '0.75rem 1.2rem', borderRadius: '10px', border: '1px solid #cbd5e1', background: '#fff', cursor: 'pointer', fontWeight: 700, fontSize: '0.84rem' }}
                     >
                       ← Back
                     </button>
@@ -921,7 +861,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                       type="button"
                       onClick={handleNextStep}
                       className="btn btn-primary"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.7rem 1.4rem' }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.75rem 1.4rem' }}
                     >
                       <span>Proceed to Experience & CV</span>
                       <ArrowRight size={16} />
@@ -933,7 +873,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
               {/* Step 3 Content */}
               {activeStep === 3 && (
                 <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
+                  <div className="v-form-grid-2">
                     <div>
                       <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
                         Total Relevant Clinical Experience *
@@ -941,7 +881,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                       <select
                         value={applicant.experience}
                         onChange={e => setApplicant({ ...applicant, experience: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none', background: '#fff' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none', background: '#fff' }}
                       >
                         <option>0 - 1 Year (Fresher)</option>
                         <option>1 - 2 Years</option>
@@ -959,12 +899,12 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         placeholder="Current hospital or clinic name"
                         value={applicant.lastOrg}
                         onChange={e => setApplicant({ ...applicant, lastOrg: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
+                  <div className="v-form-grid-2">
                     <div>
                       <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
                         Notice Period
@@ -972,7 +912,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                       <select
                         value={applicant.noticePeriod}
                         onChange={e => setApplicant({ ...applicant, noticePeriod: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none', background: '#fff' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none', background: '#fff' }}
                       >
                         <option>Immediate Joiner</option>
                         <option>15 Days</option>
@@ -989,7 +929,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         placeholder="e.g. 5.5 LPA / As per NIMS Norms"
                         value={applicant.expectedCtc}
                         onChange={e => setApplicant({ ...applicant, expectedCtc: e.target.value })}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.88rem', outline: 'none' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
                       />
                     </div>
                   </div>
@@ -1036,18 +976,18 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}>
+                  <div className="v-step-action-row">
                     <button
                       type="button"
                       onClick={() => setActiveStep(2)}
-                      style={{ padding: '0.7rem 1.2rem', borderRadius: '10px', border: '1px solid #cbd5e1', background: '#fff', cursor: 'pointer', fontWeight: 700, fontSize: '0.84rem' }}
+                      style={{ padding: '0.75rem 1.2rem', borderRadius: '10px', border: '1px solid #cbd5e1', background: '#fff', cursor: 'pointer', fontWeight: 700, fontSize: '0.84rem' }}
                     >
                       ← Back
                     </button>
                     <button
                       type="submit"
                       className="btn btn-primary"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.7rem 1.6rem', fontSize: '0.95rem' }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.75rem 1.6rem', fontSize: '0.95rem' }}
                     >
                       <Send size={16} />
                       <span>Submit Official Application</span>
@@ -1075,23 +1015,12 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
               </div>
 
               {/* Filter Pills */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
+              <div className="vacancies-cat-strip">
                 {categories.map(cat => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    style={{
-                      padding: '0.35rem 0.85rem',
-                      borderRadius: 'var(--radius-full)',
-                      border: '1px solid',
-                      borderColor: activeCategory === cat ? 'var(--nims-navy)' : '#cbd5e1',
-                      background: activeCategory === cat ? 'var(--nims-navy)' : '#ffffff',
-                      color: activeCategory === cat ? '#ffffff' : 'var(--nims-text)',
-                      fontSize: '0.78rem',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      transition: 'all 0.15s'
-                    }}
+                    className={`vacancies-cat-pill ${activeCategory === cat ? 'active' : ''}`}
                   >
                     {cat}
                   </button>
@@ -1103,32 +1032,19 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                 {filteredJobs.map((job) => (
                   <div
                     key={job.id}
-                    style={{
-                      padding: '1.15rem 1.25rem',
-                      borderRadius: '14px',
-                      border: '1px solid #e2e8f0',
-                      borderLeft: '4px solid var(--nims-navy)',
-                      background: '#ffffff',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      flexWrap: 'wrap',
-                      gap: '0.85rem',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                      transition: 'transform 0.18s, box-shadow 0.18s'
-                    }}
+                    className="v-modal-card"
                   >
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.2rem' }}>
+                    <div className="v-modal-card-info">
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '0.25rem', flexWrap: 'wrap' }}>
                         <h4 style={{ color: 'var(--nims-navy)', fontSize: '1.05rem', margin: 0, fontWeight: 800 }}>
                           {job.title}
                         </h4>
-                        <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#15803d', background: '#dcfce7', padding: '0.15rem 0.5rem', borderRadius: 'var(--radius-full)' }}>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#15803d', background: '#dcfce7', padding: '0.15rem 0.55rem', borderRadius: 'var(--radius-full)', flexShrink: 0 }}>
                           {job.openings} Openings
                         </span>
                       </div>
 
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', fontSize: '0.78rem', color: '#64748b', marginBottom: '0.35rem' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.65rem', fontSize: '0.78rem', color: '#64748b', marginBottom: '0.45rem' }}>
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
                           <Building2 size={13} color="var(--nims-orange)" />
                           {job.department}
@@ -1160,8 +1076,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                         setSelectedJob(job);
                         setActiveStep(1);
                       }}
-                      className="btn btn-primary"
-                      style={{ padding: '0.55rem 1.15rem', fontSize: '0.84rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                      className="btn btn-primary v-modal-card-btn"
                     >
                       <span>Apply Now</span>
                       <ArrowRight size={14} />

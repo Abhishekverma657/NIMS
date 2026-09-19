@@ -3435,6 +3435,318 @@ button, input, select, textarea {
 }
 
 /* ==========================================================================
+   VACANCIES MODAL ULTRA-RESPONSIVE MOBILE STYLES
+   ========================================================================== */
+.vacancies-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(5, 26, 54, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.vacancies-modal-dialog {
+  position: relative;
+  background: #ffffff;
+  width: 100%;
+  max-width: 760px;
+  max-height: 90vh;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(5, 26, 54, 0.4);
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.vacancies-modal-header {
+  padding: 1.15rem 1.6rem;
+  background: linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-light) 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 3.5px solid var(--nims-orange);
+  flex-shrink: 0;
+}
+
+.vacancies-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.vacancies-header-logo-box {
+  background: #ffffff;
+  padding: 0.35rem 0.55rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.vacancies-header-title-box {
+  min-width: 0;
+  flex: 1;
+}
+
+.vacancies-header-kicker {
+  font-size: 0.72rem;
+  color: var(--nims-gold);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vacancies-header-title {
+  color: #ffffff;
+  font-size: 1.22rem;
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vacancies-header-close-btn {
+  background: rgba(255, 255, 255, 0.14);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.vacancies-header-close-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.vacancies-modal-body {
+  padding: 1.4rem 1.6rem;
+  overflow-y: auto;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Scrollable category strip */
+.vacancies-cat-strip {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.vacancies-cat-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.vacancies-cat-pill {
+  padding: 0.38rem 0.95rem;
+  border-radius: 9999px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: var(--nims-text);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.vacancies-cat-pill.active {
+  border-color: var(--nims-navy);
+  background: var(--nims-navy);
+  color: #ffffff;
+}
+
+/* Modal Vacancy List Cards */
+.v-modal-card {
+  padding: 1.15rem 1.25rem;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid var(--nims-navy);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.18s ease;
+}
+
+.v-modal-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 18px rgba(10, 47, 94, 0.08);
+}
+
+.v-modal-card-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.v-modal-card-btn {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Responsive Step Bar */
+.v-step-nav {
+  display: flex;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.75rem;
+  gap: 0.75rem;
+}
+
+.v-step-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.v-form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.v-form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+}
+
+.v-step-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.65rem;
+}
+
+/* Mobile Breakpoints */
+@media (max-width: 640px) {
+  .vacancies-modal-overlay {
+    padding: 0.35rem;
+    align-items: flex-end;
+  }
+
+  .vacancies-modal-dialog {
+    max-height: 94vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .vacancies-modal-header {
+    padding: 0.85rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .vacancies-header-logo-box {
+    padding: 0.25rem 0.45rem;
+  }
+
+  .vacancies-header-logo-box img {
+    height: 22px !important;
+  }
+
+  .vacancies-header-kicker {
+    font-size: 0.65rem;
+  }
+
+  .vacancies-header-title {
+    font-size: 1rem;
+  }
+
+  .vacancies-header-close-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .vacancies-modal-body {
+    padding: 1rem 0.95rem;
+  }
+
+  .v-modal-card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+    gap: 0.85rem;
+  }
+
+  .v-modal-card-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+
+  .v-form-grid-2,
+  .v-form-grid-3 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .v-step-nav {
+    gap: 0.4rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .v-step-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .v-step-nav-item {
+    font-size: 0.75rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .v-step-action-row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .v-step-action-row button {
+    width: 100%;
+    justify-content: center;
+    padding: 0.8rem 1rem !important;
+  }
+}
+
+/* ==========================================================================
    OFFICIAL HOSPITAL PRINT STYLES
    ========================================================================== */
 @media print {
