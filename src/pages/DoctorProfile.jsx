@@ -7,7 +7,6 @@ import { doctorsData } from '../data/doctorsData';
 import { videoReviewsData } from '../data/videoReviewsData';
 import VideoCard from '../components/video/VideoCard';
 import VideoGalleryModal from '../components/video/VideoGalleryModal';
-import Footer from '../components/common/Footer';
 
 export default function DoctorProfile({ onOpenBooking }) {
   const { id } = useParams();
@@ -243,8 +242,6 @@ export default function DoctorProfile({ onOpenBooking }) {
           </div>
         </section>
       )}
-
-      <Footer />
 
       {activeVideoIndex !== null && (
         <VideoGalleryModal

@@ -44,20 +44,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
           gap: '1.5rem'
         }}>
           <div>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              color: 'var(--nims-orange)',
-              fontWeight: 800,
-              fontSize: '0.8rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              marginBottom: '0.35rem'
-            }}>
-              <span className="pulse-dot pulse-dot-orange" />
-              <span>Apex Emergency &amp; Trauma Center (Level-1 Active 24×7)</span>
-            </div>
+
             <h3 style={{ color: '#ffffff', fontSize: 'clamp(1.25rem, 2.2vw, 1.6rem)', margin: 0, fontWeight: 800 }}>
               Every emergency answered. Every hour of every day.
             </h3>

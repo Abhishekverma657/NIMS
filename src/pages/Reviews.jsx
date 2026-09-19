@@ -6,7 +6,6 @@ import VideoCard from '../components/video/VideoCard';
 import VideoGalleryModal from '../components/video/VideoGalleryModal';
 import { videoReviewsData } from '../data/videoReviewsData';
 import { writtenTestimonialsData } from '../data/writtenTestimonialsData';
-import Footer from '../components/common/Footer';
 
 export default function Reviews() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(null);
@@ -152,8 +151,6 @@ export default function Reviews() {
           </MotionStagger>
         </div>
       </section>
-
-      <Footer />
 
       {/* VIDEO MODAL (Gallery View) */}
       <VideoGalleryModal 
