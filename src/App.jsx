@@ -5,6 +5,7 @@ import Topbar from './components/common/Topbar';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import BookingDrawer from './components/booking/BookingDrawer';
+import PackageBookingModal from './components/booking/PackageBookingModal';
 import VacanciesModal from './components/vacancies/VacanciesModal';
 
 import Home from './pages/Home';
@@ -42,7 +43,7 @@ function RouteProgressBar() {
   return <div className="route-progress-bar" />;
 }
 
-function AnimatedPageContent({ onOpenBooking }) {
+function AnimatedPageContent({ onOpenBooking, onOpenPackageBooking }) {
   const location = useLocation();
 
   return (
@@ -62,7 +63,7 @@ function AnimatedPageContent({ onOpenBooking }) {
           <Route path="/our-purpose" element={<About initialTab="purpose" onOpenBooking={onOpenBooking} />} />
           <Route path="/specialities" element={<Specialities onOpenBooking={onOpenBooking} />} />
           <Route path="/specialities/:id" element={<SpecialityDetail onOpenBooking={onOpenBooking} />} />
-          <Route path="/health-packages" element={<HealthPackages onOpenBooking={onOpenBooking} />} />
+          <Route path="/health-packages" element={<HealthPackages onOpenBooking={onOpenBooking} onOpenPackageBooking={onOpenPackageBooking} />} />
           <Route path="/photo-gallery" element={<PhotoGallery />} />
           <Route path="/loyalty-card" element={<LoyaltyCard onOpenBooking={onOpenBooking} />} />
           <Route path="/patient-portal" element={<PatientPortal />} />
@@ -81,8 +82,21 @@ export default function App() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingPrefill, setBookingPrefill] = useState(null);
   const [vacanciesOpen, setVacanciesOpen] = useState(false);
+  const [packageModalOpen, setPackageModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState(null);
+
+  const handleOpenPackageBooking = (pkg) => {
+    setSelectedPackage(pkg || null);
+    setPackageModalOpen(true);
+  };
 
   const handleOpenBooking = (prefillData) => {
+    // If a package object was passed into generic booking, route to package booking
+    if (prefillData && (prefillData.tests || prefillData.testsCount || prefillData.isPackage)) {
+      handleOpenPackageBooking(prefillData);
+      return;
+    }
+
     if (prefillData) {
       if (typeof prefillData === 'string') {
         setBookingPrefill({ speciality: prefillData });
@@ -113,7 +127,10 @@ export default function App() {
 
         {/* Main Routed Content with Smooth Page Switch Animation */}
         <main style={{ flex: 1 }}>
-          <AnimatedPageContent onOpenBooking={handleOpenBooking} />
+          <AnimatedPageContent 
+            onOpenBooking={handleOpenBooking} 
+            onOpenPackageBooking={handleOpenPackageBooking}
+          />
         </main>
 
         {/* Mega Footer */}
@@ -122,11 +139,18 @@ export default function App() {
           onOpenVacancies={() => setVacanciesOpen(true)}
         />
 
-        {/* 3-Step Slide-Over Appointment Booking Drawer */}
+        {/* 3-Step Slide-Over Appointment Booking Drawer (For OPD Doctor Visits) */}
         <BookingDrawer
           isOpen={bookingOpen}
           onClose={() => setBookingOpen(false)}
           prefill={bookingPrefill}
+        />
+
+        {/* Dedicated Modern Health Package Booking Modal (For Diagnostic Tests & Scans) */}
+        <PackageBookingModal
+          isOpen={packageModalOpen}
+          onClose={() => setPackageModalOpen(false)}
+          initialPackage={selectedPackage}
         />
 
         {/* Vacancies / Careers Modal */}

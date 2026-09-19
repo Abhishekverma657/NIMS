@@ -4,7 +4,7 @@ import { packagesData } from '../data/packagesData';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MotionFadeIn, MotionStagger, MotionItem } from '../components/motion/MotionWrapper';
 
-export default function HealthPackages({ onOpenBooking }) {
+export default function HealthPackages({ onOpenBooking, onOpenPackageBooking }) {
   const [activeCategory, setActiveCategory] = useState('All');
   const [expandedPackage, setExpandedPackage] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -299,7 +299,13 @@ export default function HealthPackages({ onOpenBooking }) {
                       <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.97 }}
-                        onClick={onOpenBooking}
+                        onClick={() => {
+                          if (onOpenPackageBooking) {
+                            onOpenPackageBooking(pkg);
+                          } else if (onOpenBooking) {
+                            onOpenBooking(pkg);
+                          }
+                        }}
                         className="btn btn-primary"
                         style={{ width: '100%', padding: '0.8rem 1rem', fontSize: '0.94rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
                       >

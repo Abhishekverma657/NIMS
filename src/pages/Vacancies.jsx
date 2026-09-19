@@ -16,18 +16,19 @@ import {
   Users,
   Award,
   Sparkles,
+  Printer,
   X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { createPortal } from 'react-dom';
 import { MotionFadeIn, MotionStagger, MotionItem } from '../components/motion/MotionWrapper';
 import AnimatedCounter from '../components/common/AnimatedCounter';
+import VacanciesModal from '../components/vacancies/VacanciesModal';
 
 export default function Vacancies() {
   const [selectedDept, setSelectedDept] = useState('All');
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [activeJobModal, setActiveJobModal] = useState(null);
-  const [applicationSubmitted, setApplicationSubmitted] = useState(false);
+  const [modalJob, setModalJob] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -35,7 +36,9 @@ export default function Vacancies() {
     email: '',
     phone: '',
     qualification: '',
+    councilRegNo: '',
     experience: '',
+    noticePeriod: 'Immediate Joiner',
     currentCtc: '',
     resumeName: ''
   });
@@ -166,6 +169,8 @@ export default function Vacancies() {
 
   const handleApplySubmit = (e) => {
     e.preventDefault();
+    const token = 'NIMS-HR-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
+    setTokenNumber(token);
     setApplicationSubmitted(true);
   };
 
@@ -173,6 +178,94 @@ export default function Vacancies() {
     if (e.target.files && e.target.files[0]) {
       setFormData({ ...formData, resumeName: e.target.files[0].name });
     }
+  };
+
+  const handlePrintSlip = () => {
+    const slipHtml = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <title>NIMS Hospital - Job Application Receipt (${tokenNumber})</title>
+        <style>
+          @page { size: A4 portrait; margin: 10mm 14mm; }
+          * { box-sizing: border-box; margin: 0; padding: 0; }
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0f172a; padding: 10px; font-size: 13px; line-height: 1.45; }
+          .wrapper { max-width: 720px; margin: 0 auto; border: 2px solid #0a2f5e; border-radius: 12px; overflow: hidden; }
+          .header { background: #0a2f5e; color: #fff; padding: 16px 20px; border-bottom: 3.5px solid #f47521; }
+          .header h1 { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+          .header p { font-size: 10.5px; color: #cbd5e1; }
+          .token-strip { background: #f1f5f9; padding: 12px 20px; border-bottom: 1.5px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+          .token-val { font-size: 17px; font-weight: 900; color: #0a2f5e; letter-spacing: 1px; }
+          .body { padding: 18px 20px; }
+          .role-box { background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; }
+          table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 14px; }
+          td { padding: 5px; border-bottom: 1px solid #f1f5f9; }
+          td.lbl { color: #64748b; font-weight: 600; width: 35%; }
+          td.val { color: #0f172a; font-weight: 700; }
+          .timeline { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 12px 16px; font-size: 11px; color: #166534; margin-bottom: 14px; }
+          .footer { background: #f8fafc; border-top: 1.5px solid #e2e8f0; padding: 10px 20px; font-size: 10px; color: #64748b; display: flex; justify-content: space-between; }
+        </style>
+      </head>
+      <body>
+        <div class="wrapper">
+          <div class="header">
+            <h1>NIMS HOSPITAL & MEDICAL UNIVERSITY</h1>
+            <p>National Highway 11C, Delhi-Jaipur Expressway, Jaipur, Rajasthan 303121 &bull; Central Recruitment Directorate</p>
+          </div>
+          <div class="token-strip">
+            <div><span style="font-size: 10px; color: #64748b; text-transform: uppercase;">Application Token:</span> <strong class="token-val">${tokenNumber}</strong></div>
+            <div style="font-size: 11px; color: #475569;">Logged: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
+          </div>
+          <div class="body">
+            <div class="role-box">
+              <div style="font-size: 10px; color: #f47521; font-weight: 800; text-transform: uppercase;">POSITION APPLIED</div>
+              <div style="font-size: 16px; font-weight: 800; color: #0a2f5e;">${activeJobModal?.title}</div>
+              <div style="font-size: 11px; color: #64748b;">Dept: ${activeJobModal?.department} &bull; ${activeJobModal?.location}</div>
+            </div>
+            <table>
+              <tr><td class="lbl">Candidate Name:</td><td class="val">${formData.name}</td></tr>
+              <tr><td class="lbl">Mobile / WhatsApp:</td><td class="val">+91 ${formData.phone}</td></tr>
+              <tr><td class="lbl">Email:</td><td class="val">${formData.email}</td></tr>
+              <tr><td class="lbl">Highest Qualification:</td><td class="val">${formData.qualification}</td></tr>
+              <tr><td class="lbl">Council Reg. No:</td><td class="val">${formData.councilRegNo || 'Submitted / Under Review'}</td></tr>
+              <tr><td class="lbl">Experience:</td><td class="val">${formData.experience}</td></tr>
+              <tr><td class="lbl">Notice Period:</td><td class="val">${formData.noticePeriod}</td></tr>
+              ${formData.resumeName ? `<tr><td class="lbl">Attached CV:</td><td class="val">${formData.resumeName}</td></tr>` : ''}
+            </table>
+            <div class="timeline">
+              <strong>Next Steps in Recruitment:</strong>
+              <p style="margin-top: 4px;">Your profile has been submitted to the Medical Superintendent and Departmental Head. Shortlisted candidates will be contacted within 2-3 business days for technical and clinical panel rounds.</p>
+            </div>
+          </div>
+          <div class="footer">
+            <div>NIMS Hospital HR Department &bull; hr@nimshospitals.in</div>
+            <div>Helpline: 0141-23 88 999 (Ext: 3410)</div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    document.body.appendChild(iframe);
+    const doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(slipHtml);
+    doc.close();
+    iframe.contentWindow.focus();
+    setTimeout(() => {
+      iframe.contentWindow.print();
+      setTimeout(() => {
+        if (document.body.contains(iframe)) document.body.removeChild(iframe);
+      }, 2000);
+    }, 400);
   };
 
   return (
@@ -334,19 +427,26 @@ export default function Vacancies() {
                         <span>{job.vacanciesCount} Openings</span>
                       </span>
 
-                      <motion.button
+                      <button
                         type="button"
-                        whileHover={{ scale: 1.04 }}
-                        whileTap={{ scale: 0.96 }}
-                        onClick={() => {
-                          setActiveJobModal(job);
-                          setApplicationSubmitted(false);
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setModalJob(job);
+                          setIsModalOpen(true);
                         }}
                         className="btn btn-primary v-apply-btn"
+                        style={{
+                          position: 'relative',
+                          zIndex: 10,
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}
                       >
                         <span>Apply Now</span>
                         <ArrowRight size={14} />
-                      </motion.button>
+                      </button>
                     </div>
                   </motion.div>
                 </MotionItem>
@@ -411,171 +511,15 @@ export default function Vacancies() {
         </div>
       </section>
 
-      {/* Interactive Job Application Modal with Framer Motion AnimatePresence */}
-      <AnimatePresence>
-        {activeJobModal && createPortal(
-          <motion.div
-            className="modal-backdrop-custom"
-            onClick={() => setActiveJobModal(null)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}
-          >
-            <motion.div
-              className="v-apply-modal-box"
-              onClick={(e) => e.stopPropagation()}
-              initial={{ scale: 0.94, opacity: 0, y: 15 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.94, opacity: 0, y: 15 }}
-              transition={{ type: 'spring', stiffness: 380, damping: 25 }}
-            >
-              <div className="v-modal-header">
-                <div>
-                  <span className="v-modal-sub">APPLYING FOR</span>
-                  <h3 className="v-modal-title">{activeJobModal.title}</h3>
-                  <span className="v-modal-dept">{activeJobModal.department} • {activeJobModal.location}</span>
-                </div>
-                <button
-                  type="button"
-                  className="v-modal-close"
-                  onClick={() => setActiveJobModal(null)}
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className="v-modal-body">
-              {applicationSubmitted ? (
-                <div className="v-success-box">
-                  <CheckCircle2 size={48} color="#10b981" />
-                  <h4>Application Submitted Successfully!</h4>
-                  <p>
-                    Thank you, <b>{formData.name}</b>. Your application for <b>{activeJobModal.title}</b> has been received by
-                    the NIMS Hospital HR & Medical Recruitment Team.
-                  </p>
-                  <p className="success-note">
-                    Our HR desk will review your credentials and contact you at <b>{formData.phone || formData.email}</b> within 2 business days.
-                  </p>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    style={{ marginTop: '1.5rem' }}
-                    onClick={() => setActiveJobModal(null)}
-                  >
-                    Done & Return to Vacancies
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleApplySubmit} className="v-form-grid">
-                  <div className="v-form-group">
-                    <label>Full Name *</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Dr. Aryan Sharma / Priya Patel"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="v-form-group">
-                    <label>Mobile Phone Number *</label>
-                    <input
-                      type="tel"
-                      placeholder="10-digit mobile number"
-                      pattern="[0-9]{10}"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="v-form-group">
-                    <label>Email Address *</label>
-                    <input
-                      type="email"
-                      placeholder="name@example.com"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="v-form-group">
-                    <label>Highest Medical / Academic Qualification *</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. B.Sc Nursing, MD Medicine, DMLT"
-                      required
-                      value={formData.qualification}
-                      onChange={(e) => setFormData({ ...formData, qualification: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="v-form-group">
-                    <label>Total Relevant Experience *</label>
-                    <select
-                      required
-                      value={formData.experience}
-                      onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
-                    >
-                      <option value="">Select Experience Range</option>
-                      <option value="Fresher">Fresher (0 - 1 Year)</option>
-                      <option value="1-3 Years">1 - 3 Years</option>
-                      <option value="3-5 Years">3 - 5 Years</option>
-                      <option value="5-10 Years">5 - 10 Years</option>
-                      <option value="10+ Years">10+ Years</option>
-                    </select>
-                  </div>
-
-                  <div className="v-form-group">
-                    <label>Current / Expected CTC (Optional)</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. 4.5 LPA / Negotiable"
-                      value={formData.currentCtc}
-                      onChange={(e) => setFormData({ ...formData, currentCtc: e.target.value })}
-                    />
-                  </div>
-
-                  {/* Resume Upload Box */}
-                  <div className="v-form-group v-full-width">
-                    <label>Upload Resume / CV (.pdf, .docx) *</label>
-                    <div className="v-file-dropzone">
-                      <Upload size={22} color="var(--nims-orange)" />
-                      <div>
-                        {formData.resumeName ? (
-                          <span style={{ color: '#10b981', fontWeight: 700 }}>
-                            ✓ Selected: {formData.resumeName}
-                          </span>
-                        ) : (
-                          <span>Click to browse and upload your latest resume</span>
-                        )}
-                      </div>
-                      <input
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        required
-                        onChange={handleFileChange}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="v-form-footer v-full-width">
-                    <button type="submit" className="btn btn-primary v-submit-btn">
-                      <Send size={15} />
-                      <span>Submit Official Job Application</span>
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-          </motion.div>
-        </motion.div>,
-        document.body
-      )}
-    </AnimatePresence>
-  </div>
-);
+      {/* 3-Step Guided Vacancy Application Modal */}
+      <VacanciesModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setModalJob(null);
+        }}
+        initialJob={modalJob}
+      />
+    </div>
+  );
 }

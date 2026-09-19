@@ -2792,6 +2792,8 @@ button, input, select, textarea {
   padding-top: 0.95rem;
   border-top: 1px solid #f1f5f9;
   margin-top: auto;
+  position: relative;
+  z-index: 10;
 }
 
 .v-openings-count {
@@ -2807,6 +2809,10 @@ button, input, select, textarea {
   padding: 0.45rem 1.15rem;
   font-size: 0.85rem;
   border-radius: 9999px;
+  position: relative;
+  z-index: 12;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .no-vacancies-box {
@@ -3427,6 +3433,41 @@ button, input, select, textarea {
   outline: 2px solid var(--nims-orange);
   outline-offset: 2px;
 }
+
+/* ==========================================================================
+   OFFICIAL HOSPITAL PRINT STYLES
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide navigation, floating widgets, buttons, and page clutter */
+  nav,
+  footer,
+  header,
+  .topbar,
+  .floating-helpline-hub,
+  .route-progress-bar,
+  button,
+  .btn,
+  .no-print {
+    display: none !important;
+  }
+}
+
 
 
 
