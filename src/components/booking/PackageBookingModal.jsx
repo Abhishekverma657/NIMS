@@ -33,12 +33,18 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
   // Sync selected package when modal opens or initialPackage changes
   useEffect(() => {
     if (isOpen) {
+      document.body.style.overflow = 'hidden';
       if (initialPackage && initialPackage.id) {
         setSelectedPackageId(initialPackage.id);
       } else if (packagesData.length > 0) {
         setSelectedPackageId(packagesData[1]?.id || packagesData[0]?.id); // Default to Whole Body Checkup if available
       }
+    } else {
+      document.body.style.overflow = 'unset';
     }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [isOpen, initialPackage]);
 
   if (!isOpen) return null;
@@ -486,24 +492,10 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      zIndex: 9999,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'rgba(5, 26, 54, 0.72)',
-      backdropFilter: 'blur(8px)',
-      padding: '1rem',
-      animation: 'fadeIn 0.2s ease-out'
-    }}>
+    <div className="health-modal-overlay">
       {/* Background click to dismiss */}
       <div 
-        style={{ position: 'absolute', inset: 0 }} 
+        className="health-modal-backdrop" 
         onClick={onClose} 
       />
 
@@ -513,30 +505,10 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 15 }}
         transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-        style={{
-          position: 'relative',
-          width: '100%',
-          maxWidth: '680px',
-          maxHeight: '92vh',
-          background: '#ffffff',
-          borderRadius: '20px',
-          boxShadow: '0 25px 60px -15px rgba(5, 26, 54, 0.35)',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          zIndex: 1
-        }}
+        className="health-modal-dialog"
       >
         {/* Modern Modal Header */}
-        <div style={{
-          padding: '1.25rem 1.75rem',
-          background: 'linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-light) 100%)',
-          color: '#ffffff',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottom: '3px solid var(--nims-orange)'
-        }}>
+        <div className="health-modal-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <div style={{
               background: '#ffffff',
@@ -577,6 +549,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
           <button
             onClick={onClose}
             aria-label="Close"
+            className="close-btn"
             style={{
               background: 'rgba(255,255,255,0.12)',
               border: 'none',
@@ -588,7 +561,8 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
               justifyContent: 'center',
               color: '#fff',
               cursor: 'pointer',
-              transition: 'background 0.2s'
+              transition: 'background 0.2s',
+              flexShrink: 0
             }}
             onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.22)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.12)'}
@@ -598,7 +572,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
         </div>
 
         {/* Modal Body (Scrollable) */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem 1.75rem' }}>
+        <div className="health-modal-body">
           {!bookingConfirmed ? (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.4rem' }}>
               
@@ -644,6 +618,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
                     <select
                       value={selectedPackageId}
                       onChange={(e) => setSelectedPackageId(e.target.value)}
+                      className="health-modal-select"
                       style={{
                         padding: '0.25rem 0.6rem',
                         fontSize: '0.8rem',

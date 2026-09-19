@@ -18,6 +18,7 @@ import LoyaltyCard from './pages/LoyaltyCard';
 import PatientPortal from './pages/PatientPortal';
 import Vacancies from './pages/Vacancies';
 import Contact from './pages/Contact';
+import Reviews from './pages/Reviews';
 
 import { PhoneCall } from 'lucide-react';
 
@@ -70,6 +71,7 @@ function AnimatedPageContent({ onOpenBooking, onOpenPackageBooking }) {
           <Route path="/vacancies" element={<Vacancies />} />
           <Route path="/careers" element={<Vacancies />} />
           <Route path="/contact-us" element={<Contact />} />
+          <Route path="/reviews" element={<Reviews />} />
           {/* Fallback redirect */}
           <Route path="*" element={<Home onOpenBooking={onOpenBooking} />} />
         </Routes>

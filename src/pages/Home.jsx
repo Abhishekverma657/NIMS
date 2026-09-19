@@ -29,10 +29,16 @@ import DoctorCard from '../components/doctors/DoctorCard';
 import { motion } from 'framer-motion';
 import { MotionFadeIn, MotionStagger, MotionItem, MotionCard } from '../components/motion/MotionWrapper';
 import AnimatedCounter from '../components/common/AnimatedCounter';
+import VideoCard from '../components/video/VideoCard';
+import VideoGalleryModal from '../components/video/VideoGalleryModal';
+import { videoReviewsData } from '../data/videoReviewsData';
+import { writtenTestimonialsData } from '../data/writtenTestimonialsData';
 
 export default function Home({ onOpenBooking }) {
   const [activeTab, setActiveTab] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
+  const [reviewFilter, setReviewFilter] = useState('all');
+  const [activeVideoIndex, setActiveVideoIndex] = useState(null);
   
   // Doctor Filter State
   const [doctorDeptFilter, setDoctorDeptFilter] = useState('All');
@@ -79,8 +85,7 @@ export default function Home({ onOpenBooking }) {
   const [isVideoMuted, setIsVideoMuted] = useState(true);
 
   // Testimonials Filter & Video Modal State
-  const [reviewFilter, setReviewFilter] = useState('all');
-  const [activeVideoModal, setActiveVideoModal] = useState(null);
+  const [unmutedVideoId, setUnmutedVideoId] = useState(null);
 
   const heroSlides = [
     {
@@ -179,68 +184,7 @@ export default function Home({ onOpenBooking }) {
   ];
 
   // Video Reviews
-  const videoReviews = [
-    {
-      id: 'vid-1',
-      patientName: 'Rameshwar Prasad Sharma',
-      age: 62,
-      procedure: 'Bilateral Total Knee Replacement (TKR)',
-      department: 'Orthopaedics & Joint Replacement',
-      doctor: 'Dr. Meenakshi Verma',
-      duration: '2:45 min',
-      thumbnail: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=700&q=80',
-      quote: "After suffering from severe osteoarthritis for 7 years, I walked without pain on day 2 after surgery. The physiotherapy and nursing at NIMS are exceptional.",
-      rating: 5
-    },
-    {
-      id: 'vid-2',
-      patientName: 'Sunita Meena',
-      age: 54,
-      procedure: 'Emergency Primary Angioplasty (PTCA)',
-      department: 'Cardiology & CTVS Center',
-      doctor: 'Dr. R. K. Sharma',
-      duration: '3:10 min',
-      thumbnail: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=700&q=80',
-      quote: "My husband suffered a sudden heart attack on the highway. NIMS ambulance reached in 10 minutes and the Cath Lab was ready immediately. They saved his life.",
-      rating: 5
-    },
-    {
-      id: 'vid-3',
-      patientName: 'Priya & Rahul Choudhary',
-      age: 28,
-      procedure: 'Pre-Term Baby Care (29 Weeks, NICU Level III)',
-      department: 'Paediatrics & Neonatology',
-      doctor: 'Dr. R. K. Gupta & NICU Team',
-      duration: '4:02 min',
-      thumbnail: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=700&q=80',
-      quote: "Our twin babies were born premature with very low birth weight. The NICU team cared for them like their own family for 45 days. Today both are healthy.",
-      rating: 5
-    }
-  ];
-
-  const writtenTestimonials = [
-    {
-      initials: 'NS',
-      name: 'Neelam S.',
-      role: 'Cardiac Care Patient',
-      rating: 5,
-      comment: "I am very thankful to all the staff and doctors at NIMS Hospital. Services were very good, staff took utmost care, very much respectful. From the time I was shifted from emergency to discharge, everything was smooth."
-    },
-    {
-      initials: 'DM',
-      name: 'Deepak M.',
-      role: 'Orthopedic Surgery Patient',
-      rating: 5,
-      comment: "This is the best hospital I have ever visited in Jaipur. The services here are unmatched. All the staff and doctors are very humble and take care of their patients a lot. Transparent billing and great nursing."
-    },
-    {
-      initials: 'KA',
-      name: 'Kamal A.',
-      role: 'Family Inpatient Care',
-      rating: 5,
-      comment: "We really appreciate this hospital with all good facilities and staff. Be it the ward, billing or TPA department — everyone is of a helping nature. NIMS Hospital has world-class infrastructure on NH-11C."
-    }
-  ];
+  const videoReviews = videoReviewsData.slice(0, 3);
 
   return (
     <div style={{ position: 'relative' }}>
@@ -846,6 +790,7 @@ export default function Home({ onOpenBooking }) {
           {/* 2-Columns Grid - EXACT 2 CARDS PER ROW */}
           {(() => {
             const list = doctorsData.filter(d => {
+              if (d.isOpdAvailable === false) return false;
               if (doctorDeptFilter === 'All' || doctorDeptFilter === 'All Doctors') return true;
               const filter = doctorDeptFilter.toLowerCase();
               const dept = d.department.toLowerCase();
@@ -1004,130 +949,13 @@ export default function Home({ onOpenBooking }) {
                 gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
                 gap: '1.5rem'
               }} staggerDelay={0.08}>
-                {videoReviews.map((item) => (
-                  <MotionItem key={item.id}>
-                    <motion.div
-                      className="smooth-card"
-                      whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(10, 47, 94, 0.12)' }}
-                      transition={{ type: 'spring', stiffness: 350, damping: 24 }}
-                      style={{
-                        overflow: 'hidden',
-                        background: '#ffffff',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: '100%'
-                      }}
-                    >
-                      <div
-                        onClick={() => setActiveVideoModal(item)}
-                        style={{
-                          position: 'relative',
-                          height: '210px',
-                          cursor: 'pointer',
-                          overflow: 'hidden'
-                        }}
-                      >
-                        <motion.img
-                          src={item.thumbnail}
-                          alt={item.patientName}
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.3 }}
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                        <div style={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%',
-                          background: 'rgba(0,0,0,0.35)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}>
-                          <motion.div
-                            whileHover={{ scale: 1.15 }}
-                            whileTap={{ scale: 0.95 }}
-                            style={{
-                              width: '56px',
-                              height: '56px',
-                              borderRadius: '50%',
-                              background: 'var(--nims-orange)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              color: '#ffffff',
-                              boxShadow: '0 6px 20px rgba(244, 117, 33, 0.5)'
-                            }}
-                          >
-                            <Play size={24} fill="#ffffff" style={{ marginLeft: '3px' }} />
-                          </motion.div>
-                        </div>
-
-                        <span style={{
-                          position: 'absolute',
-                          bottom: '12px',
-                          right: '12px',
-                          background: 'rgba(0,0,0,0.75)',
-                          color: '#fff',
-                          fontSize: '0.72rem',
-                          fontWeight: 700,
-                          padding: '0.2rem 0.55rem',
-                          borderRadius: '4px'
-                        }}>
-                          {item.duration}
-                        </span>
-                      </div>
-
-                      <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                        <div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                            <span className="badge-pill badge-orange" style={{ fontSize: '0.72rem' }}>
-                              {item.department}
-                            </span>
-                            <div style={{ display: 'flex', gap: '2px' }}>
-                              {[...Array(item.rating)].map((_, idx) => (
-                                <Star key={idx} size={14} fill="#f59e0b" color="#f59e0b" />
-                              ))}
-                            </div>
-                          </div>
-
-                          <h3 style={{ fontSize: '1.15rem', color: 'var(--nims-navy)', margin: '0.35rem 0' }}>
-                            {item.patientName} (Age {item.age})
-                          </h3>
-                          <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--nims-orange)', marginBottom: '0.75rem' }}>
-                            Procedure: {item.procedure}
-                          </div>
-                          <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, fontStyle: 'italic' }}>
-                            "{item.quote}"
-                          </p>
-                        </div>
-
-                        <div style={{ paddingTop: '1rem', marginTop: '1rem', borderTop: '1px solid var(--nims-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
-                            Consultant: <b>{item.doctor}</b>
-                          </span>
-                          <button
-                            onClick={() => setActiveVideoModal(item)}
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              color: 'var(--nims-orange)',
-                              fontWeight: 700,
-                              fontSize: '0.84rem',
-                              cursor: 'pointer',
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '0.3rem'
-                            }}
-                          >
-                            <Play size={13} fill="var(--nims-orange)" />
-                            <span>Watch Story</span>
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </MotionItem>
+                {videoReviews.map((item, idx) => (
+                  <VideoCard 
+                    key={item.id} 
+                    item={item} 
+                    index={idx}
+                    setActiveVideoModal={setActiveVideoIndex}
+                  />
                 ))}
               </MotionStagger>
             </div>
@@ -1146,7 +974,7 @@ export default function Home({ onOpenBooking }) {
                 gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
                 gap: '1.5rem'
               }} staggerDelay={0.08}>
-                {writtenTestimonials.map((testi, i) => (
+                {writtenTestimonialsData.map((testi, i) => (
                   <MotionItem key={i}>
                     <motion.div
                       className="smooth-card"
@@ -1213,88 +1041,21 @@ export default function Home({ onOpenBooking }) {
               </MotionStagger>
             </div>
           )}
+
+          {/* Unified View All Button at the bottom */}
+          <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+            <Link to="/reviews" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 2rem', borderRadius: '50px', fontSize: '1rem', fontWeight: 600 }}>
+              <Video size={20} /> View All Patient Reviews
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Video Player Modal */}
-      {activeVideoModal && createPortal(
-        <div
-          onClick={() => setActiveVideoModal(null)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            zIndex: 999999,
-            background: 'rgba(5, 26, 54, 0.92)',
-            backdropFilter: 'blur(10px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '1.5rem'
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              position: 'relative',
-              maxWidth: '800px',
-              width: '100%',
-              background: '#000000',
-              borderRadius: 'var(--radius-md)',
-              overflow: 'hidden',
-              boxShadow: '0 25px 60px rgba(0,0,0,0.5)'
-            }}
-          >
-            <button
-              onClick={() => setActiveVideoModal(null)}
-              style={{
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-                zIndex: 10,
-                background: 'rgba(0,0,0,0.6)',
-                border: 'none',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                color: '#fff',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <X size={22} />
-            </button>
-
-            <div style={{ height: '420px', width: '100%', background: '#000' }}>
-              <video
-                controls
-                autoPlay
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                poster={activeVideoModal.thumbnail}
-              >
-                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
-              </video>
-            </div>
-
-            <div style={{ padding: '1.25rem 1.75rem', background: '#0a2f5e', color: '#fff' }}>
-              <div style={{ fontSize: '0.78rem', color: 'var(--nims-orange)', fontWeight: 700 }}>
-                {activeVideoModal.department}
-              </div>
-              <h3 style={{ color: '#fff', fontSize: '1.25rem', margin: '0.2rem 0 0.35rem 0' }}>
-                {activeVideoModal.patientName} — {activeVideoModal.procedure}
-              </h3>
-              <p style={{ color: '#cbd5e1', fontSize: '0.88rem', margin: 0 }}>
-                "{activeVideoModal.quote}"
-              </p>
-            </div>
-          </div>
-        </div>,
-        document.body
-      )}
+      {/* VIDEO MODAL (Gallery View) */}
+      <VideoGalleryModal 
+        activeVideoIndex={activeVideoIndex} 
+        setActiveVideoIndex={setActiveVideoIndex} 
+      />
     </div>
   );
 }

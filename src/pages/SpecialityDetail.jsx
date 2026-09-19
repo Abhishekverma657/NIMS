@@ -29,6 +29,7 @@ export default function SpecialityDetail({ onOpenBooking }) {
 
   // Find related doctors for this department
   const departmentDoctors = doctorsData.filter((doc) => {
+    if (doc.isOpdAvailable === false) return false;
     if (!doc.specialityId && !doc.department) return false;
     return (
       (doc.specialityId && doc.specialityId.toLowerCase().includes(speciality.id.toLowerCase())) ||
