@@ -43,8 +43,8 @@ export default function SpecialityCard({ spec }) {
           </span>
           {spec.emergency && (
             <span className="spec-emergency-chip">
-              <span className="pulse-dot pulse-dot-orange" style={{ width: '6px', height: '6px' }} />
-              24×7 Care
+              <span className="pulse-dot pulse-dot-orange" />
+              <span>24×7 Care</span>
             </span>
           )}
         </div>

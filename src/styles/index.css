@@ -263,38 +263,47 @@ button, input, select, textarea {
 
 /* Radar Pulse Beacon */
 .pulse-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
+  min-width: 7px;
+  min-height: 7px;
   border-radius: 50%;
   background: #10b981;
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .pulse-dot::after {
   content: '';
   position: absolute;
-  top: -3px;
-  left: -3px;
-  width: 14px;
-  height: 14px;
+  inset: -2px;
   border-radius: 50%;
-  background: rgba(16, 185, 129, 0.4);
-  animation: beaconPulse 2s infinite ease-in-out;
+  background: inherit;
+  opacity: 0.65;
+  animation: beaconPulse 2s infinite cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
 }
 
 .pulse-dot-orange {
   background: var(--nims-orange);
 }
 
-.pulse-dot-orange::after {
-  background: rgba(244, 117, 33, 0.4);
-  animation: beaconPulse 1.6s infinite ease-in-out;
-}
-
 @keyframes beaconPulse {
-  0% { transform: scale(0.8); opacity: 1; }
-  100% { transform: scale(2.2); opacity: 0; }
+  0% {
+    transform: scale(0.95);
+    opacity: 0.85;
+  }
+  65% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
 }
 
 /* Section Spacing */
@@ -528,35 +537,43 @@ button, input, select, textarea {
 
 .spec-header-badges {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-wrap: wrap;
+  max-width: calc(100% - 64px);
 }
 
 .spec-category-tag {
+  display: inline-flex;
+  align-items: center;
   background: rgba(10, 47, 94, 0.05);
   color: var(--nims-navy);
-  border: 1px solid rgba(10, 47, 94, 0.1);
-  font-size: 0.66rem;
+  border: 1px solid rgba(10, 47, 94, 0.12);
+  font-size: 0.67rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.18rem 0.55rem;
-  border-radius: 20px;
+  letter-spacing: 0.04em;
+  padding: 0.22rem 0.6rem;
+  border-radius: var(--radius-full);
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
 .spec-emergency-chip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.66rem;
+  gap: 5px;
+  font-size: 0.67rem;
   font-weight: 800;
-  color: #ea580c;
-  background: rgba(244, 117, 33, 0.1);
-  border: 1px solid rgba(244, 117, 33, 0.22);
-  padding: 0.12rem 0.5rem;
-  border-radius: 20px;
-  box-shadow: 0 2px 5px rgba(244, 117, 33, 0.06);
+  color: #c2410c;
+  background: #fff7ed;
+  border: 1px solid rgba(244, 117, 33, 0.26);
+  padding: 0.22rem 0.6rem;
+  border-radius: var(--radius-full);
+  line-height: 1.1;
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(244, 117, 33, 0.06);
 }
 
 .card-body-content {
@@ -2305,64 +2322,128 @@ button, input, select, textarea {
 
 .portal-features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 3.5rem;
+}
+
+@media (max-width: 991.98px) {
+  .portal-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .portal-features-grid {
+    grid-template-columns: 1fr;
+    margin-bottom: 2.5rem;
+  }
 }
 
 .portal-feature-card {
   background: #ffffff;
-  border: 1px solid #eef2f6;
+  border: 1.5px solid #edf2f7;
   border-radius: 20px;
-  padding: 1.75rem;
-  box-shadow: 0 4px 18px rgba(10, 47, 94, 0.035);
+  padding: 2rem;
+  box-shadow: 0 6px 24px rgba(10, 47, 94, 0.04);
   transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .portal-feature-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(244, 117, 33, 0.35);
-  box-shadow: 0 16px 36px rgba(10, 47, 94, 0.08);
+  transform: translateY(-6px);
+  border-color: rgba(244, 117, 33, 0.4);
+  box-shadow: 0 20px 42px rgba(10, 47, 94, 0.12);
 }
 
 .portal-feat-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.35rem;
 }
 
 .portal-feat-icon {
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 14px;
   background: rgba(244, 117, 33, 0.1);
+  border: 1px solid rgba(244, 117, 33, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .portal-feat-badge {
-  font-size: 0.7rem;
+  font-size: 0.74rem;
   font-weight: 750;
   color: var(--nims-navy);
   background: #f1f5f9;
-  padding: 0.2rem 0.65rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  letter-spacing: 0.02em;
 }
 
 .portal-feat-title {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--nims-navy);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.65rem 0;
+  line-height: 1.35;
 }
 
 .portal-feat-desc {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   color: #64748b;
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 0;
+  flex: 1;
+}
+
+.portal-urgent-banner {
+  background: linear-gradient(135deg, var(--nims-navy) 0%, #071f3d 100%);
+  border: 1.5px solid rgba(244, 117, 33, 0.35);
+  border-radius: 20px;
+  padding: 2.25rem 2.5rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+  box-shadow: 0 14px 40px rgba(10, 47, 94, 0.18);
+  margin-top: 1rem;
+}
+
+.portal-urgent-banner h4 {
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 0 0 0.4rem 0;
+}
+
+.portal-urgent-banner p {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.portal-urgent-banner .urgent-call-btn {
+  padding: 0.85rem 1.6rem;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  white-space: nowrap;
 }
 
 .portal-help-banner {
@@ -2984,6 +3065,7 @@ button, input, select, textarea {
 .modern-speciality-card,
 .nims-doctor-card,
 .vacancy-job-card,
+.portal-feature-card,
 .portal-feature-box,
 .why-work-card {
   position: relative;
@@ -2993,6 +3075,7 @@ button, input, select, textarea {
 .modern-speciality-card::after,
 .nims-doctor-card::after,
 .vacancy-job-card::after,
+.portal-feature-card::after,
 .portal-feature-box::after,
 .why-work-card::after {
   content: '';
@@ -3016,6 +3099,7 @@ button, input, select, textarea {
 .modern-speciality-card:hover::after,
 .nims-doctor-card:hover::after,
 .vacancy-job-card:hover::after,
+.portal-feature-card:hover::after,
 .portal-feature-box:hover::after,
 .why-work-card:hover::after {
   transform: rotate(25deg) translateY(120%);
@@ -3073,20 +3157,6 @@ button, input, select, textarea {
     transform: scale(1.45);
     opacity: 0.45;
   }
-}
-
-.pulse-dot {
-  position: relative;
-}
-
-.pulse-dot::after {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  background: inherit;
-  animation: statusAuraPulse 2.2s infinite ease-out;
-  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -3264,6 +3334,72 @@ button, input, select, textarea {
     font-size: 0.88rem !important;
   }
 }
+
+/* ==========================================================================
+   HEALTH PACKAGES PREMIUM CARD & INDEPENDENT ROW EXPANSION
+   ========================================================================== */
+.health-package-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid #edf2f7;
+  padding: 1.75rem;
+  box-shadow: 0 4px 20px rgba(10, 47, 94, 0.04);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  align-self: start;
+  overflow: hidden;
+}
+
+.health-package-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 45px rgba(10, 47, 94, 0.11);
+  border-color: rgba(244, 117, 33, 0.35);
+}
+
+.health-package-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--nims-navy) 0%, var(--nims-orange) 100%);
+}
+
+.package-expand-btn {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: var(--nims-navy);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.42rem 0.95rem;
+  border-radius: 9999px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.package-expand-btn:hover {
+  background: #f1f5f9;
+  border-color: var(--nims-orange);
+  color: var(--nims-orange);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(244, 117, 33, 0.15);
+}
+
+.package-expand-btn:focus-visible {
+  outline: 2px solid var(--nims-orange);
+  outline-offset: 2px;
+}
+
 
 
 

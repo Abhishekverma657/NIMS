@@ -111,14 +111,14 @@ export default function Topbar({ onOpenVacancies }) {
             <span>Careers / Vacancies</span>
           </Link>
 
-          {/* Loyalty Card rendered in identical link UI as Careers and Portal */}
+          {/* Health Schemes rendered in identical link UI as Careers and Portal */}
           <Link
             to="/loyalty-card"
             className="topbar-link"
-            title="NIMS Loyalty Card & Healthcare Benefit Schemes"
+            title="NIMS Empaneled Government Healthcare Benefit Schemes & TPA"
           >
-            <CreditCard size={13} color="var(--nims-orange)" />
-            <span>Loyalty Card</span>
+            <ShieldCheck size={13} color="var(--nims-orange)" />
+            <span>Health Schemes</span>
           </Link>
 
           <Link
@@ -142,8 +142,8 @@ export default function Topbar({ onOpenVacancies }) {
 
           <div className="mobile-actions-group">
             <Link to="/loyalty-card" className="mobile-quick-link">
-              <CreditCard size={11} color="var(--nims-orange)" />
-              <span>Loyalty Card</span>
+              <ShieldCheck size={11} color="var(--nims-orange)" />
+              <span>Health Schemes</span>
             </Link>
             <Link to="/vacancies" className="mobile-quick-link">
               <Briefcase size={11} color="var(--nims-orange)" />

@@ -225,7 +225,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
               <li>
                 <Link to="/loyalty-card" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
                   <ChevronRight size={14} color="var(--nims-orange)" />
-                  <span>NIMS Loyalty Health Card</span>
+                  <span>Government Healthcare Schemes</span>
                 </Link>
               </li>
               <li>

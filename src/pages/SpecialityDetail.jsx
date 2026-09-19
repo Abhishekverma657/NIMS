@@ -146,7 +146,7 @@ export default function SpecialityDetail({ onOpenBooking }) {
             {/* Top Action CTAs */}
             <div className="speciality-hero-ctas">
               <button
-                onClick={onOpenBooking}
+                onClick={() => onOpenBooking({ speciality: speciality.id })}
                 className="btn btn-orange"
                 style={{ padding: '0.85rem 1.6rem', fontSize: '0.98rem', fontWeight: 700 }}
               >
@@ -378,7 +378,11 @@ export default function SpecialityDetail({ onOpenBooking }) {
               {departmentDoctors.length > 0 ? (
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
                   {departmentDoctors.map((doc) => (
-                    <DoctorCard key={doc.id} doctor={doc} onBook={onOpenBooking} />
+                    <DoctorCard
+                      key={doc.id}
+                      doctor={doc}
+                      onBook={(d) => onOpenBooking({ doctor: d || doc, speciality: speciality.id })}
+                    />
                   ))}
                 </div>
               ) : (
@@ -403,7 +407,11 @@ export default function SpecialityDetail({ onOpenBooking }) {
                       OPD consultations for {speciality.name} are available Monday through Saturday.
                     </p>
                   </div>
-                  <button onClick={onOpenBooking} className="btn btn-primary" style={{ padding: '0.65rem 1.4rem' }}>
+                  <button
+                    onClick={() => onOpenBooking({ speciality: speciality.id })}
+                    className="btn btn-primary"
+                    style={{ padding: '0.65rem 1.4rem' }}
+                  >
                     Book Consultation
                   </button>
                 </div>
@@ -423,7 +431,7 @@ export default function SpecialityDetail({ onOpenBooking }) {
               </p>
 
               <button
-                onClick={onOpenBooking}
+                onClick={() => onOpenBooking({ speciality: speciality.id })}
                 className="btn btn-primary"
                 style={{ width: '100%', padding: '0.85rem', fontSize: '0.95rem', marginBottom: '0.75rem' }}
               >

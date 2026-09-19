@@ -79,7 +79,26 @@ function AnimatedPageContent({ onOpenBooking }) {
 
 export default function App() {
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingPrefill, setBookingPrefill] = useState(null);
   const [vacanciesOpen, setVacanciesOpen] = useState(false);
+
+  const handleOpenBooking = (prefillData) => {
+    if (prefillData) {
+      if (typeof prefillData === 'string') {
+        setBookingPrefill({ speciality: prefillData });
+      } else if (prefillData.id && (prefillData.specialityId || prefillData.department)) {
+        setBookingPrefill({
+          doctor: prefillData,
+          speciality: prefillData.specialityId || undefined
+        });
+      } else {
+        setBookingPrefill(prefillData);
+      }
+    } else {
+      setBookingPrefill(null);
+    }
+    setBookingOpen(true);
+  };
 
   return (
     <Router>
@@ -90,16 +109,16 @@ export default function App() {
         <Topbar onOpenVacancies={() => setVacanciesOpen(true)} />
 
         {/* Sticky Clean Single-Line Navbar (No Call button clutter, Logo = Home) */}
-        <Navbar onOpenBooking={() => setBookingOpen(true)} />
+        <Navbar onOpenBooking={() => handleOpenBooking()} />
 
         {/* Main Routed Content with Smooth Page Switch Animation */}
         <main style={{ flex: 1 }}>
-          <AnimatedPageContent onOpenBooking={() => setBookingOpen(true)} />
+          <AnimatedPageContent onOpenBooking={handleOpenBooking} />
         </main>
 
         {/* Mega Footer */}
         <Footer
-          onOpenBooking={() => setBookingOpen(true)}
+          onOpenBooking={() => handleOpenBooking()}
           onOpenVacancies={() => setVacanciesOpen(true)}
         />
 
@@ -107,6 +126,7 @@ export default function App() {
         <BookingDrawer
           isOpen={bookingOpen}
           onClose={() => setBookingOpen(false)}
+          prefill={bookingPrefill}
         />
 
         {/* Vacancies / Careers Modal */}

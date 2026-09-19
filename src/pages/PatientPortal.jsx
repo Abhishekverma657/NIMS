@@ -156,22 +156,22 @@ export default function PatientPortal() {
             {portalFeatures.map((feat, idx) => (
               <MotionItem key={idx}>
                 <motion.div
-                  className="portal-feature-box"
+                  className="portal-feature-card"
                   whileHover={{ y: -6, boxShadow: '0 20px 42px rgba(10, 47, 94, 0.12)' }}
                   transition={{ type: 'spring', stiffness: 350, damping: 24 }}
                 >
-                  <div className="feat-top-bar">
+                  <div className="portal-feat-top">
                     <motion.div
-                      className="feat-icon-pod"
+                      className="portal-feat-icon"
                       whileHover={{ rotate: 8, scale: 1.1 }}
                       transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                     >
                       {feat.icon}
                     </motion.div>
-                    <span className="feat-badge-chip">{feat.badge}</span>
+                    <span className="portal-feat-badge">{feat.badge}</span>
                   </div>
-                  <h3 className="feat-title">{feat.title}</h3>
-                  <p className="feat-desc">{feat.desc}</p>
+                  <h3 className="portal-feat-title">{feat.title}</h3>
+                  <p className="portal-feat-desc">{feat.desc}</p>
                 </motion.div>
               </MotionItem>
             ))}

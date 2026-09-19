@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Menu, X, ChevronRight, CreditCard } from 'lucide-react';
+import { Calendar, Menu, X, ChevronRight, ShieldCheck } from 'lucide-react';
 
 export default function Navbar({ onOpenBooking }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -175,7 +175,7 @@ export default function Navbar({ onOpenBooking }) {
               </Link>
             ))}
 
-            {/* Mobile Dedicated Loyalty Card Link */}
+            {/* Mobile Dedicated Healthcare Schemes Link */}
             <Link
               to="/loyalty-card"
               style={{
@@ -193,8 +193,8 @@ export default function Navbar({ onOpenBooking }) {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                <CreditCard size={18} color="var(--nims-orange)" />
-                <span>NIMS Loyalty Card & Schemes</span>
+                <ShieldCheck size={18} color="var(--nims-orange)" />
+                <span>Healthcare Benefit Schemes</span>
               </div>
               <ChevronRight size={16} color="var(--nims-orange)" />
             </Link>

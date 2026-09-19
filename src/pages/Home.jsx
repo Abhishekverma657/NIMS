@@ -890,7 +890,7 @@ export default function Home({ onOpenBooking }) {
                   <MotionItem key={doc.id}>
                     <DoctorCard
                       doctor={doc}
-                      onBook={() => onOpenBooking()}
+                      onBook={() => onOpenBooking(doc)}
                     />
                   </MotionItem>
                 ))}

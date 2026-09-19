@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, CheckCircle2, ChevronDown, ChevronUp, ShieldCheck, Tag, HeartPulse, Search } from 'lucide-react';
 import { packagesData } from '../data/packagesData';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MotionFadeIn, MotionStagger, MotionItem } from '../components/motion/MotionWrapper';
 
 export default function HealthPackages({ onOpenBooking }) {
@@ -117,8 +117,9 @@ export default function HealthPackages({ onOpenBooking }) {
           <MotionStagger
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
-              gap: '1.5rem'
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
+              gap: '1.75rem',
+              alignItems: 'start'
             }}
             staggerDelay={0.07}
           >
@@ -127,112 +128,190 @@ export default function HealthPackages({ onOpenBooking }) {
               return (
                 <MotionItem key={pkg.id}>
                   <motion.div
-                    className="smooth-card"
-                    whileHover={{ y: -6, boxShadow: '0 20px 42px rgba(10, 47, 94, 0.12)' }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 24 }}
-                    style={{
-                      padding: '1.75rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      background: '#ffffff',
-                      borderTop: '4px solid var(--nims-navy)',
-                      height: '100%'
-                    }}
+                    className="health-package-card"
+                    layout
+                    whileHover={{ y: -5, boxShadow: '0 20px 45px rgba(10, 47, 94, 0.11)' }}
+                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                   >
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-                      <span className="badge-pill badge-gold" style={{ fontSize: '0.72rem' }}>
-                        {pkg.category}
-                      </span>
-                      <span className="badge-pill badge-crimson" style={{ fontSize: '0.72rem' }}>
-                        {pkg.discount}
-                      </span>
-                    </div>
-
-                    <h3 style={{ fontSize: '1.25rem', color: 'var(--nims-navy)', marginBottom: '0.35rem' }}>
-                      {pkg.name}
-                    </h3>
-                    <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--nims-gold)', marginBottom: '1rem' }}>
-                      ★ {pkg.badge}
-                    </div>
-
-                    {/* Price Block */}
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'baseline',
-                      gap: '0.75rem',
-                      padding: '0.75rem 1rem',
-                      background: '#f8fafc',
-                      borderRadius: 'var(--radius-sm)',
-                      marginBottom: '1.25rem'
-                    }}>
-                      <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--nims-navy)' }}>
-                        {pkg.price}
-                      </span>
-                      <span style={{ fontSize: '0.9rem', color: '#94a3b8', textDecoration: 'line-through' }}>
-                        {pkg.originalPrice}
-                      </span>
-                      <span style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 700, marginLeft: 'auto' }}>
-                        {pkg.testsCount} Tests Included
-                      </span>
-                    </div>
-
-                    {/* Preview Tests (First 4) */}
-                    <div style={{ marginBottom: '1rem' }}>
-                      <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--nims-navy)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                        Key Parameters Included:
+                    <div>
+                      {/* Top Badge Strip */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.9rem', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: 800,
+                            letterSpacing: '0.04em',
+                            textTransform: 'uppercase',
+                            color: 'var(--nims-navy)',
+                            background: '#f1f5f9',
+                            padding: '0.24rem 0.65rem',
+                            borderRadius: 'var(--radius-full)',
+                            border: '1px solid #e2e8f0'
+                          }}
+                        >
+                          {pkg.category}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: 800,
+                            letterSpacing: '0.03em',
+                            color: '#15803d',
+                            background: '#dcfce7',
+                            padding: '0.24rem 0.65rem',
+                            borderRadius: 'var(--radius-full)',
+                            border: '1px solid #bbf7d0'
+                          }}
+                        >
+                          {pkg.discount}
+                        </span>
                       </div>
-                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.86rem', color: '#475569' }}>
-                        {(isExpanded ? pkg.tests : pkg.tests.slice(0, 4)).map((test, i) => (
-                          <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.45rem' }}>
-                            <CheckCircle2 size={15} color="var(--nims-crimson)" style={{ flexShrink: 0, marginTop: '3px' }} />
-                            <span>{test}</span>
-                          </li>
-                        ))}
-                      </ul>
+
+                      {/* Package Name */}
+                      <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.35rem', lineHeight: 1.25, minHeight: '3.15rem', display: 'flex', alignItems: 'center', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                        {pkg.name}
+                      </h3>
+
+                      {/* Highlights / Speciality Subtitle */}
+                      <div style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--nims-orange)', marginBottom: '1.15rem', display: 'flex', alignItems: 'center', gap: '5px', minHeight: '1.35rem' }}>
+                        <span>★</span>
+                        <span>{pkg.badge}</span>
+                      </div>
+
+                      {/* Luxury Price Strip */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        justifyContent: 'space-between',
+                        gap: '0.5rem',
+                        padding: '0.85rem 1.15rem',
+                        background: 'linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%)',
+                        borderRadius: '16px',
+                        border: '1px solid #e2e8f0',
+                        marginBottom: '1.35rem'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.65rem' }}>
+                          <span style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--nims-navy)', letterSpacing: '-0.02em' }}>
+                            {pkg.price}
+                          </span>
+                          <span style={{ fontSize: '0.9rem', color: '#94a3b8', textDecoration: 'line-through' }}>
+                            {pkg.originalPrice}
+                          </span>
+                        </div>
+                        <span style={{
+                          fontSize: '0.75rem',
+                          color: '#15803d',
+                          fontWeight: 800,
+                          background: '#ffffff',
+                          padding: '0.22rem 0.6rem',
+                          borderRadius: 'var(--radius-full)',
+                          border: '1px solid #bbf7d0',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                        }}>
+                          {pkg.testsCount} Tests
+                        </span>
+                      </div>
+
+                      {/* Key Parameters Included Header & List */}
+                      <div style={{ marginBottom: '1rem' }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.65rem' }}>
+                          Key Parameters Included:
+                        </div>
+                        
+                        {/* First 4 Tests (Always Visible & Consistent) */}
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.88rem', color: '#334155' }}>
+                          {pkg.tests.slice(0, 4).map((test, i) => (
+                            <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.55rem', lineHeight: 1.4 }}>
+                              <CheckCircle2 size={16} color="var(--nims-orange)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                              <span style={{ fontWeight: 500 }}>{test}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        {/* Smooth Animated Extra Tests (Beyond 4) */}
+                        <AnimatePresence initial={false}>
+                          {isExpanded && (
+                            <motion.div
+                              key={`expanded-${pkg.id}`}
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                              style={{ overflow: 'hidden' }}
+                            >
+                              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem', paddingTop: '0.5rem', fontSize: '0.88rem', color: '#334155' }}>
+                                {pkg.tests.slice(4).map((test, i) => (
+                                  <motion.li
+                                    key={i}
+                                    initial={{ opacity: 0, y: -4 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: i * 0.02, duration: 0.18 }}
+                                    style={{ display: 'flex', alignItems: 'flex-start', gap: '0.55rem', lineHeight: 1.4 }}
+                                  >
+                                    <CheckCircle2 size={16} color="var(--nims-orange)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                                    <span style={{ fontWeight: 500 }}>{test}</span>
+                                  </motion.li>
+                                ))}
+                              </ul>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     </div>
-                  </div>
 
-                  <div>
-                    {pkg.tests.length > 4 && (
-                      <button
-                        onClick={() => toggleExpand(pkg.id)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          color: 'var(--nims-navy)',
-                          fontSize: '0.82rem',
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.25rem',
-                          padding: '0.4rem 0',
-                          marginBottom: '1rem'
-                        }}
+                    {/* Footer Actions: Expand Button / Placeholder & Book CTA */}
+                    <div style={{ marginTop: 'auto', paddingTop: '0.5rem' }}>
+                      <div style={{ minHeight: '40px', display: 'flex', alignItems: 'center', marginBottom: '1.15rem' }}>
+                        {pkg.tests.length > 4 ? (
+                          <button
+                            type="button"
+                            onClick={() => toggleExpand(pkg.id)}
+                            className="package-expand-btn"
+                          >
+                            <span>{isExpanded ? 'Show Less' : `+${pkg.tests.length - 4} More Tests`}</span>
+                            <motion.span
+                              animate={{ rotate: isExpanded ? 180 : 0 }}
+                              transition={{ duration: 0.24, ease: 'easeInOut' }}
+                              style={{ display: 'inline-flex' }}
+                            >
+                              <ChevronDown size={15} />
+                            </motion.span>
+                          </button>
+                        ) : (
+                          <span style={{
+                            fontSize: '0.78rem',
+                            color: '#64748b',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '5px',
+                            background: '#f8fafc',
+                            padding: '0.35rem 0.75rem',
+                            borderRadius: 'var(--radius-full)',
+                            border: '1px dashed #cbd5e1',
+                            fontWeight: 600
+                          }}>
+                            <CheckCircle2 size={13} color="#15803d" />
+                            All Core Tests Included
+                          </span>
+                        )}
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={onOpenBooking}
+                        className="btn btn-primary"
+                        style={{ width: '100%', padding: '0.8rem 1rem', fontSize: '0.94rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
                       >
-                        <span>{isExpanded ? 'Show Less' : `+${pkg.tests.length - 4} More Tests`}</span>
-                        {isExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-                      </button>
-                    )}
-
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={onOpenBooking}
-                      className="btn btn-primary"
-                      style={{ width: '100%', padding: '0.7rem' }}
-                    >
-                      <Calendar size={15} />
-                      <span>Book Package Checkup</span>
-                    </motion.button>
-                  </div>
-                </motion.div>
-              </MotionItem>
-            );
-          })}
-        </MotionStagger>
+                        <Calendar size={16} />
+                        <span>Book Package Checkup</span>
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                </MotionItem>
+              );
+            })}
+          </MotionStagger>
       </div>
     </section>
     </div>

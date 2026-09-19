@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { X, Calendar, Clock, User, Phone, CheckCircle2, ChevronRight, ArrowLeft, ShieldCheck, HeartPulse } from 'lucide-react';
 import { specialitiesData } from '../../data/specialitiesData';
 import { doctorsData } from '../../data/doctorsData';
 
-export default function BookingDrawer({ isOpen, onClose }) {
+export default function BookingDrawer({ isOpen, onClose, prefill }) {
   const [step, setStep] = useState(1);
   const [selectedSpeciality, setSelectedSpeciality] = useState('cardiology');
   const [selectedDoctor, setSelectedDoctor] = useState(doctorsData[0].id);
@@ -23,6 +23,114 @@ export default function BookingDrawer({ isOpen, onClose }) {
   });
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [tokenNumber, setTokenNumber] = useState('');
+
+  // Synchronize prefill when drawer opens
+  useEffect(() => {
+    if (isOpen && prefill) {
+      if (prefill.speciality) {
+        setSelectedSpeciality(prefill.speciality);
+      }
+      if (prefill.doctor) {
+        const docId = typeof prefill.doctor === 'object' ? prefill.doctor.id : prefill.doctor;
+        setSelectedDoctor(docId);
+        if (!prefill.speciality && typeof prefill.doctor === 'object' && prefill.doctor.specialityId) {
+          setSelectedSpeciality(prefill.doctor.specialityId);
+        }
+      }
+    }
+  }, [isOpen, prefill]);
+
+  // Dynamically filter clinical specialists based on selected department / speciality
+  const displayedDoctors = useMemo(() => {
+    if (selectedSpeciality === 'all') {
+      return doctorsData;
+    }
+
+    const specObj = specialitiesData.find(s => s.id === selectedSpeciality);
+    const specName = specObj ? specObj.name.toLowerCase() : '';
+    const cleanSpecId = (selectedSpeciality || '').toLowerCase().replace(/[^a-z]/g, '');
+
+    const filtered = doctorsData.filter(doc => {
+      const docSpecClean = (doc.specialityId || '').toLowerCase().replace(/[^a-z]/g, '');
+      const docDept = (doc.department || '').toLowerCase();
+      const docTitle = (doc.title || '').toLowerCase();
+
+      // Direct ID or clean ID match
+      if (docSpecClean === cleanSpecId) return true;
+
+      // Speciality ID keyword mappings
+      if (cleanSpecId === 'cardiology' && (docSpecClean.includes('cardio') || docSpecClean.includes('ctvs') || docDept.includes('cardio'))) return true;
+      if (cleanSpecId === 'ctvs' && (docSpecClean.includes('ctvs') || docDept.includes('cardio') || docTitle.includes('ctvs'))) return true;
+      if (cleanSpecId === 'neurosurgery' || cleanSpecId === 'neurology') {
+        if (docSpecClean.includes('neuro') || docDept.includes('neuro')) return true;
+      }
+      if (cleanSpecId === 'gastroenterology') {
+        if (docSpecClean.includes('gastro') || docDept.includes('gastro') || docTitle.includes('gastro')) return true;
+      }
+      if (cleanSpecId === 'paediatrics' || cleanSpecId === 'neonatology') {
+        if (docSpecClean.includes('paediatric') || docDept.includes('paediatric') || docTitle.includes('pediatric') || docTitle.includes('paediatric')) return true;
+      }
+      if (cleanSpecId === 'orthopaedics') {
+        if (docSpecClean.includes('ortho') || docDept.includes('ortho')) return true;
+      }
+      if (cleanSpecId === 'gynaecology') {
+        if (docSpecClean.includes('gynae') || docDept.includes('gynae') || docDept.includes('obstetric')) return true;
+      }
+      if (cleanSpecId === 'urology' || cleanSpecId === 'nephrology') {
+        if (docSpecClean.includes('uro') || docDept.includes('uro') || docDept.includes('renal')) return true;
+      }
+      if (cleanSpecId === 'respiratorymedicine' || cleanSpecId === 'criticalcare' || cleanSpecId === 'emergencymedicine') {
+        if (docSpecClean.includes('respiratory') || docDept.includes('respiratory') || docTitle.includes('pulmon') || docTitle.includes('critical')) return true;
+      }
+      if (cleanSpecId === 'generalmedicine' || cleanSpecId === 'endocrinology') {
+        if (docSpecClean.includes('medicine') || docDept.includes('medicine') || docTitle.includes('metabolic')) return true;
+      }
+      if (cleanSpecId === 'generalsurgery') {
+        if (docSpecClean.includes('surgery') || docDept.includes('surgery')) return true;
+      }
+      if (cleanSpecId === 'oncology') {
+        if (docSpecClean.includes('onco') || docTitle.includes('onco') || docTitle.includes('cancer')) return true;
+      }
+
+      // Department name matching
+      if (specName && (docDept.includes(specName) || specName.includes(docDept))) {
+        return true;
+      }
+
+      return false;
+    });
+
+    if (filtered.length > 0) {
+      return filtered;
+    }
+
+    // Default duty specialist fallback for departments without a distinct profile in doctorsData
+    return [
+      {
+        id: `faculty-${selectedSpeciality}`,
+        name: `Senior Consultant (${specObj ? specObj.name : 'Specialist'})`,
+        title: `Attending Senior Faculty, Dept. of ${specObj ? specObj.name : 'Clinical Care'}`,
+        department: specObj ? specObj.name : 'Clinical Specialist',
+        specialityId: selectedSpeciality,
+        qualification: "MBBS, MD / MS, Senior Clinical Specialist",
+        experience: "15+ Years Clinical Experience",
+        opdSchedule: "Mon - Sat (09:00 AM - 03:00 PM)",
+        roomNo: `OPD Unit, ${specObj?.category || 'Clinical'} Wing`,
+        image: "/assets/images/resource/Balvir.webp",
+        isDutySpecialist: true
+      }
+    ];
+  }, [selectedSpeciality]);
+
+  // Keep selectedDoctor in sync when displayedDoctors changes
+  useEffect(() => {
+    if (displayedDoctors && displayedDoctors.length > 0) {
+      const exists = displayedDoctors.some(d => d.id === selectedDoctor);
+      if (!exists) {
+        setSelectedDoctor(displayedDoctors[0].id);
+      }
+    }
+  }, [displayedDoctors, selectedDoctor]);
 
   if (!isOpen) return null;
 
@@ -48,8 +156,16 @@ export default function BookingDrawer({ isOpen, onClose }) {
     onClose();
   };
 
-  const currentDoctorObj = doctorsData.find(d => d.id === selectedDoctor) || doctorsData[0];
-  const currentSpecialityObj = specialitiesData.find(s => s.id === selectedSpeciality) || specialitiesData[0];
+  const currentDoctorObj =
+    displayedDoctors.find(d => d.id === selectedDoctor) ||
+    doctorsData.find(d => d.id === selectedDoctor) ||
+    displayedDoctors[0] ||
+    doctorsData[0];
+
+  const currentSpecialityObj =
+    selectedSpeciality === 'all'
+      ? { id: 'all', name: 'All Specialities & Super Specialities', category: 'General' }
+      : (specialitiesData.find(s => s.id === selectedSpeciality) || { id: selectedSpeciality, name: 'Speciality OPD', category: 'General' });
 
   return (
     <div style={{
@@ -250,9 +366,30 @@ export default function BookingDrawer({ isOpen, onClose }) {
           ) : step === 1 ? (
             /* Step 1: Select Department & Doctor */
             <div>
-              <label style={{ display: 'block', fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.5rem', color: 'var(--nims-navy)' }}>
-                1. Select Speciality / Department
-              </label>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+                <label style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--nims-navy)', margin: 0 }}>
+                  1. Select Speciality / Department
+                </label>
+                {selectedSpeciality !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedSpeciality('all')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--nims-orange)',
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      padding: 0,
+                      textDecoration: 'underline'
+                    }}
+                  >
+                    View All Doctors
+                  </button>
+                )}
+              </div>
+
               <select
                 value={selectedSpeciality}
                 onChange={(e) => setSelectedSpeciality(e.target.value)}
@@ -260,13 +397,17 @@ export default function BookingDrawer({ isOpen, onClose }) {
                   width: '100%',
                   padding: '0.75rem 1rem',
                   borderRadius: 'var(--radius-sm)',
-                  border: '1px solid var(--nims-border)',
+                  border: '1.5px solid var(--nims-border)',
                   fontSize: '0.92rem',
                   background: '#f8fafc',
-                  marginBottom: '1.5rem',
-                  outline: 'none'
+                  marginBottom: '1.4rem',
+                  outline: 'none',
+                  fontWeight: 600,
+                  color: 'var(--nims-navy)',
+                  cursor: 'pointer'
                 }}
               >
+                <option value="all">★ All Departments & Specialities (Show All Doctors)</option>
                 {specialitiesData.map((spec) => (
                   <option key={spec.id} value={spec.id}>
                     {spec.name} ({spec.category})
@@ -274,11 +415,24 @@ export default function BookingDrawer({ isOpen, onClose }) {
                 ))}
               </select>
 
-              <label style={{ display: 'block', fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.65rem', color: 'var(--nims-navy)' }}>
-                2. Choose Clinical Specialist
-              </label>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+                <label style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--nims-navy)', margin: 0 }}>
+                  2. Choose Clinical Specialist
+                </label>
+                <span style={{
+                  fontSize: '0.74rem',
+                  fontWeight: 600,
+                  padding: '0.2rem 0.65rem',
+                  borderRadius: '20px',
+                  background: 'rgba(10, 47, 94, 0.08)',
+                  color: 'var(--nims-navy)'
+                }}>
+                  {displayedDoctors.length} {displayedDoctors.length === 1 ? 'Doctor' : 'Doctors'} Available
+                </span>
+              </div>
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {doctorsData.map((doc) => {
+                {displayedDoctors.map((doc) => {
                   const isSelected = selectedDoctor === doc.id;
                   return (
                     <div
@@ -291,6 +445,7 @@ export default function BookingDrawer({ isOpen, onClose }) {
                         borderRadius: 'var(--radius-md)',
                         border: isSelected ? '2px solid var(--nims-crimson)' : '1px solid var(--nims-border)',
                         background: isSelected ? 'rgba(192, 48, 74, 0.04)' : '#ffffff',
+                        boxShadow: isSelected ? '0 4px 14px rgba(192, 48, 74, 0.12)' : 'none',
                         cursor: 'pointer',
                         transition: 'all 0.18s ease'
                       }}
@@ -298,13 +453,31 @@ export default function BookingDrawer({ isOpen, onClose }) {
                       <img
                         src={doc.image}
                         alt={doc.name}
-                        style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover' }}
+                        style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+                        onError={(e) => {
+                          e.currentTarget.src = "/assets/images/resource/Balvir.webp";
+                        }}
                       />
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--nims-navy)' }}>
-                          {doc.name}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+                          <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--nims-navy)' }}>
+                            {doc.name}
+                          </div>
+                          {isSelected && (
+                            <span style={{
+                              fontSize: '0.7rem',
+                              fontWeight: 700,
+                              color: 'var(--nims-crimson)',
+                              background: 'rgba(192, 48, 74, 0.1)',
+                              padding: '0.15rem 0.5rem',
+                              borderRadius: '12px',
+                              flexShrink: 0
+                            }}>
+                              Selected ✓
+                            </span>
+                          )}
                         </div>
-                        <div style={{ fontSize: '0.78rem', color: 'var(--nims-crimson)', fontWeight: 600 }}>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--nims-crimson)', fontWeight: 600, marginTop: '0.1rem' }}>
                           {doc.title}
                         </div>
                         <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.2rem' }}>
