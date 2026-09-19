@@ -14,12 +14,12 @@ export const transitionConfig = {
 export function MotionFadeIn({
   children,
   delay = 0,
-  duration = 0.55,
+  duration = 0.45,
   direction = 'up', // 'up' | 'down' | 'left' | 'right' | 'none'
-  distance = 28,
+  distance = 20,
   className = '',
   style = {},
-  viewport = { once: true, amount: 0.15 }
+  viewport = { once: true, amount: 0, margin: '50px 0px' }
 }) {
   const getOffset = () => {
     switch (direction) {
@@ -55,13 +55,14 @@ export function MotionFadeIn({
 /**
  * MotionStagger:
  * Container component that staggers its direct MotionItem children.
+ * Uses animate="visible" so that items load immediately on mount and tab switch
+ * without waiting for scroll thresholds to be met.
  */
 export function MotionStagger({
   children,
-  staggerDelay = 0.06,
+  staggerDelay = 0.03,
   className = '',
   style = {},
-  viewport = { once: true, amount: 0.1 },
   ...props
 }) {
   const containerVariants = {
@@ -70,7 +71,7 @@ export function MotionStagger({
       opacity: 1,
       transition: {
         staggerChildren: staggerDelay,
-        delayChildren: 0.04
+        delayChildren: 0.01
       }
     }
   };
@@ -79,8 +80,7 @@ export function MotionStagger({
     <motion.div
       variants={containerVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={viewport}
+      animate="visible"
       className={className}
       style={style}
       {...props}
@@ -93,13 +93,13 @@ export function MotionStagger({
 /**
  * MotionItem:
  * Child component designed for use inside MotionStagger.
- * Guaranteed to animate into view even when dynamically mounted after tab switch.
+ * Smoothly animates into view when parent container mounts.
  */
 export function MotionItem({
   children,
   className = '',
   style = {},
-  distance = 18,
+  distance = 14,
   ...props
 }) {
   const itemVariants = {
@@ -108,7 +108,7 @@ export function MotionItem({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.38,
+        duration: 0.32,
         ease: [0.22, 1, 0.36, 1]
       }
     }
@@ -117,8 +117,6 @@ export function MotionItem({
   return (
     <motion.div
       variants={itemVariants}
-      initial="hidden"
-      animate="visible"
       className={className}
       style={style}
       {...props}

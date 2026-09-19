@@ -113,17 +113,35 @@ export default function Specialities({ onOpenBooking }) {
           </div>
 
           {/* Cards Grid using exact same card design */}
-          <MotionStagger
-            key={`spec-page-${activeCategory}-${searchTerm}`}
-            className="specialities-three-col-grid"
-            staggerDelay={0.05}
-          >
-            {filtered.map((spec) => (
-              <MotionItem key={spec.id}>
-                <SpecialityCard spec={spec} />
-              </MotionItem>
-            ))}
-          </MotionStagger>
+          {filtered.length === 0 ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '3rem 1.5rem',
+              background: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid #e2e8f0',
+              color: '#64748b'
+            }}>
+              <p style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--nims-navy)', marginBottom: '0.4rem' }}>
+                No clinical departments found
+              </p>
+              <p style={{ fontSize: '0.88rem' }}>
+                Try searching with a different term or tap the "All" category above.
+              </p>
+            </div>
+          ) : (
+            <MotionStagger
+              key={`spec-page-${activeCategory}-${searchTerm}`}
+              className="specialities-three-col-grid"
+              staggerDelay={0.025}
+            >
+              {filtered.map((spec) => (
+                <MotionItem key={spec.id}>
+                  <SpecialityCard spec={spec} />
+                </MotionItem>
+              ))}
+            </MotionStagger>
+          )}
         </div>
       </section>
     </div>
