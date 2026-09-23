@@ -285,14 +285,14 @@ export default function Vacancies() {
             </h1>
 
             <p className="vacancies-hero-sub">
-              Join Rajasthan's premier 3,400+ bed hospital and medical university. Work with renowned clinicians,
+              Join Rajasthan's premier 2,400+ bed hospital and medical university. Work with renowned clinicians,
               world-class modular infrastructure, and empower millions of healing journeys on NH-11C Jaipur.
             </p>
 
             {/* Quick Culture Metric Row */}
             <div className="vacancies-metrics-strip">
               <div className="v-metric-item">
-                <span className="v-metric-num"><AnimatedCounter target={3400} suffix="+" /></span>
+                <span className="v-metric-num"><AnimatedCounter target={2400} suffix="+" /></span>
                 <span className="v-metric-lbl">Hospital Bed Capacity</span>
               </div>
               <div className="v-metric-divider" />
@@ -474,7 +474,7 @@ export default function Vacancies() {
                   <HeartPulse size={24} color="var(--nims-orange)" />
                 </div>
                 <h4>High-Volume Clinical Exposure</h4>
-                <p>3,400 beds and 40+ super-speciality departments provide unprecedented surgical and clinical learning opportunities every single day.</p>
+                <p>2,400 beds and 40+ super-speciality departments provide unprecedented surgical and clinical learning opportunities every single day.</p>
               </div>
             </MotionItem>
 

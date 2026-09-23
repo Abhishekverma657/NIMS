@@ -267,7 +267,7 @@ export default function LoyaltyCard({ onOpenBooking }) {
                 NIMS Hospital is a NABH Accredited, multi-super speciality hospital in Jaipur. We deliver all high-end, round-the-clock healthcare services to the patient. The hospital has 30+ departments that deliver treatment for diseases related to cardiology, neurology, urology, orthopedic, nephrology and many more.
               </p>
               <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.75, marginBottom: '1.75rem' }}>
-                A team of 500+ expert and experienced doctors are always ready to offer advanced treatment for every disease. 3,400+ beds, advanced technology, expert healthcare staff, and on-time ambulance services make us the top hospital in Jaipur. We also offer various central and state healthcare schemes, ensuring that patients can receive the best treatments without financial worries.
+                A team of 500+ expert and experienced doctors are always ready to offer advanced treatment for every disease. 2,400+ beds, advanced technology, expert healthcare staff, and on-time ambulance services make us the top hospital in Jaipur. We also offer various central and state healthcare schemes, ensuring that patients can receive the best treatments without financial worries.
               </p>
 
               <button

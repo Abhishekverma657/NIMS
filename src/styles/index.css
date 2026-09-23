@@ -1,25 +1,25 @@
 :root {
   /* Exact Colors from Official NIMS Hospital (nimshospitals.in) */
-  --nims-navy: #0a2f5e;
-  --nims-navy-dark: #071f3d;
-  --nims-navy-deep: #031024;
-  --nims-navy-light: #164684;
-  --nims-navy-soft: rgba(10, 47, 94, 0.08);
+  --nims-navy: #373435;
+  --nims-navy-dark: #201f1f;
+  --nims-navy-deep: #111111;
+  --nims-navy-light: #524f50;
+  --nims-navy-soft: rgba(55, 52, 53, 0.08);
 
-  --nims-orange: #f47521;
-  --nims-orange-hover: #dc6112;
-  --nims-orange-soft: rgba(244, 117, 33, 0.12);
+  --nims-orange: #F40009;
+  --nims-orange-hover: #d10008;
+  --nims-orange-soft: rgba(244, 0, 9, 0.12);
 
-  --nims-gold: #f47521; /* Match Orange */
-  --nims-gold-hover: #dc6112;
+  --nims-gold: #EF7945; /* Match Orange */
+  --nims-gold-hover: #d66436;
 
   --nims-crimson: var(--nims-orange);
   --nims-crimson-soft: var(--nims-orange-soft);
   --nims-crimson-hover: var(--nims-orange-hover);
 
   --color-surface-base: #000000;
-  --color-surface-strong: #0a2f5e; /* Navy (NO RED!) */
-  --color-text-inverse: #0a2f5e;
+  --color-surface-strong: #373435; /* Navy (NO RED!) */
+  --color-text-inverse: #373435;
   --color-surface-muted: #efefef;
   --color-text-secondary: #64748b;
   --color-text-primary: #1e293b;
@@ -519,21 +519,21 @@ button, input, select, textarea {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(10, 47, 94, 0.03) 0%, rgba(244, 117, 33, 0.06) 100%);
-  border: 1px solid rgba(10, 47, 94, 0.06);
+  background: linear-gradient(135deg, rgba(55, 52, 53, 0.05) 0%, rgba(244, 0, 9, 0.06) 100%);
+  border: 1px solid rgba(55, 52, 53, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 5px;
-  box-shadow: 0 3px 10px rgba(10, 47, 94, 0.03);
+  box-shadow: 0 3px 10px rgba(55, 52, 53, 0.04);
   transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modern-speciality-card:hover .spec-icon-wrapper {
   transform: scale(1.08) rotate(2deg);
-  background: linear-gradient(135deg, rgba(10, 47, 94, 0.06) 0%, rgba(244, 117, 33, 0.14) 100%);
-  border-color: rgba(244, 117, 33, 0.35);
-  box-shadow: 0 6px 18px rgba(244, 117, 33, 0.18);
+  background: linear-gradient(135deg, rgba(55, 52, 53, 0.08) 0%, rgba(244, 0, 9, 0.14) 100%);
+  border-color: rgba(244, 0, 9, 0.35);
+  box-shadow: 0 6px 18px rgba(244, 0, 9, 0.18);
 }
 
 .spec-official-icon {
@@ -555,9 +555,9 @@ button, input, select, textarea {
 .spec-category-tag {
   display: inline-flex;
   align-items: center;
-  background: rgba(10, 47, 94, 0.05);
+  background: var(--nims-navy-soft);
   color: var(--nims-navy);
-  border: 1px solid rgba(10, 47, 94, 0.12);
+  border: 1px solid rgba(55, 52, 53, 0.15);
   font-size: 0.67rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -1619,7 +1619,7 @@ button, input, select, textarea {
   position: relative;
   padding: 4.5rem 0;
   overflow: hidden;
-  background: #081839;
+  background: var(--nims-navy);
   color: #ffffff;
 }
 

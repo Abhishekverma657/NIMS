@@ -94,7 +94,7 @@ export default function PhotoGallery() {
           </h1>
 
           <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '720px', lineHeight: 1.6, margin: 0 }}>
-            Experience our sprawling 3,400-bed campus, advanced modular surgical suites, 24×7 ALS ambulances, high-end diagnostic laboratories, and comforting inpatient recovery suites.
+            Experience our sprawling 2,400-bed campus, advanced modular surgical suites, 24×7 ALS ambulances, high-end diagnostic laboratories, and comforting inpatient recovery suites.
           </p>
 
           {/* Highlights Ribbon */}
@@ -116,7 +116,7 @@ export default function PhotoGallery() {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
-                <AnimatedCounter target={3400} suffix="+" />
+                <AnimatedCounter target={2400} suffix="+" />
               </span>
               <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Inpatient Beds</span>
             </div>
@@ -256,7 +256,7 @@ export default function PhotoGallery() {
                       position: 'absolute',
                       top: '12px',
                       left: '12px',
-                      background: 'rgba(10, 47, 94, 0.88)',
+                      background: 'var(--nims-navy)',
                       backdropFilter: 'blur(8px)',
                       color: '#ffffff',
                       fontSize: '0.72rem',
@@ -352,7 +352,7 @@ export default function PhotoGallery() {
             width: '100vw',
             height: '100vh',
             zIndex: 999999,
-            background: 'rgba(3, 16, 36, 0.96)',
+            background: 'rgba(10, 10, 10, 0.96)',
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
             display: 'flex',
@@ -371,7 +371,7 @@ export default function PhotoGallery() {
               padding: '1rem 2rem',
               color: '#ffffff',
               borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-              background: 'rgba(5, 26, 54, 0.6)'
+              background: 'rgba(25, 25, 25, 0.8)'
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -517,7 +517,7 @@ export default function PhotoGallery() {
           {/* Bottom Info Bar & Thumbnails Strip */}
           <div
             style={{
-              background: 'rgba(5, 26, 54, 0.85)',
+              background: 'rgba(25, 25, 25, 0.95)',
               borderTop: '1px solid rgba(255, 255, 255, 0.1)',
               padding: '1rem 2rem',
               color: '#ffffff'

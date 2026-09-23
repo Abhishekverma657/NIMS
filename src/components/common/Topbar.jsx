@@ -37,7 +37,7 @@ export default function Topbar({ onOpenVacancies }) {
     {
       badge: 'QUATERNARY CARE',
       badgeColor: '#f59e0b',
-      text: '500+ Super Speciality Doctors & 3,400+ Advanced Hospital Beds at NH-11C, Jaipur'
+      text: '500+ Super Speciality Doctors & 2,400+ Advanced Hospital Beds at NH-11C, Jaipur'
     },
     {
       badge: 'OPD & IPD',

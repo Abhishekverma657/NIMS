@@ -96,7 +96,7 @@ export default function Home({ onOpenBooking }) {
       titlePart1: 'Healing built on ',
       highlightWord: 'trust ',
       titlePart2: 'powered by expertise.',
-      subtitle: "One of India's largest 3,400-bed super-speciality teaching hospitals — bringing together renowned specialists, advanced technology, and compassionate care on a single campus in Jaipur.",
+      subtitle: "One of India's largest 2,400-bed super-speciality teaching hospitals — bringing together renowned specialists, advanced technology, and compassionate care on a single campus in Jaipur.",
       primaryCta: 'Book Appointment',
       secondaryCta: 'Explore Specialities',
       secondaryLink: '/specialities'
@@ -104,10 +104,10 @@ export default function Home({ onOpenBooking }) {
     {
       id: 1,
       type: 'image',
-      image: 'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1600&q=80',
+      image: '/assets/images/banner/slider1.webp',
       badge: 'NABH & NABL Accredited Care',
       titlePart1: 'Rajasthan’s Premier ',
-      highlightWord: '3,400-Bed ',
+      highlightWord: '2,400-Bed ',
       titlePart2: 'Quaternary Medical Campus',
       subtitle: 'Bringing together 500+ renowned clinicians, modular laminar airflow theatres, and multi-organ transplantation on a single campus.',
       primaryCta: 'Book Appointment',
@@ -117,7 +117,7 @@ export default function Home({ onOpenBooking }) {
     {
       id: 2,
       type: 'image',
-      image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1600&q=80',
+      image: '/assets/images/banner/slider2.webp',
       badge: '24×7 Level-1 Trauma Active',
       titlePart1: 'Every emergency answered. ',
       highlightWord: 'Every hour ',
@@ -139,7 +139,7 @@ export default function Home({ onOpenBooking }) {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
 
-  const filterTabs = ['All', 'Super Speciality', 'Surgical', 'Mother & Child', 'Diagnostics'];
+  const filterTabs = ['All', 'Super Speciality', 'Surgical', 'Medical & Allied', 'Mother & Child', 'Diagnostics'];
 
   const filteredSpecialities = specialitiesData.filter((item) => {
     const matchesTab = activeTab === 'All' || item.category === activeTab;
@@ -150,7 +150,7 @@ export default function Home({ onOpenBooking }) {
 
   const stats = [
     {
-      target: 3400,
+      target: 2400,
       suffix: '+',
       label: 'Inpatient Beds',
       sub: "Largest campus facility in Rajasthan",
@@ -726,7 +726,7 @@ export default function Home({ onOpenBooking }) {
                   }}
                 >
                   <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--nims-orange)', lineHeight: 1 }}>
-                    <AnimatedCounter target={3400} suffix="+" />
+                    <AnimatedCounter target={2400} suffix="+" />
                   </div>
                   <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#f8fafc' }}>
                     Beds on Single Campus

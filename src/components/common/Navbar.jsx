@@ -64,7 +64,7 @@ export default function Navbar({ onOpenBooking }) {
           aria-label="NIMS Hospital Home"
         >
           <img
-            src="/assets/images/nims-hospital-logo.svg"
+            src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg"
             alt="NIMS Hospital"
             className="navbar-brand-logo"
             style={{
@@ -75,7 +75,7 @@ export default function Navbar({ onOpenBooking }) {
               display: 'block'
             }}
             onError={(e) => {
-              e.currentTarget.src = "https://nimshospitals.in/assets/images/nims-hospital-logo.svg";
+              e.currentTarget.src = "/assets/NIMS_Hospital_Logo_Website_Horizontal.svg";
             }}
           />
         </Link>

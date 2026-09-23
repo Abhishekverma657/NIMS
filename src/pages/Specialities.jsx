@@ -45,7 +45,7 @@ export default function Specialities({ onOpenBooking }) {
               Specialities & Super Specialities
             </h1>
             <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '700px', lineHeight: 1.6 }}>
-              Explore over 30 clinical disciplines staffed by 500+ experienced clinicians, equipped with 3,400 beds, advanced diagnostic pathology, and modular surgical theatres.
+              Explore over 30 clinical disciplines staffed by 500+ experienced clinicians, equipped with 2,400 beds, advanced diagnostic pathology, and modular surgical theatres.
             </p>
           </MotionFadeIn>
         </div>

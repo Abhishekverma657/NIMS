@@ -290,12 +290,12 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
           <div class="header-banner">
             <div class="hospital-brand">
               <div class="hospital-logo-box">
-                <img src="/assets/images/nims-hospital-logo.svg" alt="NIMS Hospital" />
+                <img src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg" alt="NIMS Hospital" />
               </div>
               <div class="hospital-text">
                 <h1>NIMS HOSPITAL & MEDICAL UNIVERSITY</h1>
                 <p>National Highway 11C, Delhi-Jaipur Expressway, Jaipur, Rajasthan 303121</p>
-                <p>Medical Recruitment & HR Directorate &bull; 3,400 Bed Super Speciality Hospital</p>
+                <p>Medical Recruitment & HR Directorate &bull; 2,400 Bed Super Speciality Hospital</p>
               </div>
             </div>
           </div>
@@ -406,11 +406,11 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
           <div className="vacancies-header-brand">
             <div className="vacancies-header-logo-box">
               <img
-                src="/assets/images/nims-hospital-logo.svg"
+                src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg"
                 alt="NIMS Logo"
                 style={{ height: '26px', width: 'auto' }}
                 onError={(e) => {
-                  e.currentTarget.src = "https://nimshospitals.in/assets/images/nims-hospital-logo.svg";
+                  e.currentTarget.src = "/assets/NIMS_Hospital_Logo_Website_Horizontal.svg";
                 }}
               />
             </div>
@@ -1010,7 +1010,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
               }}>
                 <Sparkles size={20} color="var(--nims-navy)" style={{ flexShrink: 0 }} />
                 <p style={{ fontSize: '0.84rem', color: '#0369a1', margin: 0, lineHeight: 1.4 }}>
-                  Join Rajasthan's leading 3,400-bed university healthcare network. High clinical exposure, modern residential amenities, and competitive compensation.
+                  Join Rajasthan's leading 2,400-bed university healthcare network. High clinical exposure, modern residential amenities, and competitive compensation.
                 </p>
               </div>
 

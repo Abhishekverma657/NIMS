@@ -233,11 +233,11 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
               alignItems: 'center'
             }}>
               <img
-                src="/assets/images/nims-hospital-logo.svg"
+                src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg"
                 alt="NIMS Logo"
                 style={{ height: '28px', width: 'auto' }}
                 onError={(e) => {
-                  e.currentTarget.src = "https://nimshospitals.in/assets/images/nims-hospital-logo.svg";
+                  e.currentTarget.src = "/assets/NIMS_Hospital_Logo_Website_Horizontal.svg";
                 }}
               />
             </div>

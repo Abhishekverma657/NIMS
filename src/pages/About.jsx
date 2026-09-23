@@ -60,7 +60,7 @@ export default function About({ onOpenBooking, initialTab = 'overview' }) {
       const easeOut = 1 - Math.pow(1 - progress, 3);
 
       setCounters({
-        beds: Math.floor(easeOut * 3400),
+        beds: Math.floor(easeOut * 2400),
         doctors: Math.floor(easeOut * 500),
         specialities: Math.floor(easeOut * 50)
       });
@@ -397,7 +397,7 @@ export default function About({ onOpenBooking, initialTab = 'overview' }) {
             {/* Stat 1: Beds */}
             <div className="nims-stats-item">
               <div className="nims-stats-icon">
-                <HeartPulse size={44} color="#1bbde4" />
+                <HeartPulse size={44} color="var(--nims-orange)" />
               </div>
               <div className="nims-stats-label">Bed</div>
               <div className="nims-stats-count-wrap">
@@ -409,7 +409,7 @@ export default function About({ onOpenBooking, initialTab = 'overview' }) {
             {/* Stat 2: Expert Doctors */}
             <div className="nims-stats-item">
               <div className="nims-stats-icon">
-                <Users size={44} color="#1bbde4" />
+                <Users size={44} color="var(--nims-orange)" />
               </div>
               <div className="nims-stats-label">Expert Doctors</div>
               <div className="nims-stats-count-wrap">
@@ -421,7 +421,7 @@ export default function About({ onOpenBooking, initialTab = 'overview' }) {
             {/* Stat 3: Medical Specialities */}
             <div className="nims-stats-item">
               <div className="nims-stats-icon">
-                <Building2 size={44} color="#1bbde4" />
+                <Building2 size={44} color="var(--nims-orange)" />
               </div>
               <div className="nims-stats-label">Medical Specialities</div>
               <div className="nims-stats-count-wrap">
@@ -433,7 +433,7 @@ export default function About({ onOpenBooking, initialTab = 'overview' }) {
             {/* Stat 4: 24x7 Emergency */}
             <div className="nims-stats-item">
               <div className="nims-stats-icon">
-                <Clock size={44} color="#1bbde4" />
+                <Clock size={44} color="var(--nims-orange)" />
               </div>
               <div className="nims-stats-label">Emergency</div>
               <div className="nims-stats-count-wrap">

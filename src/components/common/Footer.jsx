@@ -24,7 +24,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
 
   return (
     <footer style={{
-      background: 'linear-gradient(180deg, #09264c 0%, #041427 100%)',
+      background: 'linear-gradient(180deg, var(--nims-navy) 0%, var(--nims-navy-deep) 100%)',
       color: '#cbd5e1',
       borderTop: '4px solid var(--nims-orange)',
       position: 'relative',
@@ -32,7 +32,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
     }}>
       {/* Upper CTA Banner: 24x7 Emergency Contact Strip */}
       <div style={{
-        background: 'rgba(4, 20, 39, 0.75)',
+        background: 'rgba(17, 17, 17, 0.75)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
         padding: '2.25rem 0'
       }}>
@@ -113,18 +113,18 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                   boxShadow: '0 4px 14px rgba(0,0,0,0.25)'
                 }}>
                   <img
-                    src="/assets/images/nims-hospital-logo.svg"
+                    src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg"
                     alt="NIMS Hospital Logo"
                     style={{ height: '42px', width: 'auto', display: 'block' }}
                     onError={(e) => {
-                      e.currentTarget.src = "https://nimshospitals.in/assets/images/nims-hospital-logo.svg";
+                      e.currentTarget.src = "/assets/NIMS_Hospital_Logo_Website_Horizontal.svg";
                     }}
                   />
                 </div>
               </Link>
             </div>
             <p style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.65, marginBottom: '1.25rem' }}>
-              One of Northern India's largest 3,400-bed quaternary medical teaching hospitals. Bringing together renowned clinicians, organ transplantation, and advanced diagnostics on a single integrated campus.
+              One of Northern India's largest 2,400-bed quaternary medical teaching hospitals. Bringing together renowned clinicians, organ transplantation, and advanced diagnostics on a single integrated campus.
             </p>
 
             {/* Quality Badges */}
@@ -136,7 +136,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 ✓ NABL Diagnostics
               </span>
               <span style={{ background: 'rgba(244,117,33,0.18)', color: 'var(--nims-orange)', padding: '0.3rem 0.65rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700 }}>
-                ✓ 3,400 Beds
+                ✓ 2,400 Beds
               </span>
             </div>
 

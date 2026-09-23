@@ -341,7 +341,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
           <div class="header-banner">
             <div class="hospital-brand">
               <div class="hospital-logo-box">
-                <img src="/assets/images/nims-hospital-logo.svg" alt="NIMS Hospital" />
+                <img src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg" alt="NIMS Hospital" />
               </div>
               <div class="hospital-text">
                 <h1>NIMS HOSPITAL & RESEARCH UNIVERSITY</h1>
@@ -519,11 +519,11 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
               boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
             }}>
               <img
-                src="/assets/images/nims-hospital-logo.svg"
+                src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg"
                 alt="NIMS Logo"
                 style={{ height: '26px', width: 'auto' }}
                 onError={(e) => {
-                  e.currentTarget.src = "https://nimshospitals.in/assets/images/nims-hospital-logo.svg";
+                  e.currentTarget.src = "/assets/NIMS_Hospital_Logo_Website_Horizontal.svg";
                 }}
               />
             </div>
