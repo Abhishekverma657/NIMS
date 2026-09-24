@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="50 -50 2600 2500" width="100%" height="100%">
   <defs>
     <style>
-      .nims-fav-green { fill: #669938; fill-rule: nonzero; }
-      .nims-fav-blue { fill: #2F669A; fill-rule: nonzero; }
-      .nims-fav-orange { fill: #EE7836; fill-rule: nonzero; }
+      .nims-fav-green { fill: #F40009; fill-rule: nonzero; }
+      .nims-fav-blue { fill: #777777; fill-rule: nonzero; }
+      .nims-fav-orange { fill: #F40009; fill-rule: nonzero; }
       .nims-fav-white { fill: #ffffff; fill-rule: nonzero; }
     </style>
   </defs>
