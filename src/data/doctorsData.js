@@ -177,7 +177,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -190,7 +190,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=600",
+    "image": "/assets/female-doc.jpeg",
     "featured": false
   },
   {
@@ -203,7 +203,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600",
+    "image": "/assets/female-doc.jpeg",
     "featured": false
   },
   {
@@ -412,7 +412,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -425,7 +425,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -438,7 +438,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -451,7 +451,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -464,7 +464,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -477,7 +477,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -490,7 +490,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -503,7 +503,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -516,7 +516,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -529,7 +529,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600",
+    "image": "/assets/male-doc.jpeg",
     "featured": false
   },
   {
@@ -606,7 +606,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Mon - Sat (09:00 AM - 03:00 PM)",
     "roomNo": "ENT OPD Suite, Level 1",
-    "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80",
+    "image": "/assets/male-doc.jpeg",
     "featured": true
   },
   {
@@ -619,7 +619,7 @@ export const doctorsData = [
     "experience": "15+ Years Experience",
     "opdSchedule": "Mon - Sat (10:00 AM - 04:00 PM)",
     "roomNo": "Medicine OPD, Block A",
-    "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80",
+    "image": "/assets/male-doc.jpeg",
     "featured": true
   },
   {
@@ -644,7 +644,7 @@ export const doctorsData = [
     "department": "General Medicine",
     "roomNo": "OPD 12, NIMS Hospital",
     "opdSchedule": "Mon-Sat, 9:00 AM - 4:00 PM",
-    "image": "https://images.unsplash.com/photo-1594824432258-00624a9eb482?auto=format&fit=crop&w=600&q=80",
+    "image": "/assets/female-doc.jpeg",
     "featured": false,
     "specialityId": "general-medicine"
   }
