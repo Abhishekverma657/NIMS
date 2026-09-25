@@ -146,7 +146,7 @@ export default function PhotoGallery() {
               padding: '1rem 1.4rem',
               borderRadius: '20px',
               border: '1px solid #edf2f7',
-              boxShadow: '0 4px 16px rgba(10, 47, 94, 0.03)'
+              boxShadow: '0 4px 16px rgba(35, 32, 33, 0.03)'
             }}
           >
             {/* Category Pills */}
@@ -180,7 +180,7 @@ export default function PhotoGallery() {
                         fontSize: '0.74rem',
                         padding: '0.1rem 0.45rem',
                         borderRadius: '10px',
-                        background: isActive ? 'rgba(255,255,255,0.2)' : 'rgba(10, 47, 94, 0.08)',
+                        background: isActive ? 'rgba(255,255,255,0.2)' : 'rgba(35, 32, 33, 0.08)',
                         color: isActive ? '#ffffff' : 'var(--nims-navy)',
                         fontWeight: 700
                       }}
@@ -215,7 +215,7 @@ export default function PhotoGallery() {
                   borderRadius: '20px',
                   overflow: 'hidden',
                   border: '1px solid #edf2f7',
-                  boxShadow: '0 4px 16px rgba(10, 47, 94, 0.04)',
+                  boxShadow: '0 4px 16px rgba(35, 32, 33, 0.04)',
                   cursor: 'pointer',
                   position: 'relative',
                   display: 'flex',
@@ -224,12 +224,12 @@ export default function PhotoGallery() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-6px)';
-                  e.currentTarget.style.boxShadow = '0 18px 36px rgba(10, 47, 94, 0.1)';
+                  e.currentTarget.style.boxShadow = '0 18px 36px rgba(35, 32, 33, 0.1)';
                   e.currentTarget.style.borderColor = 'rgba(244, 117, 33, 0.35)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(10, 47, 94, 0.04)';
+                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(35, 32, 33, 0.04)';
                   e.currentTarget.style.borderColor = '#edf2f7';
                 }}
               >

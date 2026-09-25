@@ -286,7 +286,7 @@ export default function LoyaltyCard({ onOpenBooking }) {
                 style={{
                   borderRadius: '24px',
                   overflow: 'hidden',
-                  boxShadow: '0 20px 40px rgba(10, 47, 94, 0.12)',
+                  boxShadow: '0 20px 40px rgba(35, 32, 33, 0.12)',
                   border: '4px solid #ffffff'
                 }}
               >
@@ -356,7 +356,7 @@ export default function LoyaltyCard({ onOpenBooking }) {
           {/* Cashless TPA Helpdesk Information Banner */}
           <div
             style={{
-              background: 'linear-gradient(135deg, #0a2f5e 0%, #071f3d 100%)',
+              background: 'linear-gradient(135deg, #373435 0%, #071f3d 100%)',
               color: '#ffffff',
               borderRadius: '24px',
               padding: '2.5rem',
@@ -365,7 +365,7 @@ export default function LoyaltyCard({ onOpenBooking }) {
               justifyContent: 'space-between',
               flexWrap: 'wrap',
               gap: '2rem',
-              boxShadow: '0 12px 36px rgba(10, 47, 94, 0.18)'
+              boxShadow: '0 12px 36px rgba(35, 32, 33, 0.18)'
             }}
           >
             <div>

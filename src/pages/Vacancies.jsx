@@ -191,12 +191,12 @@ export default function Vacancies() {
           @page { size: A4 portrait; margin: 10mm 14mm; }
           * { box-sizing: border-box; margin: 0; padding: 0; }
           body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0f172a; padding: 10px; font-size: 13px; line-height: 1.45; }
-          .wrapper { max-width: 720px; margin: 0 auto; border: 2px solid #0a2f5e; border-radius: 12px; overflow: hidden; }
-          .header { background: #0a2f5e; color: #fff; padding: 16px 20px; border-bottom: 3.5px solid #f47521; }
+          .wrapper { max-width: 720px; margin: 0 auto; border: 2px solid #373435; border-radius: 12px; overflow: hidden; }
+          .header { background: #373435; color: #fff; padding: 16px 20px; border-bottom: 3.5px solid #f47521; }
           .header h1 { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 2px; }
           .header p { font-size: 10.5px; color: #cbd5e1; }
           .token-strip { background: #f1f5f9; padding: 12px 20px; border-bottom: 1.5px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-          .token-val { font-size: 17px; font-weight: 900; color: #0a2f5e; letter-spacing: 1px; }
+          .token-val { font-size: 17px; font-weight: 900; color: #373435; letter-spacing: 1px; }
           .body { padding: 18px 20px; }
           .role-box { background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; }
           table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 14px; }
@@ -220,7 +220,7 @@ export default function Vacancies() {
           <div class="body">
             <div class="role-box">
               <div style="font-size: 10px; color: #f47521; font-weight: 800; text-transform: uppercase;">POSITION APPLIED</div>
-              <div style="font-size: 16px; font-weight: 800; color: #0a2f5e;">${activeJobModal?.title}</div>
+              <div style="font-size: 16px; font-weight: 800; color: #373435;">${activeJobModal?.title}</div>
               <div style="font-size: 11px; color: #64748b;">Dept: ${activeJobModal?.department} &bull; ${activeJobModal?.location}</div>
             </div>
             <table>
@@ -385,7 +385,7 @@ export default function Vacancies() {
                 <MotionItem key={job.id}>
                   <motion.div
                     className="vacancy-job-card"
-                    whileHover={{ y: -6, boxShadow: '0 20px 42px rgba(10, 47, 94, 0.12)' }}
+                    whileHover={{ y: -6, boxShadow: '0 20px 42px rgba(35, 32, 33, 0.12)' }}
                     transition={{ type: 'spring', stiffness: 350, damping: 24 }}
                   >
                     <div className="v-card-top">

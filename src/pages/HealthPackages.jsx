@@ -9,7 +9,7 @@ export default function HealthPackages({ onOpenBooking, onOpenPackageBooking }) 
   const [expandedPackage, setExpandedPackage] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const categories = ['All', 'Full Body & Executive', 'Women & Motherhood', 'Heart & Cardio', 'Radiology & Scans', 'Senior Citizen'];
+  const categories = ['All', 'General Wellness', 'Full Body Checkup', 'Diabetes Care', 'Heart Health', 'Liver Care', 'Kidney Care', 'Thyroid Care', 'Men\'s Health'];
 
   const filtered = packagesData.filter((pkg) => {
     const matchesCat = activeCategory === 'All' || pkg.category === activeCategory;
@@ -130,7 +130,7 @@ export default function HealthPackages({ onOpenBooking, onOpenPackageBooking }) 
                   <motion.div
                     className="health-package-card"
                     layout
-                    whileHover={{ y: -5, boxShadow: '0 20px 45px rgba(10, 47, 94, 0.11)' }}
+                    whileHover={{ y: -5, boxShadow: '0 20px 45px rgba(35, 32, 33, 0.11)' }}
                     transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                   >
                     <div>

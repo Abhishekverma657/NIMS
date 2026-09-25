@@ -36,8 +36,8 @@ export default function Navbar({ onOpenBooking }) {
       background: isScrolled ? 'rgba(255, 255, 255, 0.98)' : '#ffffff',
       backdropFilter: 'blur(16px)',
       WebkitBackdropFilter: 'blur(16px)',
-      borderBottom: '1px solid rgba(10, 47, 94, 0.08)',
-      boxShadow: isScrolled ? '0 8px 30px rgba(10, 47, 94, 0.06)' : '0 2px 8px rgba(0, 0, 0, 0.02)',
+      borderBottom: '1px solid rgba(35, 32, 33, 0.08)',
+      boxShadow: isScrolled ? '0 8px 30px rgba(35, 32, 33, 0.06)' : '0 2px 8px rgba(0, 0, 0, 0.02)',
       transition: 'all 0.2s ease',
       width: '100%',
       maxWidth: '100vw',
@@ -99,7 +99,7 @@ export default function Navbar({ onOpenBooking }) {
                   fontSize: '0.94rem',
                   fontWeight: isActive ? 700 : 500,
                   color: isActive ? 'var(--nims-navy)' : 'var(--color-text-primary)',
-                  background: isActive ? 'rgba(10, 47, 94, 0.08)' : 'transparent',
+                  background: isActive ? 'rgba(35, 32, 33, 0.08)' : 'transparent',
                   whiteSpace: 'nowrap',
                   display: 'inline-block',
                   transition: 'all 0.15s ease'
@@ -140,8 +140,8 @@ export default function Navbar({ onOpenBooking }) {
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             style={{
               display: 'none',
-              background: mobileMenuOpen ? 'rgba(10, 47, 94, 0.08)' : '#f8fafc',
-              border: '1px solid rgba(10, 47, 94, 0.14)',
+              background: mobileMenuOpen ? 'rgba(35, 32, 33, 0.08)' : '#f8fafc',
+              border: '1px solid rgba(35, 32, 33, 0.14)',
               borderRadius: '10px',
               cursor: 'pointer',
               color: 'var(--nims-navy)',
@@ -170,7 +170,7 @@ export default function Navbar({ onOpenBooking }) {
             style={{
               background: '#ffffff',
               borderTop: '1px solid var(--nims-border)',
-              boxShadow: '0 16px 36px rgba(10, 47, 94, 0.12)',
+              boxShadow: '0 16px 36px rgba(35, 32, 33, 0.12)',
               overflow: 'hidden'
             }}
             className="d-mobile-menu-content"

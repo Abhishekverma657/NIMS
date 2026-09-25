@@ -119,7 +119,7 @@ export default function DoctorProfile({ onOpenBooking }) {
                 <ul style={{ listStyle: 'none', padding: 0, margin: '2rem 0', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {doctor.highlights.map((hl, idx) => (
                     <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.8rem', color: '#444', fontSize: '1.05rem', lineHeight: 1.6 }}>
-                      <CheckCircle2 size={18} color="#0a2f5e" style={{ flexShrink: 0, marginTop: '4px' }} />
+                      <CheckCircle2 size={18} color="#373435" style={{ flexShrink: 0, marginTop: '4px' }} />
                       <span>{hl}</span>
                     </li>
                   ))}
@@ -139,7 +139,7 @@ export default function DoctorProfile({ onOpenBooking }) {
             {/* About */}
             {doctor.about && (
               <div>
-                <h2 style={{ color: '#0a2f5e', marginBottom: '1.5rem', fontSize: '1.8rem', fontWeight: 600 }}>Know More About {doctor.name}</h2>
+                <h2 style={{ color: '#373435', marginBottom: '1.5rem', fontSize: '1.8rem', fontWeight: 600 }}>Know More About {doctor.name}</h2>
                 <div style={{ color: '#555', fontSize: '1.1rem', lineHeight: 1.8, whiteSpace: 'pre-line' }}>
                   {doctor.about}
                 </div>
@@ -152,7 +152,7 @@ export default function DoctorProfile({ onOpenBooking }) {
                 
                 {doctor.detailedQualifications && doctor.detailedQualifications.length > 0 && (
                   <div>
-                    <h3 style={{ color: '#0a2f5e', marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ color: '#373435', marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <Award size={24} color="var(--nims-orange)" />
                       Qualifications
                     </h3>
@@ -161,7 +161,7 @@ export default function DoctorProfile({ onOpenBooking }) {
                         <div key={idx} style={{ padding: '1.5rem', background: '#fff', border: '1px solid #eaeaea', borderRadius: '12px', borderTop: '4px solid var(--nims-orange)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', transition: 'transform 0.2s', cursor: 'default' }}
                              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
                              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                          <div style={{ fontWeight: 600, color: '#0a2f5e', fontSize: '1.1rem', marginBottom: '0.8rem', lineHeight: 1.4 }}>{item.title}</div>
+                          <div style={{ fontWeight: 600, color: '#373435', fontSize: '1.1rem', marginBottom: '0.8rem', lineHeight: 1.4 }}>{item.title}</div>
                           {item.year && <div style={{ display: 'inline-block', background: 'rgba(244,117,33,0.1)', color: 'var(--nims-orange)', fontSize: '0.85rem', fontWeight: 600, padding: '0.3rem 0.8rem', borderRadius: '50px', marginBottom: '0.8rem' }}>{item.year}</div>}
                           {item.org && <div style={{ color: '#666', fontSize: '0.95rem', lineHeight: 1.5 }}>{item.org}</div>}
                         </div>
@@ -172,7 +172,7 @@ export default function DoctorProfile({ onOpenBooking }) {
 
                 {doctor.detailedExperience && doctor.detailedExperience.length > 0 && (
                   <div>
-                    <h3 style={{ color: '#0a2f5e', marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ color: '#373435', marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <Clock size={24} color="var(--nims-orange)" />
                       Experience
                     </h3>
@@ -181,7 +181,7 @@ export default function DoctorProfile({ onOpenBooking }) {
                         <div key={idx} style={{ padding: '1.5rem', background: '#fff', border: '1px solid #eaeaea', borderRadius: '12px', borderTop: '4px solid var(--nims-orange)', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', transition: 'transform 0.2s', cursor: 'default' }}
                              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
                              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                          <div style={{ fontWeight: 600, color: '#0a2f5e', fontSize: '1.1rem', marginBottom: '0.8rem', lineHeight: 1.4 }}>{item.title}</div>
+                          <div style={{ fontWeight: 600, color: '#373435', fontSize: '1.1rem', marginBottom: '0.8rem', lineHeight: 1.4 }}>{item.title}</div>
                           {item.year && <div style={{ display: 'inline-block', background: 'rgba(244,117,33,0.1)', color: 'var(--nims-orange)', fontSize: '0.85rem', fontWeight: 600, padding: '0.3rem 0.8rem', borderRadius: '50px', marginBottom: '0.8rem' }}>{item.year}</div>}
                           {item.org && <div style={{ color: '#666', fontSize: '0.95rem', lineHeight: 1.5 }}>{item.org}</div>}
                         </div>
@@ -196,7 +196,7 @@ export default function DoctorProfile({ onOpenBooking }) {
             {/* Expertise */}
             {doctor.expertise && doctor.expertise.length > 0 && (
               <div>
-                <h3 style={{ color: '#0a2f5e', marginBottom: '1.5rem', fontSize: '1.8rem', fontWeight: 600 }}>
+                <h3 style={{ color: '#373435', marginBottom: '1.5rem', fontSize: '1.8rem', fontWeight: 600 }}>
                   Special Interests and Expertise
                 </h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>

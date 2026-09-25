@@ -114,13 +114,13 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
           .slip-wrapper {
             max-width: 720px;
             margin: 0 auto;
-            border: 2px solid #0a2f5e;
+            border: 2px solid #373435;
             border-radius: 12px;
             overflow: hidden;
             background: #ffffff;
           }
           .header-banner {
-            background: #0a2f5e !important;
+            background: #373435 !important;
             color: #ffffff !important;
             padding: 16px 20px;
             display: flex;
@@ -186,7 +186,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
           }
           .token-pill-box {
             background: #ffffff;
-            border: 2px dashed #0a2f5e;
+            border: 2px dashed #373435;
             padding: 6px 14px;
             border-radius: 8px;
             display: flex;
@@ -203,7 +203,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
           .token-val {
             font-size: 17px;
             font-weight: 900;
-            color: #0a2f5e;
+            color: #373435;
             letter-spacing: 1px;
           }
           .booking-date-stamp {
@@ -218,10 +218,10 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
           .section-heading {
             font-size: 11.5px;
             font-weight: 800;
-            color: #0a2f5e;
+            color: #373435;
             text-transform: uppercase;
             letter-spacing: 0.6px;
-            border-bottom: 1.5px solid #0a2f5e;
+            border-bottom: 1.5px solid #373435;
             padding-bottom: 3px;
             margin-bottom: 10px;
             display: flex;
@@ -267,7 +267,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
           .pkg-name-title {
             font-size: 15px;
             font-weight: 800;
-            color: #0a2f5e;
+            color: #373435;
           }
           .pkg-category-tag {
             font-size: 10px;
@@ -331,7 +331,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
             text-align: center;
             font-weight: 700;
             font-size: 9px;
-            color: #0a2f5e;
+            color: #373435;
           }
         </style>
       </head>
@@ -1020,7 +1020,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
                     justifyContent: 'center',
                     gap: '0.6rem',
                     borderRadius: '12px',
-                    boxShadow: '0 8px 24px rgba(10, 47, 94, 0.2)'
+                    boxShadow: '0 8px 24px rgba(35, 32, 33, 0.2)'
                   }}
                 >
                   <span>Confirm Package Booking ({currentPkg?.price})</span>
@@ -1076,13 +1076,13 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
 
               {/* Token Display Box */}
               <div style={{
-                background: 'linear-gradient(135deg, #0a2f5e 0%, #174276 100%)',
+                background: 'linear-gradient(135deg, #373435 0%, #174276 100%)',
                 color: '#ffffff',
                 borderRadius: '16px',
                 padding: '1.25rem',
                 maxWidth: '440px',
                 margin: '0 auto 1.75rem',
-                boxShadow: '0 12px 30px rgba(10, 47, 94, 0.25)',
+                boxShadow: '0 12px 30px rgba(35, 32, 33, 0.25)',
                 textAlign: 'left'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.15)', paddingBottom: '0.65rem' }}>

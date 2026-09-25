@@ -85,7 +85,7 @@ export default function Contact() {
                   width: '40px',
                   height: '40px',
                   borderRadius: '10px',
-                  background: 'rgba(10, 47, 94, 0.08)',
+                  background: 'rgba(35, 32, 33, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

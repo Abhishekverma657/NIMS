@@ -9,7 +9,7 @@ export default function DoctorCard({ doctor, onBook }) {
       className="nims-doctor-card"
       whileHover={{
         y: -5,
-        boxShadow: '0 20px 42px rgba(10, 47, 94, 0.12)',
+        boxShadow: '0 20px 42px rgba(35, 32, 33, 0.12)',
         borderColor: 'rgba(244, 117, 33, 0.35)'
       }}
       transition={{ type: 'spring', stiffness: 360, damping: 24 }}

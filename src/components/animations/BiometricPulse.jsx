@@ -34,7 +34,7 @@ export default function BiometricPulse({ height = 280 }) {
       vy: (Math.random() - 0.5) * 0.4,
       radius: Math.random() * 2 + 1.5,
       alpha: Math.random() * 0.4 + 0.2,
-      color: Math.random() > 0.4 ? '#0a2f5e' : '#c0304a'
+      color: Math.random() > 0.4 ? '#373435' : '#c0304a'
     }));
 
     let step = 0;
@@ -67,7 +67,7 @@ export default function BiometricPulse({ height = 280 }) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = '#0a2f5e';
+            ctx.strokeStyle = '#373435';
             ctx.globalAlpha = (1 - dist / 110) * 0.12;
             ctx.lineWidth = 1;
             ctx.stroke();
@@ -83,8 +83,8 @@ export default function BiometricPulse({ height = 280 }) {
       ctx.lineWidth = 2.5;
 
       const gradient = ctx.createLinearGradient(0, 0, width, 0);
-      gradient.addColorStop(0, 'rgba(10, 47, 94, 0.1)');
-      gradient.addColorStop(0.3, 'rgba(10, 47, 94, 0.7)');
+      gradient.addColorStop(0, 'rgba(35, 32, 33, 0.1)');
+      gradient.addColorStop(0.3, 'rgba(35, 32, 33, 0.7)');
       gradient.addColorStop(0.65, '#c0304a'); // Crimson heartbeat spike
       gradient.addColorStop(1, 'rgba(244, 117, 33, 0.4)'); // Saffron trail
       ctx.strokeStyle = gradient;

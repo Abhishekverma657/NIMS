@@ -496,7 +496,7 @@ export default function SpecialityDetail({ onOpenBooking }) {
                       transition: 'all 0.18s ease'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(10, 47, 94, 0.06)';
+                      e.currentTarget.style.background = 'rgba(35, 32, 33, 0.06)';
                       e.currentTarget.style.color = 'var(--nims-orange)';
                     }}
                     onMouseLeave={(e) => {

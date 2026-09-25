@@ -157,7 +157,7 @@ export default function PatientPortal() {
               <MotionItem key={idx}>
                 <motion.div
                   className="portal-feature-card"
-                  whileHover={{ y: -6, boxShadow: '0 20px 42px rgba(10, 47, 94, 0.12)' }}
+                  whileHover={{ y: -6, boxShadow: '0 20px 42px rgba(35, 32, 33, 0.12)' }}
                   transition={{ type: 'spring', stiffness: 350, damping: 24 }}
                 >
                   <div className="portal-feat-top">

@@ -16,7 +16,7 @@ const VideoGalleryModal = ({ activeVideoIndex, setActiveVideoIndex, videoList = 
         width: '100vw',
         height: '100vh',
         zIndex: 999999,
-        background: 'rgba(5, 26, 54, 0.95)',
+        background: 'rgba(35, 32, 33, 0.95)',
         backdropFilter: 'blur(10px)',
         display: 'flex',
         alignItems: 'center',
@@ -138,7 +138,7 @@ const VideoGalleryModal = ({ activeVideoIndex, setActiveVideoIndex, videoList = 
         </div>
 
         {/* Video Details */}
-        <div style={{ padding: '1.25rem 2rem', background: '#0a2f5e', color: '#fff' }}>
+        <div style={{ padding: '1.25rem 2rem', background: '#373435', color: '#fff' }}>
           <h3 style={{ color: '#fff', fontSize: '1.25rem', margin: '0' }}>
             {videoList[activeVideoIndex]?.title}
           </h3>

@@ -69,7 +69,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 borderRadius: 'var(--radius-full)',
                 fontWeight: 800,
                 fontSize: '1rem',
-                boxShadow: '0 4px 18px rgba(10, 47, 94, 0.4)',
+                boxShadow: '0 4px 18px rgba(35, 32, 33, 0.4)',
                 textDecoration: 'none'
               }}
             >

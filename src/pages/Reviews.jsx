@@ -55,7 +55,7 @@ export default function Reviews() {
                   fontWeight: 600,
                   fontSize: '0.9rem',
                   cursor: 'pointer',
-                  boxShadow: reviewFilter === filter ? '0 8px 20px rgba(10, 47, 94, 0.2)' : '0 2px 8px rgba(0,0,0,0.05)',
+                  boxShadow: reviewFilter === filter ? '0 8px 20px rgba(35, 32, 33, 0.2)' : '0 2px 8px rgba(0,0,0,0.05)',
                   transition: 'all 0.3s ease',
                   textTransform: 'capitalize'
                 }}
@@ -86,7 +86,7 @@ export default function Reviews() {
               <MotionItem key={`written-${idx}`}>
                 <motion.div
                   className="smooth-card"
-                  whileHover={{ y: -5, boxShadow: '0 18px 36px rgba(10, 47, 94, 0.1)' }}
+                  whileHover={{ y: -5, boxShadow: '0 18px 36px rgba(35, 32, 33, 0.1)' }}
                   transition={{ type: 'spring', stiffness: 350, damping: 24 }}
                   style={{
                     padding: '1.75rem',

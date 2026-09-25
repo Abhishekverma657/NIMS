@@ -155,7 +155,7 @@ export default function Home({ onOpenBooking }) {
       label: 'Inpatient Beds',
       sub: "Largest campus facility in Rajasthan",
       icon: <Bed size={24} color="var(--nims-navy)" />,
-      podBg: 'rgba(10, 47, 94, 0.08)'
+      podBg: 'rgba(35, 32, 33, 0.08)'
     },
     {
       target: 500,
@@ -171,7 +171,7 @@ export default function Home({ onOpenBooking }) {
       label: 'Super Specialities',
       sub: "Comprehensive quaternary clinical care",
       icon: <Stethoscope size={24} color="var(--nims-navy)" />,
-      podBg: 'rgba(10, 47, 94, 0.08)'
+      podBg: 'rgba(35, 32, 33, 0.08)'
     },
     {
       staticText: '24×7',
@@ -192,7 +192,7 @@ export default function Home({ onOpenBooking }) {
         position: 'relative',
         height: 'clamp(580px, 84vh, 740px)',
         overflow: 'hidden',
-        background: '#0a2f5e'
+        background: '#373435'
       }}>
         {heroSlides.map((slide, index) => {
           const isActive = index === currentSlide;
@@ -238,7 +238,7 @@ export default function Home({ onOpenBooking }) {
                     <button
                       onClick={() => setIsVideoMuted(!isVideoMuted)}
                       style={{
-                        background: 'rgba(10, 47, 94, 0.75)',
+                        background: 'rgba(35, 32, 33, 0.75)',
                         border: '1px solid rgba(255,255,255,0.2)',
                         color: '#fff',
                         borderRadius: '50%',
@@ -276,7 +276,7 @@ export default function Home({ onOpenBooking }) {
                 height: '100%',
                 background: slide.type === 'video'
                   ? 'linear-gradient(90deg, rgba(5, 20, 42, 0.55) 0%, rgba(5, 20, 42, 0.22) 42%, rgba(0, 0, 0, 0) 70%)'
-                  : 'linear-gradient(90deg, rgba(7, 31, 61, 0.88) 0%, rgba(10, 47, 94, 0.65) 55%, rgba(0, 0, 0, 0.25) 100%)',
+                  : 'linear-gradient(90deg, rgba(35, 32, 33, 0.88) 0%, rgba(35, 32, 33, 0.65) 55%, rgba(0, 0, 0, 0.25) 100%)',
                 zIndex: 3,
                 pointerEvents: 'none'
               }} />
@@ -542,7 +542,7 @@ export default function Home({ onOpenBooking }) {
                     borderRadius: 'var(--radius-xl)',
                     background: '#ffffff',
                     border: '1px solid #e2e8f0',
-                    boxShadow: '0 2px 8px rgba(10, 47, 94, 0.04)',
+                    boxShadow: '0 2px 8px rgba(35, 32, 33, 0.04)',
                     transition: 'all 0.2s ease'
                   }}
                   onMouseEnter={(e) => {
@@ -625,7 +625,7 @@ export default function Home({ onOpenBooking }) {
                   style={{
                     padding: '0.85rem 2.2rem',
                     fontSize: '1rem',
-                    boxShadow: '0 4px 16px rgba(10, 47, 94, 0.2)'
+                    boxShadow: '0 4px 16px rgba(35, 32, 33, 0.2)'
                   }}
                 >
                   <span>Explore All 30+ Super Specialities</span>
@@ -977,7 +977,7 @@ export default function Home({ onOpenBooking }) {
                   <MotionItem key={i}>
                     <motion.div
                       className="smooth-card"
-                      whileHover={{ y: -5, boxShadow: '0 18px 36px rgba(10, 47, 94, 0.1)' }}
+                      whileHover={{ y: -5, boxShadow: '0 18px 36px rgba(35, 32, 33, 0.1)' }}
                       transition={{ type: 'spring', stiffness: 350, damping: 24 }}
                       style={{
                         padding: '1.75rem',

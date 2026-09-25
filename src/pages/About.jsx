@@ -738,7 +738,7 @@ export default function About({ onOpenBooking, initialTab = 'overview' }) {
             position: 'fixed',
             inset: 0,
             zIndex: 999999,
-            background: 'rgba(3, 16, 36, 0.88)',
+            background: 'rgba(35, 32, 33, 0.88)',
             backdropFilter: 'blur(10px)',
             display: 'flex',
             alignItems: 'center',

@@ -195,7 +195,7 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
       zIndex: 9999,
       display: 'flex',
       justifyContent: 'flex-end',
-      background: 'rgba(5, 26, 54, 0.65)',
+      background: 'rgba(35, 32, 33, 0.65)',
       backdropFilter: 'blur(8px)',
       animation: 'fadeIn 0.2s ease-out'
     }}>
@@ -442,7 +442,7 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
                   fontWeight: 600,
                   padding: '0.2rem 0.65rem',
                   borderRadius: '20px',
-                  background: 'rgba(10, 47, 94, 0.08)',
+                  background: 'rgba(35, 32, 33, 0.08)',
                   color: 'var(--nims-navy)'
                 }}>
                   {displayedDoctors.length} {displayedDoctors.length === 1 ? 'Doctor' : 'Doctors'} Available

@@ -13,7 +13,7 @@ export default function SpecialityCard({ spec }) {
       style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' }}
       whileHover={{
         y: -6,
-        boxShadow: '0 20px 40px rgba(10, 47, 94, 0.12)',
+        boxShadow: '0 20px 40px rgba(35, 32, 33, 0.12)',
         borderColor: 'rgba(244, 117, 33, 0.4)'
       }}
       whileTap={{ scale: 0.985 }}

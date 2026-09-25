@@ -8,7 +8,7 @@ const VideoCard = ({ item, index, setActiveVideoModal }) => {
     <MotionItem>
       <motion.div
         className="smooth-card"
-        whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(10, 47, 94, 0.12)' }}
+        whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(35, 32, 33, 0.12)' }}
         transition={{ type: 'spring', stiffness: 350, damping: 24 }}
         onClick={() => setActiveVideoModal(index)}
         style={{

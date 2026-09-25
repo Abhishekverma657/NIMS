@@ -22,7 +22,7 @@ export default function SpecialityDetailModal({ speciality, onClose, onBook }) {
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(3, 16, 36, 0.72)',
+        backgroundColor: 'rgba(35, 32, 33, 0.72)',
         backdropFilter: 'blur(8px)',
         zIndex: 10000,
         display: 'flex',
@@ -40,7 +40,7 @@ export default function SpecialityDetailModal({ speciality, onClose, onBook }) {
           maxWidth: '680px',
           maxHeight: '90vh',
           overflowY: 'auto',
-          boxShadow: '0 25px 60px -15px rgba(10, 47, 94, 0.3)',
+          boxShadow: '0 25px 60px -15px rgba(35, 32, 33, 0.3)',
           border: '1px solid #e2e8f0',
           position: 'relative',
           animation: 'fadeInUp 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
@@ -198,7 +198,7 @@ export default function SpecialityDetailModal({ speciality, onClose, onBook }) {
                   width: '40px',
                   height: '40px',
                   borderRadius: '10px',
-                  background: 'rgba(10, 47, 94, 0.08)',
+                  background: 'rgba(35, 32, 33, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -311,7 +311,7 @@ export default function SpecialityDetailModal({ speciality, onClose, onBook }) {
           <div
             style={{
               padding: '0.85rem 1.15rem',
-              background: 'rgba(10, 47, 94, 0.04)',
+              background: 'rgba(35, 32, 33, 0.04)',
               borderLeft: '4px solid var(--nims-orange)',
               borderRadius: '8px',
               fontSize: '0.86rem',

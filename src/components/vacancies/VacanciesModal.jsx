@@ -141,13 +141,13 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
           .slip-wrapper {
             max-width: 720px;
             margin: 0 auto;
-            border: 2px solid #0a2f5e;
+            border: 2px solid #373435;
             border-radius: 12px;
             overflow: hidden;
             background: #ffffff;
           }
           .header-banner {
-            background: #0a2f5e !important;
+            background: #373435 !important;
             color: #ffffff !important;
             padding: 16px 20px;
             display: flex;
@@ -193,7 +193,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
           }
           .token-pill-box {
             background: #ffffff;
-            border: 2px dashed #0a2f5e;
+            border: 2px dashed #373435;
             padding: 6px 14px;
             border-radius: 8px;
             display: flex;
@@ -210,7 +210,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
           .token-val {
             font-size: 17px;
             font-weight: 900;
-            color: #0a2f5e;
+            color: #373435;
             letter-spacing: 1px;
           }
           .booking-date-stamp {
@@ -225,10 +225,10 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
           .section-heading {
             font-size: 11.5px;
             font-weight: 800;
-            color: #0a2f5e;
+            color: #373435;
             text-transform: uppercase;
             letter-spacing: 0.6px;
-            border-bottom: 1.5px solid #0a2f5e;
+            border-bottom: 1.5px solid #373435;
             padding-bottom: 3px;
             margin-bottom: 10px;
           }
@@ -314,7 +314,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
           <div class="slip-body">
             <div class="role-box">
               <div style="font-size: 10px; color: #f47521; font-weight: 800; text-transform: uppercase;">APPLIED POSITION</div>
-              <div style="font-size: 16px; font-weight: 800; color: #0a2f5e; margin: 2px 0;">${selectedJob?.title}</div>
+              <div style="font-size: 16px; font-weight: 800; color: #373435; margin: 2px 0;">${selectedJob?.title}</div>
               <div style="font-size: 11px; color: #64748b;">Department: <strong>${selectedJob?.department}</strong> &bull; Location: ${selectedJob?.location}</div>
             </div>
 
@@ -483,13 +483,13 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
 
               {/* Token Details Display */}
               <div style={{
-                background: 'linear-gradient(135deg, #0a2f5e 0%, #164684 100%)',
+                background: 'linear-gradient(135deg, #373435 0%, #164684 100%)',
                 color: '#ffffff',
                 borderRadius: '16px',
                 padding: '1.25rem 1.5rem',
                 maxWidth: '480px',
                 margin: '0 auto 1.5rem',
-                boxShadow: '0 12px 30px rgba(10, 47, 94, 0.25)',
+                boxShadow: '0 12px 30px rgba(35, 32, 33, 0.25)',
                 textAlign: 'left'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.15)', paddingBottom: '0.65rem' }}>
