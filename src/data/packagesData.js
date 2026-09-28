@@ -143,7 +143,7 @@ export const packagesData = [
     price: "₹ 1,899",
     originalPrice: "₹ 3,500",
     discount: "45% OFF",
-    badge: "Recommended Preventive Screening for Men Aged 45+",
+    badge: "Preventive Screening for Men 45+",
     tests: [
       "CBC & ESR (Complete Blood Count and Inflammation Screening)",
       "Fasting Blood Sugar",

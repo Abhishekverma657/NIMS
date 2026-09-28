@@ -26,7 +26,7 @@ export default function HealthPackages({ onOpenBooking, onOpenPackageBooking }) 
     <div>
       {/* Banner */}
       <section style={{
-        background: 'linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-light) 100%)',
+        background: 'linear-gradient(90deg, rgba(35, 32, 33, 0.95) 0%, rgba(35, 32, 33, 0.75) 55%, rgba(0, 0, 0, 0.3) 100%), url("/assets/images/banner/health-package.png") right center/cover no-repeat, var(--nims-navy)',
         color: '#ffffff',
         padding: '3.5rem 0 2.5rem',
         borderBottom: '3px solid var(--nims-gold)'

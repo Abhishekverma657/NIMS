@@ -221,6 +221,18 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                   <span>Contact Us &amp; Directions</span>
                 </Link>
               </li>
+              <li>
+                <Link to="/privacypolicy" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
+                  <ChevronRight size={14} color="var(--nims-orange)" />
+                  <span>Privacy Policy &amp; DPDP Act</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms-and-conditions" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
+                  <ChevronRight size={14} color="var(--nims-orange)" />
+                  <span>Terms &amp; Conditions</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -400,9 +412,46 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
             © {new Date().getFullYear()} NIMS Hospital (National Institute of Medical Sciences &amp; Research). All Rights Reserved.
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
             <Link to="/contact-us" style={{ color: '#94a3b8', textDecoration: 'none' }}>
               Campus Map &amp; Directions
+            </Link>
+            <span>•</span>
+            <Link
+              to="/privacypolicy"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                color: '#ffffff',
+                background: 'rgba(244, 0, 9, 0.22)',
+                border: '1px solid rgba(244, 0, 9, 0.45)',
+                padding: '0.28rem 0.75rem',
+                borderRadius: 'var(--radius-full)',
+                fontWeight: 700,
+                fontSize: '0.78rem',
+                textDecoration: 'none',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'var(--nims-orange)';
+                e.currentTarget.style.borderColor = 'var(--nims-orange)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(244, 0, 9, 0.22)';
+                e.currentTarget.style.borderColor = 'rgba(244, 0, 9, 0.45)';
+              }}
+            >
+              <ShieldCheck size={13} color="#ff8a80" />
+              <span>Privacy Policy</span>
+            </Link>
+            <span>•</span>
+            <Link to="/terms-and-conditions" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+              Terms &amp; Conditions
+            </Link>
+            <span>•</span>
+            <Link to="/disclaimer" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+              Disclaimer
             </Link>
             <span>•</span>
             <Link to="/patient-portal" style={{ color: '#94a3b8', textDecoration: 'none' }}>
