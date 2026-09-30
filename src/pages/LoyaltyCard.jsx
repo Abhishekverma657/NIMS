@@ -132,7 +132,7 @@ export default function LoyaltyCard({ onOpenBooking }) {
       {/* Dynamic Page Banner */}
       <section
         style={{
-          background: 'linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-dark) 100%)',
+          background: '#757575',
           color: '#ffffff',
           padding: '3.75rem 0 3rem',
           borderBottom: '4px solid var(--nims-orange)',
@@ -148,13 +148,13 @@ export default function LoyaltyCard({ onOpenBooking }) {
               alignItems: 'center',
               gap: '0.5rem',
               fontSize: '0.85rem',
-              color: '#94a3b8',
+              color: '#f8fafc',
               marginBottom: '1.25rem'
             }}
           >
             <span>HOME</span>
             <ChevronRight size={14} />
-            <span style={{ color: 'var(--nims-orange)', fontWeight: 600 }}>HEALTHCARE BENEFIT SCHEMES</span>
+            <span style={{ color: 'var(--nims-gold)', fontWeight: 600 }}>HEALTHCARE BENEFIT SCHEMES</span>
           </div>
 
           <span
@@ -186,7 +186,7 @@ export default function LoyaltyCard({ onOpenBooking }) {
             Healthcare Benefit Schemes & Cashless Care
           </h1>
 
-          <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '720px', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ color: '#f1f5f9', fontSize: '1.05rem', maxWidth: '720px', lineHeight: 1.6, margin: 0 }}>
             NIMS Hospital is linked with all central and state government healthcare schemes. We understand that financial concerns can add stress during treatment, and we ensure our patients receive the best care without financial hardship.
           </p>
         </div>
@@ -369,7 +369,7 @@ export default function LoyaltyCard({ onOpenBooking }) {
             }}
           >
             <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(244, 117, 33, 0.25)', color: 'var(--nims-orange)', padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.78rem', fontWeight: 700, marginBottom: '0.5rem' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(189, 23, 28, 0.25)', color: 'var(--nims-orange)', padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.78rem', fontWeight: 700, marginBottom: '0.5rem' }}>
                 <ShieldCheck size={15} />
                 <span>24×7 Central Cashless TPA Desk</span>
               </div>

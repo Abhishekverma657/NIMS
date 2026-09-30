@@ -424,8 +424,8 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 alignItems: 'center',
                 gap: '0.4rem',
                 color: '#ffffff',
-                background: 'rgba(244, 0, 9, 0.22)',
-                border: '1px solid rgba(244, 0, 9, 0.45)',
+                background: 'rgba(189, 23, 28, 0.22)',
+                border: '1px solid rgba(189, 23, 28, 0.45)',
                 padding: '0.28rem 0.75rem',
                 borderRadius: 'var(--radius-full)',
                 fontWeight: 700,
@@ -438,8 +438,8 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 e.currentTarget.style.borderColor = 'var(--nims-orange)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(244, 0, 9, 0.22)';
-                e.currentTarget.style.borderColor = 'rgba(244, 0, 9, 0.45)';
+                e.currentTarget.style.background = 'rgba(189, 23, 28, 0.22)';
+                e.currentTarget.style.borderColor = 'rgba(189, 23, 28, 0.45)';
               }}
             >
               <ShieldCheck size={13} color="#ff8a80" />

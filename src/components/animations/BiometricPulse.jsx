@@ -86,7 +86,7 @@ export default function BiometricPulse({ height = 280 }) {
       gradient.addColorStop(0, 'rgba(35, 32, 33, 0.1)');
       gradient.addColorStop(0.3, 'rgba(35, 32, 33, 0.7)');
       gradient.addColorStop(0.65, '#c0304a'); // Crimson heartbeat spike
-      gradient.addColorStop(1, 'rgba(244, 117, 33, 0.4)'); // Saffron trail
+      gradient.addColorStop(1, 'rgba(189, 23, 28, 0.4)'); // Saffron trail
       ctx.strokeStyle = gradient;
 
       for (let x = 0; x < width; x += 3) {

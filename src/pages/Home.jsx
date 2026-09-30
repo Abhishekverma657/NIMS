@@ -163,7 +163,7 @@ export default function Home({ onOpenBooking }) {
       label: 'Expert Doctors',
       sub: "Renowned super-specialists & surgeons",
       icon: <UserCheck size={24} color="var(--nims-orange)" />,
-      podBg: 'rgba(244, 117, 33, 0.12)'
+      podBg: 'rgba(189, 23, 28, 0.12)'
     },
     {
       target: 40,

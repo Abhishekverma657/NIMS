@@ -180,7 +180,7 @@ export default function App() {
           title="24x7 Emergency & OPD Helpline"
           initial={{ scale: 0.85, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          whileHover={{ scale: 1.05, y: -3, boxShadow: '0 16px 36px rgba(244, 117, 33, 0.35)' }}
+          whileHover={{ scale: 1.05, y: -3, boxShadow: '0 16px 36px rgba(189, 23, 28, 0.35)' }}
           whileTap={{ scale: 0.96 }}
           transition={{ type: 'spring', stiffness: 380, damping: 22 }}
         >

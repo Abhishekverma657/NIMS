@@ -221,7 +221,7 @@ export default function SpecialityDetailModal({ speciality, onClose, onBook }) {
                   width: '40px',
                   height: '40px',
                   borderRadius: '10px',
-                  background: 'rgba(244, 117, 33, 0.1)',
+                  background: 'rgba(189, 23, 28, 0.1)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

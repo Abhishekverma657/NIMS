@@ -20,19 +20,19 @@ export default function Contact() {
     <div>
       {/* Banner */}
       <section style={{
-        background: 'linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-light) 100%)',
+        background: '#757575',
         color: '#ffffff',
         padding: '3.5rem 0 2.5rem',
         borderBottom: '3px solid var(--nims-gold)'
       }}>
         <div className="container">
-          <span className="badge-pill badge-gold" style={{ marginBottom: '0.75rem' }}>
+          <span className="badge-pill" style={{ background: 'var(--nims-orange)', color: '#ffffff', marginBottom: '0.75rem' }}>
             Reach NIMS Hospital, Jaipur
           </span>
           <h1 style={{ color: '#ffffff', fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', marginBottom: '0.5rem' }}>
             Contact Us & 24×7 Emergency Care
           </h1>
-          <p style={{ color: '#cbd5e1', fontSize: '1.02rem', maxWidth: '650px' }}>
+          <p style={{ color: '#f1f5f9', fontSize: '1.02rem', maxWidth: '650px' }}>
             We are here to assist you 24 hours a day, 365 days a year. Connect with our emergency triage, OPD appointment desk, or international patient office.
           </p>
         </div>

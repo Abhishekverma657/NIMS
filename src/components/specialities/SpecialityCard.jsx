@@ -14,7 +14,7 @@ export default function SpecialityCard({ spec }) {
       whileHover={{
         y: -6,
         boxShadow: '0 20px 40px rgba(35, 32, 33, 0.12)',
-        borderColor: 'rgba(244, 117, 33, 0.4)'
+        borderColor: 'rgba(189, 23, 28, 0.4)'
       }}
       whileTap={{ scale: 0.985 }}
       transition={{ type: 'spring', stiffness: 360, damping: 24 }}

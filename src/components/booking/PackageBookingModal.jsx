@@ -126,7 +126,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 3.5px solid #f47521;
+            border-bottom: 3.5px solid #bd171c;
           }
           .hospital-brand {
             display: flex;
@@ -160,7 +160,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
             text-align: right;
           }
           .desk-pill {
-            background: #f47521 !important;
+            background: #bd171c !important;
             color: #ffffff !important;
             font-size: 9.5px;
             font-weight: 800;

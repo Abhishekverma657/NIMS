@@ -15,34 +15,29 @@ import {
 export default function Topbar({ onOpenVacancies }) {
   const newsItems = [
     {
-      badge: '24×7 EMERGENCY',
-      badgeColor: '#10b981',
-      text: 'Open 24 Hours • Comprehensive Emergency & Critical Trauma Care Unit'
+      fullText: '⚡ NIMS TATKAAL SEVA: 24/7 ONLINE ICU BED BOOKING (PRE-BOOKING ₹5,000/-)',
+      color: '#bd171c', // Text color inside yellow box
+      bg: '#fde047',    // Yellow box
     },
     {
-      badge: 'ACCREDITED',
-      badgeColor: '#f47521',
-      text: 'NABH & NABL Accredited Multi-Super Speciality Quaternary Hospital in Jaipur'
+      fullText: '🔴 ADMISSIONS OPEN 2026 - 2027 FOR MBBS',
+      color: '#e5b64a',
+      bg: 'transparent',
     },
     {
-      badge: 'AMBULANCE HELPLINE',
-      badgeColor: '#38bdf8',
-      text: '24×7 Rapid Ambulance & Emergency Response: 0141-2388999'
+      fullText: '🏥 DR. B. S. TOMAR INSTITUTE OF MEDICAL SCIENCES & RESEARCH',
+      color: '#ffffff',
+      bg: 'transparent',
     },
     {
-      badge: 'CASHLESS ACTIVE',
-      badgeColor: '#22c55e',
-      text: 'Empanelled: RGHS, Chiranjeevi/MAA, Ayushman Bharat, CGHS, ECHS & ESIC'
+      fullText: '🚨 24/7 ICU & EMERGENCY CARE AVAILABLE',
+      color: '#facc15',
+      bg: 'transparent',
     },
     {
-      badge: 'QUATERNARY CARE',
-      badgeColor: '#f59e0b',
-      text: '500+ Super Speciality Doctors & 2,400+ Advanced Hospital Beds at NH-11C, Jaipur'
-    },
-    {
-      badge: 'OPD & IPD',
-      badgeColor: '#a855f7',
-      text: '30+ Clinical Disciplines & Modular State-of-the-Art Operation Theatres'
+      fullText: '📞 CALL EMERGENCY: +91 74120 77125',
+      color: '#e5b64a',
+      bg: 'transparent',
     }
   ];
 
@@ -50,11 +45,7 @@ export default function Topbar({ onOpenVacancies }) {
     <div className="nims-topbar-wrapper">
       {/* Fluid full-width container utilizing left and right screen space */}
       <div className="topbar-fluid-container">
-        {/* Left Side: Fixed Jaipur Address */}
-        <div className="topbar-left">
-          <MapPin size={13} color="var(--nims-orange)" style={{ flexShrink: 0 }} />
-          <span className="location-text">Jaipur-Delhi Highway (NH-11C), Rajasthan</span>
-        </div>
+
 
         {/* Center: Continuous News Headline Marquee (Right to Left Scrolling) */}
         <div
@@ -68,14 +59,22 @@ export default function Topbar({ onOpenVacancies }) {
                 <span
                   className="ticker-badge"
                   style={{
-                    background: `${item.badgeColor}22`,
-                    color: item.badgeColor,
-                    borderColor: `${item.badgeColor}55`
+                    background: item.bg,
+                    color: item.color,
+                    fontWeight: 900,
+                    padding: item.bg !== 'transparent' ? '0.3rem 0.6rem' : '0.3rem 0',
+                    border: 'none',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    fontSize: '0.75rem',
+                    textTransform: 'uppercase',
+                    height: '100%'
                   }}
                 >
-                  {item.badge}
+                  {item.fullText}
                 </span>
-                <span className="marquee-text">{item.text}</span>
                 <span className="marquee-separator">•</span>
               </div>
             ))}
@@ -86,14 +85,22 @@ export default function Topbar({ onOpenVacancies }) {
                 <span
                   className="ticker-badge"
                   style={{
-                    background: `${item.badgeColor}22`,
-                    color: item.badgeColor,
-                    borderColor: `${item.badgeColor}55`
+                    background: item.bg,
+                    color: item.color,
+                    fontWeight: 900,
+                    padding: item.bg !== 'transparent' ? '0.3rem 0.6rem' : '0.3rem 0',
+                    border: 'none',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    fontSize: '0.75rem',
+                    textTransform: 'uppercase',
+                    height: '100%'
                   }}
                 >
-                  {item.badge}
+                  {item.fullText}
                 </span>
-                <span className="marquee-text">{item.text}</span>
                 <span className="marquee-separator">•</span>
               </div>
             ))}
@@ -101,21 +108,36 @@ export default function Topbar({ onOpenVacancies }) {
         </div>
 
         {/* Right Side: Fixed Action Links (Careers, Loyalty Card, Patient Portal in uniform UI) */}
-        <div className="topbar-right">
+        <div className="topbar-right" style={{ display: 'flex', gap: '0.75rem' }}>
           <Link
             to="/vacancies"
-            className="topbar-link"
+            className="topbar-btn"
             title="Careers and Open Positions at NIMS Hospital"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '0.3rem',
+              padding: '0.35rem 0.75rem', borderRadius: '50px',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              background: 'rgba(255, 255, 255, 0.05)',
+              color: '#e2e8f0', textDecoration: 'none',
+              fontWeight: 700, fontSize: '0.75rem', transition: 'all 0.2s'
+            }}
           >
             <Briefcase size={13} color="var(--nims-orange)" />
-            <span>Careers / Vacancies</span>
+            <span>Careers</span>
           </Link>
 
-          {/* Health Schemes rendered in identical link UI as Careers and Portal */}
           <Link
             to="/loyalty-card"
-            className="topbar-link"
+            className="topbar-btn"
             title="NIMS Empaneled Government Healthcare Benefit Schemes & TPA"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '0.3rem',
+              padding: '0.35rem 0.75rem', borderRadius: '50px',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              background: 'rgba(255, 255, 255, 0.05)',
+              color: '#e2e8f0', textDecoration: 'none',
+              fontWeight: 700, fontSize: '0.75rem', transition: 'all 0.2s'
+            }}
           >
             <ShieldCheck size={13} color="var(--nims-orange)" />
             <span>Health Schemes</span>
@@ -123,10 +145,19 @@ export default function Topbar({ onOpenVacancies }) {
 
           <Link
             to="/patient-portal"
-            className="topbar-link"
+            className="topbar-btn-primary"
             title="Patient Portal & Online Records"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '0.3rem',
+              padding: '0.35rem 0.85rem', borderRadius: '50px',
+              border: '1px solid rgba(229, 182, 74, 0.5)',
+              background: 'rgba(255, 255, 255, 0.15)',
+              color: 'var(--nims-gold)', textDecoration: 'none',
+              fontWeight: 800, fontSize: '0.75rem', transition: 'all 0.2s',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            }}
           >
-            <User size={13} color="var(--nims-orange)" />
+            <User size={13} color="var(--nims-gold)" />
             <span>Patient Portal</span>
           </Link>
         </div>
@@ -135,10 +166,7 @@ export default function Topbar({ onOpenVacancies }) {
       {/* Mobile-Only Responsive Quick Action Bar */}
       <div className="topbar-mobile-quickbar">
         <div className="mobile-quickbar-inner">
-          <div className="mobile-loc-tag">
-            <MapPin size={11} color="var(--nims-orange)" />
-            <span>Jaipur NH-11C</span>
-          </div>
+
 
           <div className="mobile-actions-group">
             <Link to="/loyalty-card" className="mobile-quick-link">

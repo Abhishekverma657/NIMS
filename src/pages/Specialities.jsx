@@ -31,7 +31,7 @@ export default function Specialities({ onOpenBooking }) {
     <div>
       {/* Banner */}
       <section style={{
-        background: 'linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-dark) 100%)',
+        background: '#757575',
         color: '#ffffff',
         padding: '3.5rem 0 2.75rem',
         borderBottom: '3px solid var(--nims-orange)'
@@ -44,7 +44,7 @@ export default function Specialities({ onOpenBooking }) {
             <h1 style={{ color: '#ffffff', fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', marginBottom: '0.65rem' }}>
               Specialities & Super Specialities
             </h1>
-            <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '700px', lineHeight: 1.6 }}>
+            <p style={{ color: '#f1f5f9', fontSize: '1.05rem', maxWidth: '700px', lineHeight: 1.6 }}>
               Explore over 30 clinical disciplines staffed by 500+ experienced clinicians, equipped with 2,400 beds, advanced diagnostic pathology, and modular surgical theatres.
             </p>
           </MotionFadeIn>

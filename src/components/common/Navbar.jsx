@@ -43,12 +43,14 @@ export default function Navbar({ onOpenBooking }) {
       maxWidth: '100vw',
       overflowX: 'hidden'
     }}>
-      <div className="container" style={{
+      <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingTop: isScrolled ? '0.55rem' : '0.75rem',
         paddingBottom: isScrolled ? '0.55rem' : '0.75rem',
+        paddingLeft: 'clamp(1rem, 3vw, 3rem)',
+        paddingRight: 'clamp(1rem, 3vw, 3rem)',
         gap: '0.75rem',
         width: '100%'
       }}>
@@ -94,21 +96,28 @@ export default function Navbar({ onOpenBooking }) {
                 key={link.path}
                 to={link.path}
                 style={{
-                  padding: '0.45rem 0.9rem',
-                  borderRadius: 'var(--radius-xl)',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '100px',
                   fontSize: '0.94rem',
-                  fontWeight: isActive ? 700 : 500,
-                  color: isActive ? 'var(--nims-navy)' : 'var(--color-text-primary)',
-                  background: isActive ? 'rgba(35, 32, 33, 0.08)' : 'transparent',
+                  fontWeight: isActive ? 800 : 600,
+                  color: isActive ? 'var(--nims-navy)' : '#334155',
+                  background: isActive ? 'rgba(23, 42, 52, 0.06)' : 'transparent',
                   whiteSpace: 'nowrap',
                   display: 'inline-block',
-                  transition: 'all 0.15s ease'
+                  transition: 'all 0.2s ease',
+                  letterSpacing: '0.2px'
                 }}
                 onMouseEnter={e => {
-                  if (!isActive) e.currentTarget.style.color = 'var(--nims-orange)';
+                  if (!isActive) {
+                    e.currentTarget.style.color = 'var(--nims-orange)';
+                    e.currentTarget.style.background = 'rgba(189, 23, 28, 0.04)';
+                  }
                 }}
                 onMouseLeave={e => {
-                  if (!isActive) e.currentTarget.style.color = 'var(--color-text-primary)';
+                  if (!isActive) {
+                    e.currentTarget.style.color = '#334155';
+                    e.currentTarget.style.background = 'transparent';
+                  }
                 }}
               >
                 {link.name}
@@ -119,18 +128,34 @@ export default function Navbar({ onOpenBooking }) {
 
         {/* Right CTA Area: Desktop CTA button + Mobile Hamburger Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
-          {/* Desktop "Book Appointment" button - hidden on mobile */}
+          {/* Desktop "Book Appointment" button - styled like BST Hospital */}
           <button
             onClick={onOpenBooking}
             className="btn btn-primary d-desktop-only"
             style={{
               padding: '0.65rem 1.35rem',
               fontSize: '0.92rem',
-              background: 'var(--nims-navy)'
+              background: 'linear-gradient(to right, #bd171c, #9e1217, #791017)',
+              color: 'white',
+              borderRadius: '9999px',
+              fontWeight: 900,
+              boxShadow: '0 10px 15px -3px rgba(189, 23, 28, 0.3)',
+              border: '1px solid rgba(248, 113, 113, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              transition: 'all 0.3s ease'
             }}
           >
-            <Calendar size={16} />
-            <span>Book Appointment</span>
+            <span style={{ 
+              width: '10px', 
+              height: '10px', 
+              borderRadius: '50%', 
+              background: 'rgba(255, 255, 255, 0.2)', 
+              display: 'inline-block',
+              marginRight: '2px'
+            }}></span>
+            <span>Nims Tatkaal Seva (ICU Booking) ➔</span>
           </button>
 
           {/* Mobile Hamburger Toggle Button */}
@@ -201,7 +226,7 @@ export default function Navbar({ onOpenBooking }) {
                       fontWeight: isActive ? 700 : 500,
                       color: isActive ? 'var(--nims-orange)' : 'var(--nims-navy)',
                       background: isActive ? 'var(--nims-orange-soft)' : 'rgba(248, 250, 252, 0.75)',
-                      border: `1px solid ${isActive ? 'rgba(244, 117, 33, 0.25)' : 'rgba(226, 232, 240, 0.8)'}`,
+                      border: `1px solid ${isActive ? 'rgba(189, 23, 28, 0.25)' : 'rgba(226, 232, 240, 0.8)'}`,
                       textDecoration: 'none',
                       transition: 'all 0.15s ease'
                     }}
@@ -230,19 +255,19 @@ export default function Navbar({ onOpenBooking }) {
                     fontSize: '0.98rem',
                     fontWeight: 700,
                     color: '#ffffff',
-                    background: 'linear-gradient(135deg, var(--nims-orange) 0%, #e05e0c 100%)',
-                    border: 'none',
+                    background: 'linear-gradient(to right, #bd171c, #9e1217, #791017)',
+                    border: '1px solid rgba(248, 113, 113, 0.3)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '0.55rem',
-                    boxShadow: '0 4px 16px rgba(244, 117, 33, 0.35)',
+                    boxShadow: '0 10px 15px -3px rgba(189, 23, 28, 0.3)',
                     transition: 'transform 0.15s ease'
                   }}
                 >
-                  <Calendar size={18} />
-                  <span>Book Appointment Online</span>
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)', display: 'inline-block', marginRight: '2px' }}></span>
+                  <span>Nims Tatkaal Seva (ICU Booking) ➔</span>
                 </button>
               </div>
             </div>

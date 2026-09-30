@@ -153,7 +153,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 3.5px solid #f47521;
+            border-bottom: 3.5px solid #bd171c;
           }
           .hospital-brand {
             display: flex;
@@ -313,7 +313,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
 
           <div class="slip-body">
             <div class="role-box">
-              <div style="font-size: 10px; color: #f47521; font-weight: 800; text-transform: uppercase;">APPLIED POSITION</div>
+              <div style="font-size: 10px; color: #bd171c; font-weight: 800; text-transform: uppercase;">APPLIED POSITION</div>
               <div style="font-size: 16px; font-weight: 800; color: #373435; margin: 2px 0;">${selectedJob?.title}</div>
               <div style="font-size: 11px; color: #64748b;">Department: <strong>${selectedJob?.department}</strong> &bull; Location: ${selectedJob?.location}</div>
             </div>

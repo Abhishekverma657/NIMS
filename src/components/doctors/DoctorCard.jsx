@@ -10,7 +10,7 @@ export default function DoctorCard({ doctor, onBook }) {
       whileHover={{
         y: -5,
         boxShadow: '0 20px 42px rgba(35, 32, 33, 0.12)',
-        borderColor: 'rgba(244, 117, 33, 0.35)'
+        borderColor: 'rgba(189, 23, 28, 0.35)'
       }}
       transition={{ type: 'spring', stiffness: 360, damping: 24 }}
     >

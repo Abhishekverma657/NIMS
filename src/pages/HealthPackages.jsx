@@ -26,19 +26,19 @@ export default function HealthPackages({ onOpenBooking, onOpenPackageBooking }) 
     <div>
       {/* Banner */}
       <section style={{
-        background: 'linear-gradient(90deg, rgba(35, 32, 33, 0.95) 0%, rgba(35, 32, 33, 0.75) 55%, rgba(0, 0, 0, 0.3) 100%), url("/assets/images/banner/health-package.png") right center/cover no-repeat, var(--nims-navy)',
+        background: 'linear-gradient(90deg, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.5) 50%, rgba(15, 23, 42, 0) 100%), url("/assets/images/banner/health-package.png") right center/cover no-repeat',
         color: '#ffffff',
         padding: '3.5rem 0 2.5rem',
         borderBottom: '3px solid var(--nims-gold)'
       }}>
         <div className="container">
-          <span className="badge-pill badge-gold" style={{ marginBottom: '0.75rem' }}>
+          <span className="badge-pill" style={{ background: 'var(--nims-orange)', color: '#ffffff', marginBottom: '0.75rem' }}>
             Preventive Healthcare & Diagnostics
           </span>
           <h1 style={{ color: '#ffffff', fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', marginBottom: '0.5rem' }}>
             Health Packages ({packagesData.length} Panels Available)
           </h1>
-          <p style={{ color: '#cbd5e1', fontSize: '1.02rem', maxWidth: '650px' }}>
+          <p style={{ color: '#f1f5f9', fontSize: '1.02rem', maxWidth: '650px' }}>
             Early diagnosis saves lives. Choose from comprehensive master health checkups, maternity panels, cardiac wellness, and senior citizen packages at subsidized rates.
           </p>
         </div>

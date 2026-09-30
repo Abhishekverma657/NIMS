@@ -67,7 +67,7 @@ export default function PhotoGallery() {
       {/* Dynamic Header Banner */}
       <section
         style={{
-          background: 'linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-dark) 100%)',
+          background: '#757575',
           color: '#ffffff',
           padding: '3.75rem 0 3rem',
           borderBottom: '4px solid var(--nims-orange)',
@@ -93,7 +93,7 @@ export default function PhotoGallery() {
             A Visual Tour of NIMS Hospital
           </h1>
 
-          <p style={{ color: '#cbd5e1', fontSize: '1.05rem', maxWidth: '720px', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ color: '#f1f5f9', fontSize: '1.05rem', maxWidth: '720px', lineHeight: 1.6, margin: 0 }}>
             Experience our sprawling 2,400-bed campus, advanced modular surgical suites, 24×7 ALS ambulances, high-end diagnostic laboratories, and comforting inpatient recovery suites.
           </p>
 
@@ -112,19 +112,19 @@ export default function PhotoGallery() {
               <span style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--nims-orange)' }}>
                 <AnimatedCounter target={30} suffix="+" />
               </span>
-              <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>High-Resolution Facilities</span>
+              <span style={{ fontSize: '0.86rem', color: '#f8fafc' }}>High-Resolution Facilities</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff' }}>
                 <AnimatedCounter target={2400} suffix="+" />
               </span>
-              <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Inpatient Beds</span>
+              <span style={{ fontSize: '0.86rem', color: '#f8fafc' }}>Inpatient Beds</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.35rem', fontWeight: 800, color: '#10b981' }}>
                 <AnimatedCounter staticText="24×7" />
               </span>
-              <span style={{ fontSize: '0.86rem', color: '#94a3b8' }}>Level-1 Emergency & Trauma</span>
+              <span style={{ fontSize: '0.86rem', color: '#f8fafc' }}>Level-1 Emergency & Trauma</span>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default function PhotoGallery() {
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-6px)';
                   e.currentTarget.style.boxShadow = '0 18px 36px rgba(35, 32, 33, 0.1)';
-                  e.currentTarget.style.borderColor = 'rgba(244, 117, 33, 0.35)';
+                  e.currentTarget.style.borderColor = 'rgba(189, 23, 28, 0.35)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'none';
