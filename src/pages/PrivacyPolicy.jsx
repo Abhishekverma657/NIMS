@@ -270,10 +270,25 @@ export default function PrivacyPolicy({ initialTab = 'privacy' }) {
                     <li>IP address</li>
                     <li>Device identifiers where technically required</li>
                     <li>Crash and diagnostic information</li>
-                    <li>Network information</li>
                     <li>App usage information</li>
                   </ul>
                 </div>
+              </div>
+
+              {/* 2.A Google Play Health Data Compliance */}
+              <div style={{ marginBottom: '2rem', padding: '1.5rem', background: '#e0f2fe', borderRadius: 'var(--radius-md)', borderLeft: '4px solid #0284c7' }}>
+                <h3 style={{ fontSize: '1.25rem', color: '#0369a1', marginBottom: '0.75rem', fontWeight: 700 }}>
+                  Special Notice for Health App Compliance (Google Play)
+                </h3>
+                <p style={{ marginBottom: '0.5rem', fontWeight: 600 }}>
+                  As a medical application, NIMS Tatkal Seva strictly adheres to Google Play’s Health Apps policy and Indian healthcare data protection laws (including DISHA/DPDP Act 2023).
+                </p>
+                <ul style={{ paddingLeft: '1.5rem', marginBottom: '0.5rem', color: '#0c4a6e' }}>
+                  <li><strong>Data Security:</strong> All personal and health-related data (including prescriptions, reports, and medical history) is transmitted securely using modern cryptography (e.g., HTTPS/TLS) and stored on secure servers with restricted access.</li>
+                  <li><strong>Limited Use:</strong> We strictly collect and use your health data ONLY to provide healthcare services (booking beds, teleconsultation, diagnostics). </li>
+                  <li><strong>No Unauthorized Sharing:</strong> We do <strong>NOT</strong> sell, rent, or share your health data to third parties for advertising, marketing, or data broker purposes under any circumstances.</li>
+                  <li><strong>Teleconsultation (Video Calls):</strong> The App requests Camera and Microphone permissions solely to facilitate encrypted live Video Consultations with NIMS doctors. These video streams are strictly confidential and are not recorded or broadcasted without your explicit consent.</li>
+                </ul>
               </div>
 
               {/* 3. How We Use Your Information */}
