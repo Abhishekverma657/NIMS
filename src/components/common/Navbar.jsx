@@ -129,8 +129,8 @@ export default function Navbar({ onOpenBooking }) {
         {/* Right CTA Area: Desktop CTA button + Mobile Hamburger Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
           {/* Desktop "Book Appointment" button - styled like BST Hospital */}
-          <button
-            onClick={onOpenBooking}
+          <Link
+            to="/tatkaal-booking"
             className="btn btn-primary d-desktop-only"
             style={{
               padding: '0.65rem 1.35rem',
@@ -144,7 +144,8 @@ export default function Navbar({ onOpenBooking }) {
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
+              textDecoration: 'none'
             }}
           >
             <span style={{ 
@@ -156,7 +157,7 @@ export default function Navbar({ onOpenBooking }) {
               marginRight: '2px'
             }}></span>
             <span>Nims Tatkaal Seva (ICU Booking) ➔</span>
-          </button>
+          </Link>
 
           {/* Mobile Hamburger Toggle Button */}
           <button
@@ -243,11 +244,9 @@ export default function Navbar({ onOpenBooking }) {
                 paddingTop: '0.75rem',
                 borderTop: '1px solid var(--nims-border)'
               }}>
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenBooking();
-                  }}
+                <Link
+                  to="/tatkaal-booking"
+                  onClick={() => setMobileMenuOpen(false)}
                   style={{
                     width: '100%',
                     padding: '0.85rem 1rem',
@@ -263,12 +262,13 @@ export default function Navbar({ onOpenBooking }) {
                     justifyContent: 'center',
                     gap: '0.55rem',
                     boxShadow: '0 10px 15px -3px rgba(189, 23, 28, 0.3)',
-                    transition: 'transform 0.15s ease'
+                    transition: 'transform 0.15s ease',
+                    textDecoration: 'none'
                   }}
                 >
                   <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)', display: 'inline-block', marginRight: '2px' }}></span>
                   <span>Nims Tatkaal Seva (ICU Booking) ➔</span>
-                </button>
+                </Link>
               </div>
             </div>
           </motion.div>

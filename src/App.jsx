@@ -22,6 +22,7 @@ import Reviews from './pages/Reviews';
 import DoctorProfile from './pages/DoctorProfile';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import DeleteUserAccount from './pages/DeleteUserAccount';
+import TatkaalBooking from './pages/TatkaalBooking';
 
 import { PhoneCall } from 'lucide-react';
 
@@ -81,6 +82,7 @@ function AnimatedPageContent({ onOpenBooking, onOpenPackageBooking }) {
           <Route path="/terms-and-conditions" element={<PrivacyPolicy initialTab="terms" />} />
           <Route path="/disclaimer" element={<PrivacyPolicy initialTab="disclaimer" />} />
           <Route path="/deleteuseraccount" element={<DeleteUserAccount />} />
+          <Route path="/tatkaal-booking" element={<TatkaalBooking />} />
           {/* Fallback redirect */}
           <Route path="*" element={<Home onOpenBooking={onOpenBooking} />} />
         </Routes>
