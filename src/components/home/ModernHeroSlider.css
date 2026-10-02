@@ -1,0 +1,879 @@
+.modern-hero-container {
+  position: relative;
+  width: 100%;
+  height: 65vh; /* Reduced height */
+  min-height: 550px; /* Reduced min-height */
+  max-height: 700px; /* Reduced max-height */
+  overflow: visible; /* Changed from hidden to allow bottom bar overlap */
+  background: #1a0505;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 120px; /* Space for lower overlapping bar */
+}
+
+.hero-slide-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Keep images clipped */
+}
+
+.hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%; /* Shifted up slightly to prevent building top from getting cropped */
+}
+
+/* Clean subtle gradient just for text readability on left edge, no red */
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg, 
+    rgba(0, 0, 0, 0.4) 0%, 
+    transparent 50%
+  );
+  z-index: 1;
+}
+
+/* Remove the red glowing orb to keep image clean */
+.hero-gradient-overlay::before {
+  display: none;
+}
+
+.hero-content-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Organic Swoosh Divider Styles */
+.hero-swoosh-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 65%; /* Width remains same as requested */
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+  /* 3D Look: First shadow creates 'thickness', second creates 'depth' */
+  filter: drop-shadow(6px 0 0 rgba(70, 0, 0, 0.7)) drop-shadow(15px 0 35px rgba(0,0,0,0.5));
+}
+
+.hero-swoosh-light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-swoosh-3d-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: drop-shadow(-2px 0px 4px rgba(0,0,0,0.5));
+}
+
+.hero-swoosh-main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 96%;
+  height: 100%;
+}
+
+/* Text Container */
+.hero-content-inner {
+  width: 100%;
+  width: 38%; /* Scaled down width to ensure it never touches the curve */
+  padding: 4rem 2rem 4rem 4rem; /* Reduced left padding slightly for more usable space */
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.75rem; /* Smaller font */
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.hero-title {
+  font-size: clamp(2rem, 3.2vw, 3.5rem); /* Scaled down */
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+  margin-bottom: 1.25rem;
+}
+
+/* Remove inline text backgrounds, keep it clean */
+.hero-title span.text-bg {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* Golden-Yellow Highlight for amazing contrast */
+.hero-highlight {
+  color: #ffd700;
+  position: relative;
+  display: inline-block;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.hero-subtitle {
+  font-size: 1rem; /* Scaled down */
+  color: white;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 95%;
+  font-weight: 500;
+  padding-left: 1rem;
+  border-left: 4px solid #ffd700;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.hero-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem; /* Scaled down buttons */
+  border-radius: 10px;
+  font-size: 0.95rem; /* Smaller font */
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.primary-btn {
+  background: white;
+  color: #a70000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.primary-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  background: #f8fafc;
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.secondary-btn .btn-icon {
+  transition: transform 0.3s ease;
+}
+
+.secondary-btn:hover .btn-icon {
+  transform: translateX(4px);
+}
+
+.tatkal-custom-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.tatkal-text-logo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.tatkal-text-logo .nims-text {
+  font-size: clamp(2.5rem, 3.5vw, 3.8rem); /* Slightly smaller */
+  font-weight: 900;
+  color: white;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.tatkal-text-logo .tatkal-text {
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem); /* Slightly smaller */
+  font-weight: 800;
+  color: #ffd700;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.tatkal-pulse-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.85rem; /* Slightly smaller */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background: rgba(0,0,0,0.15);
+  padding: 0.4rem 0.8rem;
+  border-radius: 50px;
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.pulse-icon {
+  color: #ffbaba;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+.tatkal-priority-title {
+  color: white;
+  font-size: clamp(1.3rem, 1.8vw, 1.8rem); /* Slightly smaller */
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  margin-bottom: 0.5rem;
+}
+
+.tatkal-subtitle {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.95rem; /* Slightly smaller */
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  max-width: 100%; /* Take full width of the smaller container */
+}
+
+.tatkal-feature-blocks {
+  display: flex;
+  flex-wrap: nowrap; /* Keep in one line if possible */
+  gap: 1rem; /* Tighter gap */
+  margin-bottom: 2.5rem; 
+}
+
+.t-block {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Tighter gap */
+}
+
+.t-icon-glass {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 40px; /* Smaller icon */
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffd700;
+  backdrop-filter: blur(5px);
+}
+
+.t-block-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.t-block-text strong {
+  color: white;
+  font-size: 0.95rem; /* Slightly smaller */
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.t-block-text span {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem; /* Slightly smaller */
+  font-weight: 500;
+  white-space: nowrap; /* Prevent breaking */
+}
+
+.tatkal-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.tatkal-app-btn {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 60px;
+  padding: 0.5rem 1.75rem 0.5rem 0.5rem;
+  text-decoration: none;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  align-self: flex-start;
+}
+
+.tatkal-app-btn:hover {
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+
+.app-btn-icon-real {
+  width: 55px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mock-phone {
+  width: 32px;
+  height: 62px;
+  background: #111;
+  border-radius: 10px;
+  border: 2px solid #555;
+  box-shadow: inset 0 0 0 2px #000, 0 4px 10px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.mock-phone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 4px;
+  background: #000;
+  border-radius: 0 0 4px 4px;
+  z-index: 2;
+}
+
+.mock-screen-top {
+  flex: 1;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mock-screen-bottom {
+  flex: 1;
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-btn-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.t-main {
+  color: white;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+}
+
+.t-sub {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.app-btn-arrow-circle {
+  background: white;
+  color: #a70000;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.hero-callback-card {
+  position: absolute;
+  right: 6%; /* Moved closer to the right edge */
+  top: 28%; /* Moved even higher up */
+  transform: translateY(-50%);
+  width: 280px; /* Shrunk width */
+  background: white;
+  border-radius: 20px; /* Restored full rounded corners */
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  z-index: 15;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.8);
+}
+
+.callback-header {
+  background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+  padding: 1rem 0.85rem; /* Reduced padding */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Reduced gap */
+}
+
+.callback-icon-circle {
+  width: 38px; /* Smaller icon circle */
+  height: 38px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.callback-header-text h3 {
+  color: white;
+  font-size: 1rem; /* Smaller text */
+  font-weight: 800;
+  margin: 0 0 0.15rem 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.callback-header-text p {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.65rem; /* Smaller text */
+  margin: 0;
+  font-weight: 500;
+}
+
+.callback-body {
+  padding: 1.15rem; /* Reduced padding */
+  background: #ffffff;
+}
+
+.callback-input-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.callback-input-group .input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #cc0000;
+}
+
+.callback-input-group input {
+  width: 100%;
+  padding: 0.7rem 1rem 0.7rem 2.25rem; /* Reduced padding */
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.85rem; /* Smaller text */
+  outline: none;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.callback-input-group input:focus {
+  border-color: #cc0000;
+  box-shadow: 0 0 0 3px rgba(204,0,0,0.1);
+}
+
+.callback-submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #cc0000 0%, #aa0000 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem; /* Reduced padding */
+  font-size: 0.9rem; /* Smaller text */
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(204,0,0,0.3);
+  margin-top: 0.25rem;
+}
+
+.callback-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(204,0,0,0.4);
+}
+
+.hero-navigation {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.slider-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-arrow {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+/* Added specific arrows for left and right edges */
+.nav-arrow.floating-left {
+  position: absolute;
+  right: 3.5rem; /* Grouped tightly with the right arrow */
+  top: auto;
+  bottom: 1rem; /* Ekdum bottom-right me chipkaya hua */
+  transform: none;
+  z-index: 20;
+}
+
+.nav-arrow.floating-right {
+  position: absolute;
+  right: 1rem; /* Ekdum bottom-right me chipkaya hua */
+  top: auto;
+  bottom: 1rem; /* Ekdum bottom-right me chipkaya hua */
+  transform: none;
+  z-index: 20;
+}
+
+.nav-arrow:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-5px); /* Changed hover animation since they are no longer vertically centered */
+}
+
+.nav-arrow.floating-left:hover, .nav-arrow.floating-right:hover {
+  transform: translateY(-5px) scale(1.05); /* Proper hover animation for bottom-aligned arrows */
+}
+
+.progress-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.progress-dot {
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: width 0.3s ease;
+}
+
+.progress-dot.active {
+  width: 80px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #ffd700;
+  width: 0;
+}
+
+/* FIXED BOTTOM SERVICES BAR */
+.hero-bottom-services-bar {
+  position: absolute;
+  bottom: -80px; /* Pushed almost entirely below the slider */
+  left: 0; 
+  width: 100%; 
+  height: 85px;
+  background: linear-gradient(to right, #8a0000, #a70000, #b9101c, #a70000, #8a0000);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); /* Shadow adjusted for floating feel */
+  border-radius: 30px 30px 0 0; /* Curved top-left and top-right */
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.service-item:hover {
+  transform: translateY(-2px);
+}
+
+.service-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.service-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 1024px) {
+  .hero-swoosh-container {
+    width: 65%; /* Give more space to content on tablet */
+  }
+  .hero-content-inner {
+    width: 55%;
+    padding: 3rem 2rem 3rem 3rem;
+  }
+  .hero-bottom-services-bar {
+    width: 98%;
+    left: 1%;
+    gap: 1rem;
+  }
+  .service-item span {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-bottom-services-bar {
+    display: none; /* Hide on mobile to save space */
+  }
+  
+  .modern-hero-container {
+    height: auto;
+    min-height: auto;
+    max-height: none;
+    margin-bottom: 30px;
+    background: linear-gradient(to bottom, #7a0000, #a70000);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .hero-slide-bg {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Specific mobile height for image */
+  }
+
+  .hero-bg-img {
+    height: 100%;
+    object-position: center 20%;
+  }
+
+  .hero-content-wrapper {
+    position: static; /* Allows absolute children to position relative to hero container */
+    height: auto;
+    width: 100%;
+    background: transparent;
+  }
+
+  /* Disable complex SVG curve on mobile */
+  .hero-swoosh-container {
+    display: none;
+  }
+
+  .hero-content-inner {
+    width: 100%;
+    padding: 2rem 1.5rem 3rem 1.5rem;
+  }
+
+  /* Typography Fixes */
+  .tatkal-text-logo .nims-text {
+    font-size: 2.8rem;
+  }
+  .tatkal-text-logo .tatkal-text {
+    font-size: 1.8rem;
+  }
+  
+  .tatkal-priority-title {
+    font-size: 1.6rem;
+    line-height: 1.3;
+    white-space: normal;
+  }
+
+  .tatkal-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  /* Feature Blocks */
+  .tatkal-feature-blocks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .t-block {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.4rem;
+  }
+
+  .t-icon-glass {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto;
+  }
+
+  .t-block-text strong {
+    font-size: 0.9rem;
+  }
+
+  .t-block-text span {
+    font-size: 0.7rem;
+    display: block;
+  }
+
+  /* CTA Buttons */
+  .tatkal-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .tatkal-btn, .tatkal-btn-outline {
+    width: 100%;
+    justify-content: center;
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .tatkal-app-btn {
+    width: 100%;
+    border-radius: 20px;
+    padding: 0.75rem;
+    gap: 0.75rem;
+    justify-content: flex-start;
+  }
+
+  .app-btn-text {
+    flex: 1;
+  }
+
+  .t-main {
+    font-size: 1.05rem;
+  }
+
+  .t-sub {
+    font-size: 0.75rem;
+    white-space: normal;
+  }
+
+  /* Slider Controls */
+  .nav-arrow.floating-left {
+    top: 150px; /* Positioned over the image */
+    right: 4rem; /* Grouped with right arrow on mobile */
+    left: auto;
+    width: 35px;
+    height: 35px;
+  }
+  
+  .nav-arrow.floating-right {
+    top: 150px; /* Positioned over the image */
+    right: 1rem;
+    width: 35px;
+    height: 35px;
+  }
+
+  .hero-navigation {
+    bottom: -15px; /* Adjust pagination dots */
+  }
+
+  .progress-dot {
+    width: 30px;
+    height: 3px;
+  }
+  .progress-dot.active {
+    width: 60px;
+  }
+  .hero-callback-card {
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 20px;
+    margin: 0 auto;
+    width: 85%; /* Slightly narrower on mobile */
+    max-width: 280px; /* Match new desktop max width */
+    z-index: 30;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  }
+}
+
+@media (max-width: 480px) {
+  .tatkal-text-logo .nims-text { font-size: 2.2rem; }
+  .tatkal-text-logo .tatkal-text { font-size: 1.5rem; }
+  .tatkal-priority-title { font-size: 1.4rem; }
+  .t-block-text strong { font-size: 0.8rem; }
+  .t-block-text span { font-size: 0.65rem; }
+}

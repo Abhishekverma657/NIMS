@@ -20,9 +20,11 @@ import {
   Video,
   FileText,
   Play,
-  X
+  X,
+  Activity
 } from 'lucide-react';
 import { specialitiesData } from '../data/specialitiesData';
+import './SpecialitiesSection.css';
 import { doctorsData } from '../data/doctorsData';
 import SpecialityCard from '../components/specialities/SpecialityCard';
 import DoctorCard from '../components/doctors/DoctorCard';
@@ -33,6 +35,7 @@ import VideoCard from '../components/video/VideoCard';
 import VideoGalleryModal from '../components/video/VideoGalleryModal';
 import { videoReviewsData } from '../data/videoReviewsData';
 import { writtenTestimonialsData } from '../data/writtenTestimonialsData';
+import ModernHeroSlider from '../components/home/ModernHeroSlider';
 
 export default function Home({ onOpenBooking }) {
   const [activeTab, setActiveTab] = useState('All');
@@ -89,14 +92,14 @@ export default function Home({ onOpenBooking }) {
   const heroSlides = [
     {
       id: 0,
-      type: 'video',
-      videoUrl: '/assets/video/nimshospital-vedio.mp4',
-      poster: '/assets/images/hospital-img.png',
+      type: 'image',
+      image: '/assets/slider/nims-slider1.jpeg',
+      isTatkalLayout: true,
       badge: 'Your Health, Our Priority',
       titlePart1: 'Healing built on ',
       highlightWord: 'trust ',
       titlePart2: 'powered by expertise.',
-      subtitle: "One of India's largest 2,400-bed super-speciality teaching hospitals — bringing together renowned specialists, advanced technology, and compassionate care on a single campus in Jaipur.",
+      subtitle: "One of India's largest 2,400-bed super-speciality teaching hospitals.",
       primaryCta: 'Book Appointment',
       secondaryCta: 'Explore Specialities',
       secondaryLink: '/specialities'
@@ -104,7 +107,7 @@ export default function Home({ onOpenBooking }) {
     {
       id: 1,
       type: 'image',
-      image: '/assets/images/banner/slider1.webp',
+      image: '/assets/slider/nims-slider2.jpeg',
       badge: 'NABH & NABL Accredited Care',
       titlePart1: 'Rajasthan’s Premier ',
       highlightWord: '2,400-Bed ',
@@ -117,7 +120,7 @@ export default function Home({ onOpenBooking }) {
     {
       id: 2,
       type: 'image',
-      image: '/assets/images/banner/slider2.webp',
+      image: '/assets/slider/nims-slider3.jpeg',
       badge: '24×7 Level-1 Trauma Active',
       titlePart1: 'Every emergency answered. ',
       highlightWord: 'Every hour ',
@@ -139,7 +142,7 @@ export default function Home({ onOpenBooking }) {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
 
-  const filterTabs = ['All', 'Super Speciality', 'Surgical', 'Medical & Allied', 'Mother & Child', 'Diagnostics'];
+  const filterTabs = ['All', 'Super Speciality', 'Surgical', 'Medical & Allied', 'Mother & Child'];
 
   const filteredSpecialities = specialitiesData.filter((item) => {
     const matchesTab = activeTab === 'All' || item.category === activeTab;
@@ -187,283 +190,7 @@ export default function Home({ onOpenBooking }) {
 
   return (
     <div style={{ position: 'relative' }}>
-      {/* HERO SLIDER (With Real Video Banner & Exact NIMS Button Colors) */}
-      <section style={{
-        position: 'relative',
-        height: 'clamp(580px, 84vh, 740px)',
-        overflow: 'hidden',
-        background: '#373435'
-      }}>
-        {heroSlides.map((slide, index) => {
-          const isActive = index === currentSlide;
-          return (
-            <div
-              key={slide.id}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                opacity: isActive ? 1 : 0,
-                visibility: isActive ? 'visible' : 'hidden',
-                transition: 'opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
-                zIndex: isActive ? 2 : 1
-              }}
-            >
-              {/* Media: Video or Hospital Image */}
-              {slide.type === 'video' ? (
-                <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                  <video
-                    autoPlay
-                    loop
-                    muted={isVideoMuted}
-                    playsInline
-                    poster={slide.poster}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover'
-                    }}
-                  >
-                    <source src={slide.videoUrl} type="video/mp4" />
-                  </video>
-                  {/* Mute/Unmute Control */}
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '28px',
-                    right: '28px',
-                    zIndex: 10
-                  }}>
-                    <button
-                      onClick={() => setIsVideoMuted(!isVideoMuted)}
-                      style={{
-                        background: 'rgba(35, 32, 33, 0.75)',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        color: '#fff',
-                        borderRadius: '50%',
-                        width: '38px',
-                        height: '38px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer'
-                      }}
-                      title={isVideoMuted ? 'Unmute Video' : 'Mute Video'}
-                    >
-                      {isVideoMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <img
-                  src={slide.image}
-                  alt={slide.titlePart1}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                  }}
-                />
-              )}
-
-              {/* Crystal-Clear Scrim Overlay (Soft & transparent for video so it stays 100% bright) */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                background: slide.type === 'video'
-                  ? 'linear-gradient(90deg, rgba(5, 20, 42, 0.55) 0%, rgba(5, 20, 42, 0.22) 42%, rgba(0, 0, 0, 0) 70%)'
-                  : 'linear-gradient(90deg, rgba(35, 32, 33, 0.88) 0%, rgba(35, 32, 33, 0.65) 55%, rgba(0, 0, 0, 0.25) 100%)',
-                zIndex: 3,
-                pointerEvents: 'none'
-              }} />
-
-              {/* Content Overlay */}
-              <div className="container" style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                zIndex: 4,
-                display: 'flex',
-                alignItems: 'center'
-              }}>
-                <motion.div
-                  key={`hero-content-${slide.id}-${isActive}`}
-                  initial={{ opacity: 0, y: 26 }}
-                  animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 26 }}
-                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                  style={{
-                    maxWidth: '660px',
-                    color: '#ffffff',
-                    textShadow: '0 2px 14px rgba(0, 0, 0, 0.65)'
-                  }}
-                >
-                  {/* Badge Pill: Exactly like screenshot */}
-                  <div style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.45rem',
-                    background: '#ffffff',
-                    color: 'var(--nims-navy)',
-                    padding: '0.35rem 0.9rem',
-                    borderRadius: 'var(--radius-xl)',
-                    marginBottom: '1.25rem',
-                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-                  }}>
-                    <Heart size={14} color="var(--nims-orange)" fill="var(--nims-orange)" />
-                    <span style={{ fontSize: '0.82rem', fontWeight: 700 }}>
-                      {slide.badge}
-                    </span>
-                  </div>
-
-                  {/* Headline: Exact word 'trust' highlighted in NIMS Orange */}
-                  <h1 style={{
-                    fontSize: 'clamp(2.2rem, 4.2vw, 3.4rem)',
-                    fontWeight: 800,
-                    color: '#ffffff',
-                    lineHeight: 1.15,
-                    marginBottom: '1.25rem',
-                    letterSpacing: '-0.02em'
-                  }}>
-                    {slide.titlePart1}
-                    <span style={{ color: 'var(--nims-orange)' }}>
-                      {slide.highlightWord}
-                    </span>
-                    {slide.titlePart2}
-                  </h1>
-
-                  <p style={{
-                    fontSize: '1.02rem',
-                    color: '#e2e8f0',
-                    lineHeight: 1.65,
-                    marginBottom: '2rem'
-                  }}>
-                    {slide.subtitle}
-                  </p>
-
-                  {/* Exact Buttons from Screenshot: Orange for Book Appointment, Navy for Explore */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                    <motion.button
-                      onClick={onOpenBooking}
-                      className="btn btn-orange"
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.96 }}
-                      style={{
-                        padding: '0.85rem 1.8rem',
-                        fontSize: '1rem',
-                        background: 'var(--nims-orange)'
-                      }}
-                    >
-                      <Calendar size={18} />
-                      <span>{slide.primaryCta}</span>
-                    </motion.button>
-
-                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-                      <Link
-                        to={slide.secondaryLink}
-                        className="btn btn-secondary"
-                        style={{
-                          padding: '0.85rem 1.8rem',
-                          fontSize: '1rem',
-                          background: 'var(--nims-navy)',
-                          border: '1px solid rgba(255, 255, 255, 0.25)'
-                        }}
-                      >
-                        <span>{slide.secondaryCta}</span>
-                        <ArrowRight size={16} />
-                      </Link>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          );
-        })}
-
-        {/* Carousel Navigation Arrows */}
-        <button
-          onClick={prevSlide}
-          style={{
-            position: 'absolute',
-            left: '20px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            zIndex: 10,
-            background: 'rgba(255,255,255,0.2)',
-            backdropFilter: 'blur(8px)',
-            border: 'none',
-            borderRadius: '50%',
-            width: '44px',
-            height: '44px',
-            color: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
-          }}
-          aria-label="Previous Slide"
-        >
-          <ChevronLeft size={24} />
-        </button>
-
-        <button
-          onClick={nextSlide}
-          style={{
-            position: 'absolute',
-            right: '20px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            zIndex: 10,
-            background: 'rgba(255,255,255,0.2)',
-            backdropFilter: 'blur(8px)',
-            border: 'none',
-            borderRadius: '50%',
-            width: '44px',
-            height: '44px',
-            color: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
-          }}
-          aria-label="Next Slide"
-        >
-          <ChevronRight size={24} />
-        </button>
-
-        {/* Slide Indicators */}
-        <div style={{
-          position: 'absolute',
-          bottom: '24px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 10,
-          display: 'flex',
-          gap: '0.65rem'
-        }}>
-          {heroSlides.map((s, idx) => (
-            <button
-              key={s.id}
-              onClick={() => setCurrentSlide(idx)}
-              style={{
-                width: currentSlide === idx ? '32px' : '10px',
-                height: '10px',
-                borderRadius: '5px',
-                background: currentSlide === idx ? 'var(--nims-orange)' : 'rgba(255,255,255,0.4)',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
-      </section>
+      <ModernHeroSlider slides={heroSlides} />
 
       {/* BENTO STATS STRIP */}
       <section style={{
@@ -502,119 +229,80 @@ export default function Home({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* SPECIALITIES PREVIEW SECTION (Exact match to screenshot) */}
-      <section className="section" style={{ background: '#f8fafc', borderBottom: '1px solid #edf2f7' }}>
-        <div className="container">
-          {/* Header layout matching screenshot */}
+      {/* SPECIALITIES PREVIEW SECTION (EXACT REFERENCE MATCH) */}
+      <section className="spec-section-wrapper">
+        {/* Soft Background Medical Patterns / Elements */}
+        <div className="spec-bg-shape-1"></div>
+        <div className="spec-bg-shape-2"></div>
+        <div className="spec-bg-pattern"></div>
+
+        <div className="container relative z-10">
           <MotionFadeIn>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              flexWrap: 'wrap',
-              gap: '1.5rem',
-              marginBottom: '2rem'
-            }}>
-              <div style={{ maxWidth: '720px' }}>
-                <span className="section-subtitle" style={{ display: 'block', marginBottom: '0.4rem' }}>
-                  Centres of Clinical Excellence
-                </span>
-                <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.35rem)', color: 'var(--nims-navy)', marginBottom: '0.65rem' }}>
-                  Our Super Specialities
+            <div className="spec-header-container">
+              <div className="spec-header-text">
+                <div className="spec-header-subtitle">
+                  <Activity size={15} strokeWidth={2.5} /> Advanced Medical Care
+                </div>
+                <h2 className="spec-header-title">
+                  Our <span>Super Specialities</span>
                 </h2>
-                <p style={{ fontSize: '1.02rem', color: '#64748b', lineHeight: 1.6, margin: 0 }}>
-                  Advanced, integrated care across every major discipline — delivered by expert clinicians with the latest technology.
+                <p className="spec-header-desc">
+                  Advanced, integrated care across every major discipline — delivered by expert clinicians with the latest technology and world-class infrastructure.
                 </p>
               </div>
 
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  to="/specialities"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    color: 'var(--nims-navy)',
-                    fontWeight: 700,
-                    fontSize: '0.98rem',
-                    textDecoration: 'none',
-                    padding: '0.65rem 1.25rem',
-                    borderRadius: 'var(--radius-xl)',
-                    background: '#ffffff',
-                    border: '1px solid #e2e8f0',
-                    boxShadow: '0 2px 8px rgba(35, 32, 33, 0.04)',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--nims-orange)';
-                    e.currentTarget.style.color = 'var(--nims-orange)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = '#e2e8f0';
-                    e.currentTarget.style.color = 'var(--nims-navy)';
-                  }}
-                >
-                  <span>View all specialties</span>
-                  <span style={{ fontSize: '1.15rem' }}>&rarr;</span>
+              <div className="spec-header-actions">
+                <div className="spec-search-wrapper">
+                  <Search size={18} className="spec-search-icon-left" />
+                  <input
+                    type="text"
+                    placeholder="Search department, treatment or doctor..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="spec-search-input"
+                  />
+                  <button className="spec-search-btn-right">
+                    <ArrowRight size={16} strokeWidth={2.5} />
+                  </button>
+                </div>
+                
+                <Link to="/specialities" className="spec-view-all-btn">
+                  View all specialities <ArrowRight size={16} strokeWidth={2.5} />
                 </Link>
-              </motion.div>
+              </div>
             </div>
           </MotionFadeIn>
 
-          {/* Filter Bar & Search with Horizontal Auto-Scroll Pills */}
+          {/* Filter Bar with Horizontal Auto-Scroll Pills */}
           <MotionFadeIn delay={0.1}>
-            <div className="nims-specialities-filter-bar">
-              <div className="nims-filter-pill-scroll">
-                {filterTabs.map((tab) => (
+            <div className="spec-filter-scroll">
+              {filterTabs.map((tab) => {
+                const isActive = activeTab === tab;
+                return (
                   <button
                     key={tab}
                     type="button"
                     onClick={(e) => handleSpecTabClick(tab, e)}
-                    className={`nims-filter-pill ${activeTab === tab ? 'active' : ''}`}
+                    className={`spec-filter-pill ${isActive ? 'active' : 'inactive'}`}
                   >
+                    {isActive && <Activity size={14} color="rgba(255,255,255,0.8)" />}
                     {tab}
                   </button>
-                ))}
-              </div>
-
-              <div className="speciality-search-box" style={{
-                display: 'flex',
-                alignItems: 'center',
-                background: '#ffffff',
-                border: '1px solid #e2e8f0',
-                borderRadius: 'var(--radius-xl)',
-                padding: '0.45rem 1rem',
-                width: '100%',
-                maxWidth: '280px',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
-                flexShrink: 0
-              }}>
-                <Search size={16} color="#94a3b8" style={{ marginRight: '0.5rem' }} />
-                <input
-                  type="text"
-                  placeholder="Search department..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{
-                    border: 'none',
-                    outline: 'none',
-                    fontSize: '0.85rem',
-                    width: '100%',
-                    background: 'transparent'
-                  }}
-                />
-              </div>
+                );
+              })}
             </div>
           </MotionFadeIn>
 
-          {/* Specialities Grid - EXACT 3-CARDS PER ROW LAYOUT */}
-          <MotionStagger key={`spec-${activeTab}-${searchTerm}`} className="specialities-three-col-grid" staggerDelay={0.06}>
-            {filteredSpecialities.slice(0, 6).map((spec) => (
-              <MotionItem key={spec.id}>
-                <SpecialityCard spec={spec} />
-              </MotionItem>
-            ))}
-          </MotionStagger>
+          {/* Specialities Grid */}
+          <div style={{ overflow: 'hidden', width: '100%' }}>
+            <MotionStagger key={`spec-${activeTab}-${searchTerm}`} className="spec-grid" staggerDelay={0.06}>
+              {filteredSpecialities.slice(0, 6).map((spec, index) => (
+                <MotionItem key={spec.id} style={{ height: '100%' }}>
+                  <SpecialityCard spec={spec} index={index + 1} />
+                </MotionItem>
+              ))}
+            </MotionStagger>
+          </div>
 
           <MotionFadeIn delay={0.15}>
             <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
@@ -638,99 +326,132 @@ export default function Home({ onOpenBooking }) {
       </section>
 
       {/* ABOUT HOSPITAL SUMMARY SECTION */}
-      <section className="section" style={{ background: '#ffffff' }}>
-        <div className="container">
+      <section style={{
+        background: '#ffffff',
+        position: 'relative',
+        overflow: 'hidden',
+        padding: '5rem 0',
+        borderBottom: '1px solid #f0f4f8'
+      }}>
+        {/* Decorative glowing orbs */}
+        <div style={{ position:'absolute', top:'-80px', right:'-80px', width:'400px', height:'400px', background:'radial-gradient(circle, rgba(200,16,46,0.06) 0%, transparent 70%)', borderRadius:'50%', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', bottom:'-60px', left:'-60px', width:'300px', height:'300px', background:'radial-gradient(circle, rgba(200,16,46,0.04) 0%, transparent 70%)', borderRadius:'50%', pointerEvents:'none' }} />
+
+        <div className="container" style={{ position:'relative', zIndex:10 }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
-            gap: 'clamp(1.75rem, 4vw, 3.5rem)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(2.5rem, 5vw, 5rem)',
             alignItems: 'center'
           }}>
+            {/* Left: Text Content */}
             <MotionFadeIn direction="left">
               <div>
-                <span className="badge-pill badge-orange" style={{ marginBottom: '0.75rem' }}>
-                  26+ Years of Trusted Care in Jaipur
-                </span>
-                <h2 style={{ fontSize: 'clamp(1.7rem, 2.8vw, 2.3rem)', marginBottom: '1.25rem', color: 'var(--nims-navy)' }}>
-                  The best healthcare should never feel out of reach.
-                </h2>
-                <p style={{ fontSize: '0.98rem', lineHeight: 1.7, marginBottom: '1.25rem', color: '#475569' }}>
-                  NIMS Hospital was built on a simple belief — that care should be advanced enough to treat the most complex conditions, affordable enough for every family, and compassionate enough that every patient feels cared for from the moment they arrive.
-                </p>
-                <p style={{ fontSize: '0.98rem', lineHeight: 1.7, marginBottom: '1.75rem', color: '#475569' }}>
-                  From preventive care and diagnostics to organ transplantation, critical care and complex surgeries — patients receive seamless, coordinated treatment on a single campus.
-                </p>
-
-                {/* Feature Pills */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginBottom: '2rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 600, color: 'var(--nims-navy)' }}>
-                    <CheckCircle size={18} color="var(--nims-orange)" />
-                    <span>NABH Accredited</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 600, color: 'var(--nims-navy)' }}>
-                    <CheckCircle size={18} color="var(--nims-navy)" />
-                    <span>Award-Winning Care</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 600, color: 'var(--nims-navy)' }}>
-                    <CheckCircle size={18} color="var(--nims-orange)" />
-                    <span>500+ Specialists</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 600, color: 'var(--nims-navy)' }}>
-                    <CheckCircle size={18} color="var(--nims-navy)" />
-                    <span>Integrated Campus</span>
-                  </div>
+                {/* Badge */}
+                <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'1.25rem' }}>
+                  <div style={{ width:'32px', height:'2px', background:'#C8102E', borderRadius:'2px' }} />
+                  <span style={{ color:'#C8102E', fontWeight:800, fontSize:'0.7rem', textTransform:'uppercase', letterSpacing:'0.15em' }}>
+                    26+ Years of Trusted Care in Jaipur
+                  </span>
                 </div>
 
-                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{ display: 'inline-block' }}>
-                  <Link to="/about" className="btn btn-secondary" style={{ padding: '0.75rem 1.6rem' }}>
-                    <span>Learn More About Hospital & Leadership</span>
+                <h2 style={{ fontSize:'clamp(1.8rem, 3vw, 2.6rem)', fontWeight:800, color:'#142235', lineHeight:1.15, marginBottom:'1.25rem', letterSpacing:'-0.02em' }}>
+                  The best healthcare<br />
+                  <span style={{ color:'#C8102E' }}>should never feel</span><br />
+                  out of reach.
+                </h2>
+
+                <p style={{ fontSize:'0.96rem', lineHeight:1.75, marginBottom:'0.9rem', color:'#475569' }}>
+                  NIMS Hospital was built on a simple belief — that care should be advanced enough to treat the most complex conditions, affordable enough for every family, and compassionate enough that every patient feels cared for from the moment they arrive.
+                </p>
+                <p style={{ fontSize:'0.96rem', lineHeight:1.75, marginBottom:'2rem', color:'#64748b' }}>
+                  From preventive care and diagnostics to organ transplantation, critical care and complex surgeries — seamless, coordinated treatment on a single campus.
+                </p>
+
+                {/* Feature Grid */}
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem', marginBottom:'2.25rem' }}>
+                  {[
+                    { label:'NABH Accredited', red: true },
+                    { label:'Award-Winning Care', red: false },
+                    { label:'500+ Specialists', red: true },
+                    { label:'Integrated Campus', red: false }
+                  ].map((item, i) => (
+                    <div key={i} style={{ display:'flex', alignItems:'center', gap:'8px', background:'#f8fafc', border:`1px solid ${item.red ? 'rgba(200,16,46,0.2)' : '#e2e8f0'}`, borderRadius:'10px', padding:'0.65rem 0.85rem' }}>
+                      <div style={{ width:'8px', height:'8px', borderRadius:'50%', background: item.red ? '#C8102E' : '#10B981', flexShrink:0 }} />
+                      <span style={{ fontSize:'0.83rem', fontWeight:700, color:'#142235' }}>{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{ display:'inline-block' }}>
+                  <Link to="/about" style={{
+                    display:'inline-flex', alignItems:'center', gap:'8px',
+                    background:'linear-gradient(135deg, #C8102E, #9B0000)',
+                    color:'#fff', fontWeight:700, fontSize:'0.9rem',
+                    padding:'0.85rem 2rem', borderRadius:'9999px',
+                    boxShadow:'0 6px 20px rgba(200,16,46,0.35)',
+                    textDecoration:'none'
+                  }}>
+                    Learn More About Hospital &amp; Leadership
                     <ArrowRight size={16} />
                   </Link>
                 </motion.div>
               </div>
             </MotionFadeIn>
 
-            {/* Campus Photo Visual */}
+            {/* Right: Image + Stats */}
             <MotionFadeIn direction="right" delay={0.15}>
-              <div style={{ position: 'relative' }}>
-                <div style={{
-                  borderRadius: 'var(--radius-md)',
-                  overflow: 'hidden',
-                  boxShadow: 'var(--shadow-1)',
-                  border: '4px solid #ffffff'
-                }}>
+              <div style={{ position:'relative' }}>
+                {/* Main image */}
+                <div style={{ borderRadius:'20px', overflow:'hidden', border:'2px solid rgba(255,255,255,0.08)', boxShadow:'0 30px 80px rgba(0,0,0,0.4)' }}>
                   <img
                     src="/assets/images/hospital-img.png"
                     alt="NIMS Hospital Jaipur Campus"
-                    style={{ width: '100%', height: '380px', objectFit: 'cover', display: 'block' }}
+                    style={{ width:'100%', height:'380px', objectFit:'cover', display:'block' }}
                     onError={(e) => {
                       e.currentTarget.src = "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1000&q=80";
                     }}
                   />
+                  {/* Gradient overlay on image */}
+                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(20,34,53,0.5) 0%, transparent 50%)', borderRadius:'20px' }} />
                 </div>
 
+                {/* Stat card - bottom left */}
                 <motion.div
                   whileHover={{ scale: 1.05, y: -4 }}
-                  transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+                  transition={{ type:'spring', stiffness:350, damping:22 }}
                   style={{
-                    position: 'absolute',
-                    bottom: '-20px',
-                    left: '20px',
-                    background: 'var(--nims-navy)',
-                    color: '#ffffff',
-                    padding: '1.15rem 1.5rem',
-                    borderRadius: 'var(--radius-sm)',
-                    boxShadow: '0 12px 30px rgba(0,0,0,0.25)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    cursor: 'default'
+                    position:'absolute', bottom:'-18px', left:'20px',
+                    background:'rgba(255,255,255,0.95)',
+                    backdropFilter:'blur(12px)',
+                    padding:'1rem 1.4rem', borderRadius:'14px',
+                    boxShadow:'0 16px 40px rgba(0,0,0,0.2)',
+                    border:'1px solid rgba(255,255,255,0.5)',
+                    cursor:'default', minWidth:'140px'
                   }}
                 >
-                  <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--nims-orange)', lineHeight: 1 }}>
+                  <div style={{ fontSize:'1.7rem', fontWeight:800, color:'#C8102E', lineHeight:1 }}>
                     <AnimatedCounter target={2400} suffix="+" />
                   </div>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#f8fafc' }}>
+                  <div style={{ fontSize:'0.75rem', fontWeight:600, color:'#475569', marginTop:'2px' }}>
                     Beds on Single Campus
                   </div>
+                </motion.div>
+
+                {/* Floating accent card - top right */}
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type:'spring', stiffness:350, damping:22 }}
+                  style={{
+                    position:'absolute', top:'20px', right:'-12px',
+                    background:'linear-gradient(135deg, #C8102E, #9B0000)',
+                    color:'white', padding:'0.8rem 1.1rem', borderRadius:'14px',
+                    boxShadow:'0 12px 30px rgba(200,16,46,0.4)',
+                    cursor:'default', minWidth:'120px'
+                  }}
+                >
+                  <div style={{ fontSize:'1.3rem', fontWeight:800, lineHeight:1 }}>26+</div>
+                  <div style={{ fontSize:'0.65rem', fontWeight:600, opacity:0.85, marginTop:'2px', textTransform:'uppercase', letterSpacing:'0.08em' }}>Years of Care</div>
                 </motion.div>
               </div>
             </MotionFadeIn>

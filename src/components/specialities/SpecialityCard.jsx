@@ -1,57 +1,74 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Users, Bed } from 'lucide-react';
+import {
+  ArrowRight, CheckCircle, Users, Bed,
+  Activity, Scissors, Zap, HeartPulse, Brain,
+  Bone, Stethoscope, Eye, Baby, TestTube2, Syringe, Wind
+} from 'lucide-react';
+import './SpecialityCard.css';
 
 const MotionLink = motion(Link);
 
-export default function SpecialityCard({ spec }) {
+const ICON_MAP = {
+  'medical oncology': Activity,
+  'surgical oncology': Scissors,
+  'radiation oncology': Zap,
+  'cardiology': HeartPulse,
+  'ctvs': HeartPulse,
+  'neurosurgery': Brain,
+  'neurology': Brain,
+  'orthopaedics': Bone,
+  'ophthalmology': Eye,
+  'obstetrics': Baby,
+  'gynaecology': Baby,
+  'laboratory': TestTube2,
+  'pathology': TestTube2,
+  'anaesthesia': Syringe,
+  'pulmonology': Wind,
+  'respiratory': Wind,
+};
+
+function getIconForSpec(name = '') {
+  const lower = name.toLowerCase();
+  for (const [key, icon] of Object.entries(ICON_MAP)) {
+    if (lower.includes(key)) return icon;
+  }
+  return Stethoscope;
+}
+
+export default function SpecialityCard({ spec, index = 1 }) {
+  const IconComponent = getIconForSpec(spec.name);
+  const watermarkNum = String(index).padStart(2, '0');
+
   return (
     <MotionLink
       to={`/specialities/${spec.id}`}
-      className="modern-speciality-card"
-      style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' }}
-      whileHover={{
-        y: -6,
-        boxShadow: '0 20px 40px rgba(35, 32, 33, 0.12)',
-        borderColor: 'rgba(189, 23, 28, 0.4)'
-      }}
-      whileTap={{ scale: 0.985 }}
-      transition={{ type: 'spring', stiffness: 360, damping: 24 }}
+      className="spec-card-modern"
+      whileTap={{ scale: 0.98 }}
     >
-      {/* Top Accent Gradient Bar */}
-      <div className="card-hover-accent" />
+      {/* Decorative background shapes */}
+      <div className="spec-card-bg-shape-top" />
+      <div className="spec-card-bg-shape-bottom" />
+      <div className="spec-card-bg-pattern" />
 
-      {/* Card Header: Icon Pedestal + Category & 24x7 Badges */}
-      <div className="card-top-row">
-        <motion.div
-          className="spec-icon-wrapper"
-          whileHover={{ rotate: 5, scale: 1.05 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-        >
-          <img
-            src={spec.svgIcon}
-            alt={`${spec.name} Department Icon`}
-            className="spec-official-icon"
-            loading="lazy"
-          />
-        </motion.div>
+      {/* Card body */}
+      <div className="spec-card-body">
 
-        <div className="spec-header-badges">
-          <span className="spec-category-tag">
-            {spec.category}
+        {/* Header row */}
+        <div className="spec-card-header">
+          {/* Icon Badge */}
+          <div className="spec-card-icon-box">
+            <IconComponent size={28} color="#fff" strokeWidth={1.8} />
+          </div>
+
+          {/* Category badge */}
+          <span className="spec-card-category">
+            {spec.category || 'SUPER SPECIALITY'}
           </span>
-          {spec.emergency && (
-            <span className="spec-emergency-chip">
-              <span className="pulse-dot pulse-dot-orange" />
-              <span>24×7 Care</span>
-            </span>
-          )}
         </div>
-      </div>
 
-      {/* Card Body: Title, Short Description & Clinical Capacity Bar */}
-      <div className="card-body-content">
+        {/* Title + Description */}
         <h3 className="spec-card-title">
           {spec.name}
         </h3>
@@ -59,47 +76,53 @@ export default function SpecialityCard({ spec }) {
           {spec.shortDesc || spec.description}
         </p>
 
-        {/* Clinical Stats Bar (Specialists & Dedicated Beds) */}
-        <div className="spec-stats-bar">
-          <div className="spec-stat-item">
-            <Users size={13} className="spec-stat-icon" />
-            <span><b>{spec.doctorsCount || 12}+</b> Specialists</span>
+        {/* Stats pill */}
+        <div className="spec-card-stats">
+          <div className="spec-card-stat-item">
+            <Users size={13} color="#C8102E" strokeWidth={2.5} />
+            <span><strong>{spec.doctorsCount || 8}+</strong> Specialists</span>
           </div>
-          <span className="spec-stat-divider" />
-          <div className="spec-stat-item">
-            <Bed size={13} className="spec-stat-icon" />
-            <span><b>{spec.beds || 60}+</b> Beds</span>
+          <span className="spec-card-stat-divider" />
+          <div className="spec-card-stat-item">
+            <Bed size={13} color="#C8102E" strokeWidth={2.5} />
+            <span><strong>{spec.beds || 40}+</strong> Beds</span>
           </div>
         </div>
 
-        {/* Procedures / Clinical Capabilities */}
-        {spec.procedures && spec.procedures.length > 0 && (
-          <div className="spec-procedures-section">
-            <div className="spec-procedures-list">
-              {spec.procedures.slice(0, 2).map((proc, idx) => (
-                <div key={idx} className="spec-proc-row">
-                  <CheckCircle2 size={13} className="proc-check-icon" />
-                  <span className="proc-row-text">{proc}</span>
-                </div>
-              ))}
+        {/* Procedures */}
+        <div className="spec-card-procs">
+          {(spec.procedures || []).slice(0, 3).map((proc, idx) => (
+            <div key={idx} className="spec-card-proc-item">
+              <CheckCircle size={15} color="#C8102E" strokeWidth={2.5} style={{ flexShrink: 0 }} />
+              <span className="spec-card-proc-text">{proc}</span>
             </div>
-            {spec.procedures.length > 2 && (
-              <span className="proc-more-badge">
-                +{spec.procedures.length - 2} Advanced Procedures
-              </span>
-            )}
-          </div>
-        )}
-      </div>
+          ))}
+          {(spec.procedures || []).length > 3 && (
+            <span className="spec-card-proc-more">
+              +{spec.procedures.length - 3} Advanced Procedures &rarr;
+            </span>
+          )}
+        </div>
 
-      {/* Card Footer: Action Link & Emergency Availability Indicator */}
-      <div className="card-footer-row">
-        <span className="learn-more-text">
-          <span>Explore Department</span>
-          <ArrowRight size={14} className="learn-more-arrow" />
-        </span>
-        <span className="spec-opd-badge">OPD Active</span>
+        {/* Footer */}
+        <div className="spec-card-footer">
+          <div className="spec-card-explore">
+            <span>Explore Department</span>
+            <ArrowRight size={14} color="#C8102E" strokeWidth={2.5} className="spec-card-explore-icon" />
+          </div>
+
+          <div className="spec-card-footer-right">
+            <span className="spec-card-opd">
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }} />
+              OPD Active
+            </span>
+            <div className="spec-card-arrow-btn">
+              <ArrowRight size={14} color="#fff" strokeWidth={2.5} />
+            </div>
+          </div>
+        </div>
       </div>
     </MotionLink>
   );
 }
+

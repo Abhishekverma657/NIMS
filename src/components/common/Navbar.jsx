@@ -21,10 +21,12 @@ export default function Navbar({ onOpenBooking }) {
   }, [location.pathname]);
 
   const navLinks = [
-    { name: 'Specialities', path: '/specialities' },
+
     { name: 'About Us', path: '/about' },
+    { name: 'Specialities', path: '/specialities' },
     { name: 'Health Packages', path: '/health-packages' },
     { name: 'Photo Gallery', path: '/photo-gallery' },
+    { name: 'Careers', path: '/careers' },
     { name: 'Contact', path: '/contact-us' }
   ];
 
@@ -47,8 +49,8 @@ export default function Navbar({ onOpenBooking }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingTop: isScrolled ? '0.55rem' : '0.75rem',
-        paddingBottom: isScrolled ? '0.55rem' : '0.75rem',
+        paddingTop: isScrolled ? '0.35rem' : '0.5rem',
+        paddingBottom: isScrolled ? '0.35rem' : '0.5rem',
         paddingLeft: 'clamp(1rem, 3vw, 3rem)',
         paddingRight: 'clamp(1rem, 3vw, 3rem)',
         gap: '0.75rem',
@@ -70,7 +72,7 @@ export default function Navbar({ onOpenBooking }) {
             alt="NIMS Hospital"
             className="navbar-brand-logo"
             style={{
-              height: '44px',
+              height: '36px',
               width: 'auto',
               maxWidth: '190px',
               objectFit: 'contain',
@@ -86,7 +88,7 @@ export default function Navbar({ onOpenBooking }) {
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '0.35rem',
+          gap: '1.5rem',
           flexWrap: 'nowrap'
         }} className="d-desktop-only">
           {navLinks.map((link) => {
@@ -96,12 +98,12 @@ export default function Navbar({ onOpenBooking }) {
                 key={link.path}
                 to={link.path}
                 style={{
-                  padding: '0.5rem 1rem',
-                  borderRadius: '100px',
+                  padding: '0.5rem 0',
                   fontSize: '0.94rem',
-                  fontWeight: isActive ? 800 : 600,
-                  color: isActive ? 'var(--nims-navy)' : '#334155',
-                  background: isActive ? 'rgba(23, 42, 52, 0.06)' : 'transparent',
+                  fontWeight: 700,
+                  color: isActive ? '#bd171c' : '#334155',
+                  textDecoration: 'none',
+                  borderBottom: isActive ? '2px solid #bd171c' : '2px solid transparent',
                   whiteSpace: 'nowrap',
                   display: 'inline-block',
                   transition: 'all 0.2s ease',
@@ -109,14 +111,12 @@ export default function Navbar({ onOpenBooking }) {
                 }}
                 onMouseEnter={e => {
                   if (!isActive) {
-                    e.currentTarget.style.color = 'var(--nims-orange)';
-                    e.currentTarget.style.background = 'rgba(189, 23, 28, 0.04)';
+                    e.currentTarget.style.color = '#bd171c';
                   }
                 }}
                 onMouseLeave={e => {
                   if (!isActive) {
                     e.currentTarget.style.color = '#334155';
-                    e.currentTarget.style.background = 'transparent';
                   }
                 }}
               >
@@ -133,8 +133,8 @@ export default function Navbar({ onOpenBooking }) {
             to="/tatkaal-booking"
             className="btn btn-primary d-desktop-only"
             style={{
-              padding: '0.65rem 1.35rem',
-              fontSize: '0.92rem',
+              padding: '0.5rem 1.25rem',
+              fontSize: '0.9rem',
               background: 'linear-gradient(to right, #bd171c, #9e1217, #791017)',
               color: 'white',
               borderRadius: '9999px',
