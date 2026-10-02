@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CalendarDays, Activity, ShieldPlus, ChevronRight, ChevronLeft, Ambulance, Stethoscope, FlaskConical, Home as HomeIcon, MapPin, ShieldCheck, HeartHandshake, Smartphone, Phone, User } from 'lucide-react';
+import { ArrowRight, CalendarDays, Activity, ShieldPlus, ChevronRight, ChevronLeft, Ambulance, Stethoscope, FlaskConical, Home as HomeIcon, MapPin, ShieldCheck, HeartHandshake, Smartphone, Phone, User, Bed } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './ModernHeroSlider.css';
 
@@ -44,7 +44,6 @@ export default function ModernHeroSlider({ slides }) {
       </AnimatePresence>
 
       <div className="hero-content-wrapper">
-        {/* ORGANIC CONCAVE SWOOSH DIVIDER */}
         <div className="hero-swoosh-container">
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="hero-swoosh-main">
             <defs>
@@ -54,10 +53,16 @@ export default function ModernHeroSlider({ slides }) {
                 <stop offset="100%" stopColor="#a70000" />
               </linearGradient>
             </defs>
+            {/* Deep shadow layer */}
+            <path d="M0 0 L100 0 C60 25, 20 60, 85 100 L0 100 Z" fill="rgba(60, 0, 0, 0.5)" transform="translate(5, 0)" />
+            {/* Light pinkish-white layer */}
+            <path d="M0 0 L100 0 C60 25, 20 60, 85 100 L0 100 Z" fill="#ffeaea" transform="translate(4, 0)" />
+            {/* Thick white layer */}
+            <path d="M0 0 L100 0 C60 25, 20 60, 85 100 L0 100 Z" fill="#ffffff" transform="translate(2.5, 0)" />
+            {/* Bright red accent layer */}
+            <path d="M0 0 L100 0 C60 25, 20 60, 85 100 L0 100 Z" fill="#ff0a2e" transform="translate(1, 0)" />
+            {/* Main deep red layer */}
             <path d="M0 0 L100 0 C60 25, 20 60, 85 100 L0 100 Z" fill="url(#redGradient)" />
-          </svg>
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="hero-swoosh-light">
-            <path d="M0 0 L100 0 C60 25, 20 60, 85 100 L0 100 Z" fill="rgba(255, 255, 255, 0.08)" transform="translate(1, 0) scale(0.99, 1)" />
           </svg>
         </div>
 
@@ -72,25 +77,14 @@ export default function ModernHeroSlider({ slides }) {
           >
             {slides[current].isTatkalLayout ? (
               <div className="tatkal-custom-layout">
-                <motion.div className="tatkal-pulse-text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+                <motion.div className="tatkal-pulse-text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} style={{ marginBottom: '0.2rem' }}>
                   <Activity size={18} className="pulse-icon" />
-                  <span>Associated With NIMS Hospital</span>
+                  <span>24x7 Care, Just A Tap Away</span>
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                  <h1 className="tatkal-text-logo">
-                    <span className="nims-text">NIMS</span>
-                    <span className="tatkal-text">TATKAL SEVA</span>
-                  </h1>
+                  <img src="/assets/white logo.png" alt="NIMS Logo" style={{ maxWidth: '280px', height: 'auto', marginBottom: '0.8rem', marginTop: '0.2rem', display: 'block' }} />
                 </motion.div>
-                
-                <motion.h2 className="tatkal-priority-title" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
-                  Your Health, Our Priority
-                </motion.h2>
-                
-                <motion.p className="tatkal-subtitle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
-                  {slides[current].subtitle}
-                </motion.p>
 
                 <motion.div className="tatkal-feature-blocks" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
                   <div className="t-block">
@@ -116,38 +110,17 @@ export default function ModernHeroSlider({ slides }) {
                   </div>
                 </motion.div>
 
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-4">
-                  <Link to="/app" className="tatkal-app-btn">
-                    <div className="app-btn-icon-real">
-                      {/* CSS-based phone mockup mimicking the real photo */}
-                      <div className="mock-phone">
-                        <div className="mock-screen-top">
-                          <svg viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M5.5 2.5L18.5 12L5.5 21.5V2.5Z"/></svg>
-                        </div>
-                        <div className="mock-screen-bottom">
-                          <svg viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="app-btn-text">
-                      <span className="t-main">Download Mobile App</span>
-                      <span className="t-sub">Book • Track • Manage • Stay Healthy</span>
-                    </div>
-                    <div className="app-btn-arrow-circle"><ArrowRight size={18} /></div>
-                  </Link>
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
+                  <a href="#" style={{ display: 'inline-block', transition: 'transform 0.2s' }} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on App Store" style={{ height: '46px', width: 'auto' }} />
+                  </a>
+                  <a href="#" style={{ display: 'inline-block', transition: 'transform 0.2s' }} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" style={{ height: '46px', width: 'auto' }} />
+                  </a>
                 </motion.div>
               </div>
             ) : (
               <>
-                <motion.div 
-                  className="hero-badge"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2, duration: 0.3 }}
-                >
-                  <Activity size={16} />
-                  <span>{slides[current].badge}</span>
-                </motion.div>
 
                 <motion.h1 
                   className="hero-title"
@@ -261,28 +234,28 @@ export default function ModernHeroSlider({ slides }) {
       {/* FIXED BOTTOM SERVICES BAR */}
       <div className="hero-bottom-services-bar">
         <div className="service-item">
-          <div className="service-icon"><Ambulance size={20} /></div>
-          <span>Book Ambulance<br/>Near Me</span>
+          <div className="service-icon"><Bed size={20} /></div>
+          <span>Book ICU<br/>Bed</span>
         </div>
         <div className="service-divider"></div>
         <div className="service-item">
           <div className="service-icon"><Stethoscope size={20} /></div>
-          <span>Book Health Checkup<br/>& Sample Collect</span>
+          <span>Book<br/>OPD</span>
         </div>
         <div className="service-divider"></div>
         <div className="service-item">
-          <div className="service-icon"><CalendarDays size={20} /></div>
-          <span>Online<br/>Appointment</span>
+          <div className="service-icon"><Ambulance size={20} /></div>
+          <span>Book<br/>Ambulance</span>
         </div>
         <div className="service-divider"></div>
         <div className="service-item">
           <div className="service-icon"><FlaskConical size={20} /></div>
-          <span>Health Checkup<br/>Packages</span>
+          <span>Book Health<br/>Package</span>
         </div>
         <div className="service-divider"></div>
         <div className="service-item">
-          <div className="service-icon"><HomeIcon size={20} /></div>
-          <span>Sample Collect<br/>From Home</span>
+          <div className="service-icon"><Smartphone size={20} /></div>
+          <span>Download App<br/>Now</span>
         </div>
       </div>
     </div>

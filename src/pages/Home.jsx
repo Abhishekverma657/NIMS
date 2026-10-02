@@ -109,10 +109,10 @@ export default function Home({ onOpenBooking }) {
       type: 'image',
       image: '/assets/slider/nims-slider2.jpeg',
       badge: 'NABH & NABL Accredited Care',
-      titlePart1: 'Rajasthan’s Premier ',
-      highlightWord: '2,400-Bed ',
-      titlePart2: 'Quaternary Medical Campus',
-      subtitle: 'Bringing together 500+ renowned clinicians, modular laminar airflow theatres, and multi-organ transplantation on a single campus.',
+      titlePart1: 'Advanced Care. One Campus. ',
+      highlightWord: '2,400 Beds. ',
+      titlePart2: '500+ Doctors',
+      subtitle: 'World-class surgical facilities and multi-organ transplant care',
       primaryCta: 'Book Appointment',
       secondaryCta: 'About Hospital',
       secondaryLink: '/about'
@@ -125,7 +125,7 @@ export default function Home({ onOpenBooking }) {
       titlePart1: 'Every emergency answered. ',
       highlightWord: 'Every hour ',
       titlePart2: 'of every day.',
-      subtitle: 'Rapid triage trauma bay, on-campus blood bank, and advanced life support ambulances stationed directly on NH-11C, Jaipur.',
+      subtitle: 'Emergency care, blood bank support, and advanced life support ambulances—available 24/7.',
       primaryCta: 'Emergency Info',
       secondaryCta: 'Health Packages',
       secondaryLink: '/health-packages'

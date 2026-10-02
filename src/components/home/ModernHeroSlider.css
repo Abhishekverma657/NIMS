@@ -1,9 +1,9 @@
 .modern-hero-container {
   position: relative;
   width: 100%;
-  height: 65vh; /* Reduced height */
-  min-height: 550px; /* Reduced min-height */
-  max-height: 700px; /* Reduced max-height */
+  height: 85vh; /* Increased height */
+  min-height: 700px; /* Increased min-height */
+  max-height: 900px; /* Increased max-height */
   overflow: visible; /* Changed from hidden to allow bottom bar overlap */
   background: #1a0505;
   font-family: 'Inter', sans-serif;
@@ -62,8 +62,8 @@
   height: 100%;
   z-index: 5;
   pointer-events: none;
-  /* 3D Look: First shadow creates 'thickness', second creates 'depth' */
-  filter: drop-shadow(6px 0 0 rgba(70, 0, 0, 0.7)) drop-shadow(15px 0 35px rgba(0,0,0,0.5));
+  /* 3D Look: White border line + depth shadow */
+  filter: drop-shadow(6px 0 0 rgba(255, 255, 255, 1)) drop-shadow(20px 0 40px rgba(0,0,0,0.6));
 }
 
 .hero-swoosh-light {
@@ -94,9 +94,8 @@
 
 /* Text Container */
 .hero-content-inner {
-  width: 100%;
-  width: 38%; /* Scaled down width to ensure it never touches the curve */
-  padding: 4rem 2rem 4rem 4rem; /* Reduced left padding slightly for more usable space */
+  width: 45%; /* Slightly wider to accommodate text moving left */
+  padding: 4rem 2rem 4rem 2rem; /* Reduced left padding to move text to the left */
   position: relative;
   z-index: 10;
   display: flex;
@@ -152,7 +151,7 @@
   color: white;
   line-height: 1.6;
   margin-bottom: 2rem;
-  max-width: 95%;
+  max-width: 450px;
   font-weight: 500;
   padding-left: 1rem;
   border-left: 4px solid #ffd700;
@@ -644,10 +643,10 @@
   z-index: 20;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); /* Shadow adjusted for floating feel */
-  border-radius: 30px 30px 0 0; /* Curved top-left and top-right */
+  justify-content: space-evenly;
+  padding: 0 2rem; /* Add some padding so edges aren't too close */
+  box-shadow: none;
+  border-radius: 0; /* Full width straight edges */
 }
 
 .service-item {
