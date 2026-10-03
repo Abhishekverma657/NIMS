@@ -67,9 +67,9 @@ export default function PhotoGallery() {
       {/* Dynamic Header Banner */}
       <section
         style={{
-          background: '#757575',
+          background: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url("/assets/images/banner/doctor-stethoscope.png") center/cover no-repeat',
           color: '#ffffff',
-          padding: '3.75rem 0 3rem',
+          padding: '4.5rem 0 3.5rem',
           borderBottom: '4px solid var(--nims-orange)',
           position: 'relative',
           overflow: 'hidden'

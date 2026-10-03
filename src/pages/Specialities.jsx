@@ -31,9 +31,9 @@ export default function Specialities({ onOpenBooking }) {
     <div>
       {/* Banner */}
       <section style={{
-        background: '#757575',
+        background: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url("/assets/images/banner/media-banner.png") center/cover no-repeat',
         color: '#ffffff',
-        padding: '3.5rem 0 2.75rem',
+        padding: '4.5rem 0 3.5rem',
         borderBottom: '3px solid var(--nims-orange)'
       }}>
         <div className="container">
