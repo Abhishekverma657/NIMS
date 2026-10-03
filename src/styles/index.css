@@ -3228,6 +3228,77 @@ button, input, select, textarea {
   box-shadow: 0 8px 24px rgba(35, 32, 33, 0.28);
 }
 
+/* Shared action outline — every primary site CTA carries the same crisp 1px edge as the store badges. */
+.btn,
+.btn-primary:not(.btn),
+.btn-secondary:not(.btn),
+.btn-orange:not(.btn),
+.btn-gold:not(.btn),
+.btn-outline:not(.btn),
+.btn-ghost:not(.btn) {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--button-outline, rgba(23, 42, 52, .72));
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-orange,
+.btn-gold {
+  --button-outline: rgba(255, 255, 255, .76);
+}
+
+.btn-outline { --button-outline: var(--nims-navy); }
+.btn-ghost { --button-outline: rgba(23, 42, 52, .22); }
+
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-orange:hover,
+.btn-gold:hover {
+  border-color: #ffffff;
+}
+
+/* One site-wide CTA treatment: mirror the App Store / Google Play badge geometry. */
+.btn,
+.btn-primary:not(.btn),
+.btn-secondary:not(.btn),
+.btn-orange:not(.btn),
+.btn-gold:not(.btn),
+.btn-outline:not(.btn),
+.btn-ghost:not(.btn) {
+  background: #050505 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, .78) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, .22);
+}
+
+.btn:hover,
+.btn-primary:not(.btn):hover,
+.btn-secondary:not(.btn):hover,
+.btn-orange:not(.btn):hover,
+.btn-gold:not(.btn):hover,
+.btn-outline:not(.btn):hover,
+.btn-ghost:not(.btn):hover {
+  background: #1c1c1e !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, .34);
+}
+
+/* Emergency is the single deliberate colour exception to the black action system. */
+.btn.btn-tatkaal {
+  background: linear-gradient(105deg, #d91620 0%, #b40710 58%, #85040b 100%) !important;
+  border-color: rgba(255, 255, 255, .76) !important;
+  box-shadow: 0 12px 26px rgba(134, 0, 10, .34);
+}
+
+.btn.btn-tatkaal:hover {
+  background: linear-gradient(105deg, #ef2730 0%, #c80d17 58%, #98050d 100%) !important;
+  box-shadow: 0 15px 30px rgba(134, 0, 10, .46);
+}
+
 /* Pulse Glow Keyframes for Emergency & Status Chips */
 @keyframes statusAuraPulse {
   0%, 100% {
@@ -3951,3 +4022,98 @@ button, input, select, textarea {
   box-shadow: 0 4px 12px rgba(229, 182, 74, 0.3) !important;
 }
 
+/* Header announcement rail — compact at every viewport, without duplicate controls. */
+.nims-topbar-wrapper {
+  background: #102a35;
+  border-bottom: 1px solid rgba(229, 182, 74, .22);
+}
+
+.topbar-fluid-container {
+  min-height: 64px;
+  padding: .7rem clamp(1rem, 3vw, 4rem);
+  gap: clamp(.8rem, 2vw, 2rem);
+}
+
+.topbar-marquee-container {
+  height: 34px;
+  margin: 0;
+  mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
+}
+
+.marquee-track { gap: 1.4rem; animation-duration: 50s; }
+.marquee-item { gap: .45rem; }
+.ticker-badge { font-size: clamp(.67rem, .72vw, .78rem) !important; letter-spacing: .045em; line-height: 1.15; }
+.marquee-separator { margin-left: .35rem; color: #d52b30; }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  flex-shrink: 0;
+}
+
+.topbar-action {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: .38rem;
+  padding: .45rem .78rem;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  color: #f8fafc;
+  font-size: .76rem;
+  font-weight: 750;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--motion-fast), border-color var(--motion-fast), transform var(--motion-fast);
+}
+
+.topbar-action svg { color: var(--nims-orange); }
+.topbar-action:hover { color: #fff; background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.42); transform: translateY(-1px); }
+.topbar-action--portal { border-color: rgba(229,182,74,.64); color: var(--nims-gold); background: rgba(229,182,74,.08); }
+.topbar-action--portal svg { color: var(--nims-gold); }
+.topbar-action--portal:hover { color: #fff5cf; background: rgba(229,182,74,.18); }
+.topbar-action:focus-visible, .mobile-quick-link:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+@media (max-width: 1023px) {
+  .topbar-fluid-container { min-height: 38px; padding: .2rem .75rem; }
+  .topbar-marquee-container { height: 30px; }
+  .topbar-right { display: none; }
+  .topbar-mobile-quickbar { display: block; padding: .38rem .75rem; background: #0c2029; border-top-color: rgba(255,255,255,.1); }
+  .mobile-quickbar-inner { justify-content: center; }
+  .mobile-actions-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(100%, 460px); gap: .4rem; }
+  .mobile-quick-link { min-height: 31px; justify-content: center; gap: .28rem; padding: .34rem .4rem; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; color: #dce5e9; font-size: .68rem; font-weight: 700; line-height: 1; text-decoration: none; white-space: nowrap; }
+  .mobile-quick-link:last-child { color: var(--nims-gold); border-color: rgba(229,182,74,.42); }
+}
+
+@media (max-width: 420px) {
+  .topbar-mobile-quickbar { padding-inline: .45rem; }
+  .mobile-actions-group { gap: .25rem; }
+  .mobile-quick-link { font-size: .61rem; padding-inline: .25rem; }
+  .mobile-quick-link svg { width: 10px; height: 10px; }
+  .ticker-badge { font-size: .64rem !important; }
+}
+
+/* Mobile announcement rail: every destination stays available without consuming the hero. */
+@media (max-width: 768px) {
+  .topbar-fluid-container { min-height: 27px; padding: 0 .5rem; }
+  .topbar-marquee-container { height: 27px; }
+  .marquee-track { gap: .85rem; animation-duration: 44s; }
+  .ticker-badge { padding-block: .12rem !important; font-size: .6rem !important; }
+  .topbar-mobile-quickbar { padding: .16rem .45rem; }
+  .mobile-actions-group { gap: .25rem; }
+  .mobile-quick-link { min-height: 26px; padding: .22rem .3rem; font-size: .6rem; }
+  .mobile-quick-link svg { width: 10px; height: 10px; }
+}
+
+@media (min-width: 1024px) {
+  .topbar-fluid-container { min-height: 54px; padding-top: .45rem; padding-bottom: .45rem; }
+  .topbar-marquee-container { height: 30px; }
+  .topbar-action { min-height: 32px; gap: .3rem; padding: .32rem .62rem; font-size: .69rem; }
+  .topbar-action svg { width: 13px; height: 13px; }
+  .topbar-right { gap: .42rem; }
+}

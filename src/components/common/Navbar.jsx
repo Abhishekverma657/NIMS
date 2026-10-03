@@ -21,7 +21,6 @@ export default function Navbar({ onOpenBooking }) {
   }, [location.pathname]);
 
   const navLinks = [
-
     { name: 'About Us', path: '/about' },
     { name: 'Specialities', path: '/specialities' },
     { name: 'Health Packages', path: '/health-packages' },
@@ -56,7 +55,7 @@ export default function Navbar({ onOpenBooking }) {
         gap: '0.75rem',
         width: '100%'
       }}>
-        {/* Official NIMS Hospital Logo */}
+        {/* Official NIMS Hospital horizontal mark for a familiar, institutional header. */}
         <Link
           to="/"
           style={{
@@ -70,21 +69,17 @@ export default function Navbar({ onOpenBooking }) {
           <img
             src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg"
             alt="NIMS Hospital"
-            className="navbar-brand-logo"
             style={{
-              height: '36px',
-              width: 'auto',
-              maxWidth: '190px',
+              width: 'clamp(122px, 9.8vw, 158px)',
+              height: 'auto',
+              maxHeight: '50px',
               objectFit: 'contain',
               display: 'block'
-            }}
-            onError={(e) => {
-              e.currentTarget.src = "/assets/NIMS_Hospital_Logo_Website_Horizontal.svg";
             }}
           />
         </Link>
 
-        {/* Desktop Nav Links (STRICTLY SINGLE LINE) */}
+        {/* Desktop navigation */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -128,19 +123,19 @@ export default function Navbar({ onOpenBooking }) {
 
         {/* Right CTA Area: Desktop CTA button + Mobile Hamburger Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
-          {/* Desktop "Book Appointment" button - styled like BST Hospital */}
+          {/* NIMS Tatkaal booking */}
           <Link
             to="/tatkaal-booking"
-            className="btn btn-primary d-desktop-only"
+            className="btn btn-primary btn-tatkaal d-desktop-only"
             style={{
               padding: '0.5rem 1.25rem',
               fontSize: '0.9rem',
-              background: 'linear-gradient(to right, #bd171c, #9e1217, #791017)',
+              background: 'linear-gradient(105deg, #d91620 0%, #b40710 58%, #85040b 100%)',
               color: 'white',
-              borderRadius: '9999px',
+              borderRadius: '7px',
               fontWeight: 900,
-              boxShadow: '0 10px 15px -3px rgba(189, 23, 28, 0.3)',
-              border: '1px solid rgba(248, 113, 113, 0.3)',
+              boxShadow: '0 12px 26px rgba(134, 0, 10, 0.34)',
+              border: '1px solid rgba(255, 255, 255, 0.78)',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
@@ -148,14 +143,14 @@ export default function Navbar({ onOpenBooking }) {
               textDecoration: 'none'
             }}
           >
-            <span style={{ 
-              width: '10px', 
-              height: '10px', 
-              borderRadius: '50%', 
-              background: 'rgba(255, 255, 255, 0.2)', 
+            <span style={{
+              width: '10px',
+              height: '10px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.2)',
               display: 'inline-block',
               marginRight: '2px'
-            }}></span>
+            }} />
             <span>Nims Tatkaal Seva (ICU Booking) ➔</span>
           </Link>
 

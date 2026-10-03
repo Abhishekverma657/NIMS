@@ -108,56 +108,31 @@ export default function Topbar({ onOpenVacancies }) {
         </div>
 
         {/* Right Side: Fixed Action Links (Careers, Loyalty Card, Patient Portal in uniform UI) */}
-        <div className="topbar-right" style={{ display: 'flex', gap: '0.75rem' }}>
+        <div className="topbar-right">
           <Link
             to="/vacancies"
-            className="topbar-btn"
+            className="topbar-action"
             title="Careers and Open Positions at NIMS Hospital"
-            style={{
-              display: 'flex', alignItems: 'center', gap: '0.3rem',
-              padding: '0.35rem 0.75rem', borderRadius: '50px',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              background: 'rgba(255, 255, 255, 0.05)',
-              color: '#e2e8f0', textDecoration: 'none',
-              fontWeight: 700, fontSize: '0.75rem', transition: 'all 0.2s'
-            }}
           >
-            <Briefcase size={13} color="var(--nims-orange)" />
+            <Briefcase size={15} />
             <span>Careers</span>
           </Link>
 
           <Link
             to="/loyalty-card"
-            className="topbar-btn"
+            className="topbar-action"
             title="NIMS Empaneled Government Healthcare Benefit Schemes & TPA"
-            style={{
-              display: 'flex', alignItems: 'center', gap: '0.3rem',
-              padding: '0.35rem 0.75rem', borderRadius: '50px',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              background: 'rgba(255, 255, 255, 0.05)',
-              color: '#e2e8f0', textDecoration: 'none',
-              fontWeight: 700, fontSize: '0.75rem', transition: 'all 0.2s'
-            }}
           >
-            <ShieldCheck size={13} color="var(--nims-orange)" />
+            <ShieldCheck size={15} />
             <span>Health Schemes</span>
           </Link>
 
           <Link
             to="/patient-portal"
-            className="topbar-btn-primary"
+            className="topbar-action topbar-action--portal"
             title="Patient Portal & Online Records"
-            style={{
-              display: 'flex', alignItems: 'center', gap: '0.3rem',
-              padding: '0.35rem 0.85rem', borderRadius: '50px',
-              border: '1px solid rgba(229, 182, 74, 0.5)',
-              background: 'rgba(255, 255, 255, 0.15)',
-              color: 'var(--nims-gold)', textDecoration: 'none',
-              fontWeight: 800, fontSize: '0.75rem', transition: 'all 0.2s',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-            }}
           >
-            <User size={13} color="var(--nims-gold)" />
+            <User size={15} />
             <span>Patient Portal</span>
           </Link>
         </div>

@@ -21,11 +21,19 @@ import {
   FileText,
   Play,
   X,
-  Activity
+  Activity,
+  FlaskConical,
+  PhoneCall,
+  Sparkles,
+  Ambulance,
+  Award,
+  Tag,
+  CheckCircle2
 } from 'lucide-react';
 import { specialitiesData } from '../data/specialitiesData';
 import './SpecialitiesSection.css';
 import { doctorsData } from '../data/doctorsData';
+import { packagesData } from '../data/packagesData';
 import SpecialityCard from '../components/specialities/SpecialityCard';
 import DoctorCard from '../components/doctors/DoctorCard';
 import { motion } from 'framer-motion';
@@ -37,7 +45,7 @@ import { videoReviewsData } from '../data/videoReviewsData';
 import { writtenTestimonialsData } from '../data/writtenTestimonialsData';
 import ModernHeroSlider from '../components/home/ModernHeroSlider';
 
-export default function Home({ onOpenBooking }) {
+export default function Home({ onOpenBooking, onOpenPackageBooking }) {
   const [activeTab, setActiveTab] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [reviewFilter, setReviewFilter] = useState('all');
@@ -82,65 +90,44 @@ export default function Home({ onOpenBooking }) {
     }
   };
 
-  // Hero Slider State
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isVideoMuted, setIsVideoMuted] = useState(true);
-
-  // Testimonials Filter & Video Modal State
-  const [unmutedVideoId, setUnmutedVideoId] = useState(null);
-
   const heroSlides = [
     {
       id: 0,
-      type: 'image',
       image: '/assets/slider/nims-slider1.jpeg',
-      isTatkalLayout: true,
-      badge: 'Your Health, Our Priority',
+      badge: '⚡ 24×7 Level-1 Emergency & Quaternary Care',
       titlePart1: 'Healing built on ',
-      highlightWord: 'trust ',
-      titlePart2: 'powered by expertise.',
-      subtitle: "One of India's largest 2,400-bed super-speciality teaching hospitals.",
-      primaryCta: 'Book Appointment',
+      highlightWord: 'trust, ',
+      titlePart2: 'powered by clinical expertise.',
+      subtitle: "One of India's largest 2,400-bed super-speciality teaching & research hospitals.",
+      primaryCta: 'Book OPD Visit',
       secondaryCta: 'Explore Specialities',
       secondaryLink: '/specialities'
     },
     {
       id: 1,
-      type: 'image',
       image: '/assets/slider/nims-slider2.jpeg',
-      badge: 'NABH & NABL Accredited Care',
+      badge: '🏆 NABH & NABL Accredited Center of Excellence',
       titlePart1: 'Advanced Care. One Campus. ',
       highlightWord: '2,400 Beds. ',
-      titlePart2: '500+ Doctors',
-      subtitle: 'World-class surgical facilities and multi-organ transplant care',
+      titlePart2: '500+ Specialist Doctors',
+      subtitle: 'World-class surgical suites, organ transplant care, and comprehensive ICU facilities.',
       primaryCta: 'Book Appointment',
       secondaryCta: 'About Hospital',
       secondaryLink: '/about'
     },
     {
       id: 2,
-      type: 'image',
       image: '/assets/slider/nims-slider3.jpeg',
-      badge: '24×7 Level-1 Trauma Active',
+      badge: '🚑 Level-1 Trauma & Emergency Hotline Active',
       titlePart1: 'Every emergency answered. ',
-      highlightWord: 'Every hour ',
+      highlightWord: '24 Hours ',
       titlePart2: 'of every day.',
-      subtitle: 'Emergency care, blood bank support, and advanced life support ambulances—available 24/7.',
-      primaryCta: 'Emergency Info',
-      secondaryCta: 'Health Packages',
+      subtitle: 'Critical care, blood bank support, advanced cardiac cath lab, and life-support ambulances.',
+      primaryCta: 'Call Emergency',
+      secondaryCta: 'Health Checkup Packages',
       secondaryLink: '/health-packages'
     }
   ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 8000);
-    return () => clearInterval(timer);
-  }, [heroSlides.length]);
-
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
 
   const filterTabs = ['All', 'Super Speciality', 'Surgical', 'Medical & Allied', 'Mother & Child'];
 
@@ -156,9 +143,9 @@ export default function Home({ onOpenBooking }) {
       target: 2400,
       suffix: '+',
       label: 'Inpatient Beds',
-      sub: "Largest campus facility in Rajasthan",
+      sub: "Largest medical campus in Rajasthan",
       icon: <Bed size={24} color="var(--nims-navy)" />,
-      podBg: 'rgba(35, 32, 33, 0.08)'
+      podBg: 'rgba(23, 42, 52, 0.08)'
     },
     {
       target: 500,
@@ -172,13 +159,13 @@ export default function Home({ onOpenBooking }) {
       target: 40,
       suffix: '+',
       label: 'Super Specialities',
-      sub: "Comprehensive quaternary clinical care",
+      sub: "Comprehensive clinical care departments",
       icon: <Stethoscope size={24} color="var(--nims-navy)" />,
-      podBg: 'rgba(35, 32, 33, 0.08)'
+      podBg: 'rgba(23, 42, 52, 0.08)'
     },
     {
       staticText: '24×7',
-      label: 'Emergency & Trauma',
+      label: 'Trauma & Emergency',
       sub: "Level-1 emergency & blood bank",
       icon: <Clock size={24} color="#10b981" />,
       podBg: 'rgba(16, 185, 129, 0.12)'
@@ -187,14 +174,70 @@ export default function Home({ onOpenBooking }) {
 
   // Video Reviews (exclude doctor-specific ones)
   const videoReviews = videoReviewsData.filter(v => !v.doctorId).slice(0, 3);
+  // Featured Health Packages for homepage banner section
+  const featuredPackages = packagesData.slice(0, 3);
 
   return (
     <div style={{ position: 'relative' }}>
-      <ModernHeroSlider slides={heroSlides} />
+      {/* ULTRA PREMIUM HERO SLIDER */}
+      <ModernHeroSlider 
+        slides={heroSlides} 
+        onOpenBooking={onOpenBooking} 
+        onOpenPackageBooking={onOpenPackageBooking}
+      />
+
+      {/* LIVE EMERGENCY TICKER STRIP */}
+      <div style={{
+        background: 'linear-gradient(90deg, #172a34 0%, #0f232e 100%)',
+        color: '#ffffff',
+        padding: '0.75rem 0',
+        borderBottom: '2px solid var(--nims-gold)',
+        boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+      }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              background: 'var(--nims-orange)',
+              color: '#ffffff',
+              padding: '0.25rem 0.75rem',
+              borderRadius: '9999px',
+              fontSize: '0.72rem',
+              fontWeight: 800,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase'
+            }}>
+              <span className="pulse-dot-live" style={{ background: '#ffffff' }} />
+              24×7 LIVE STATUS
+            </span>
+            <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)' }}>
+              Level-1 Emergency &amp; Trauma Unit Active • OPD Open • Cashless Insurance Accepted
+            </span>
+          </div>
+
+          <a 
+            href="tel:0141-2388999"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              color: 'var(--nims-gold)',
+              fontWeight: 800,
+              fontSize: '0.92rem',
+              textDecoration: 'none'
+            }}
+          >
+            <PhoneCall size={16} />
+            Emergency Hotline: 0141-23 88 999
+          </a>
+        </div>
+      </div>
 
       {/* BENTO STATS STRIP */}
       <section style={{
-        padding: '3rem 0',
+        padding: '3.5rem 0',
         background: '#ffffff',
         borderBottom: '1px solid var(--nims-border)'
       }}>
@@ -229,9 +272,151 @@ export default function Home({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* SPECIALITIES PREVIEW SECTION (EXACT REFERENCE MATCH) */}
+      {/* HEALTH PACKAGES & DIAGNOSTICS PROMO SECTION */}
+      <section style={{
+        padding: '4.5rem 0',
+        background: 'linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%)',
+        borderBottom: '1px solid var(--nims-border)',
+        position: 'relative'
+      }}>
+        <div className="container">
+          <MotionFadeIn>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '2.5rem' }}>
+              <div>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--nims-orange)', fontWeight: 800, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.5rem' }}>
+                  <FlaskConical size={16} />
+                  PREVENTIVE HEALTHCARE &amp; DIAGNOSTICS
+                </div>
+                <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontWeight: 800, color: 'var(--nims-navy)', margin: 0, letterSpacing: '-0.02em' }}>
+                  Comprehensive <span style={{ color: 'var(--nims-orange)' }}>Health Packages</span>
+                </h2>
+                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.96rem', marginTop: '0.4rem', maxWidth: '600px' }}>
+                  Subsidized preventive health screening panels designed for total body wellness and early diagnosis.
+                </p>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}
+                className="btn btn-secondary"
+                style={{ padding: '0.75rem 1.6rem', fontSize: '0.9rem', borderRadius: '50px' }}
+              >
+                <span>View All Health Packages</span>
+                <ArrowRight size={16} />
+              </motion.button>
+            </div>
+          </MotionFadeIn>
+
+          <MotionStagger style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
+            gap: '1.75rem'
+          }} staggerDelay={0.08}>
+            {featuredPackages.map((pkg) => (
+              <MotionItem key={pkg.id}>
+                <div style={{
+                  background: '#ffffff',
+                  borderRadius: '20px',
+                  padding: '1.75rem',
+                  border: '1px solid var(--nims-border)',
+                  boxShadow: '0 10px 30px rgba(23, 42, 52, 0.06)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  height: '100%',
+                  transition: 'all 0.3s ease'
+                }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                      <span style={{
+                        background: 'rgba(189, 23, 28, 0.1)',
+                        color: 'var(--nims-orange)',
+                        padding: '0.3rem 0.75rem',
+                        borderRadius: '9999px',
+                        fontSize: '0.75rem',
+                        fontWeight: 800
+                      }}>
+                        {pkg.discount || 'Special Price'}
+                      </span>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                        <Tag size={14} color="var(--nims-gold)" />
+                        {pkg.category}
+                      </span>
+                    </div>
+
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.4rem' }}>
+                      {pkg.name}
+                    </h3>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', marginBottom: '1.25rem', lineHeight: 1.4 }}>
+                      {pkg.badge}
+                    </p>
+
+                    <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '12px', marginBottom: '1.5rem', border: '1px solid #e2e8f0' }}>
+                      <div style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Key Included Parameters ({pkg.testsCount} Tests):
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                        {pkg.tests.slice(0, 4).map((test, idx) => (
+                          <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: '#475569' }}>
+                            <CheckCircle2 size={14} color="#10b981" style={{ flexShrink: 0 }} />
+                            <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{test}</span>
+                          </div>
+                        ))}
+                        {pkg.tests.length > 4 && (
+                          <div style={{ fontSize: '0.76rem', color: 'var(--nims-orange)', fontWeight: 700, marginTop: '0.2rem' }}>
+                            + {pkg.tests.length - 4} more vital tests included
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.6rem', marginBottom: '1.25rem' }}>
+                      <span style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--nims-navy)' }}>
+                        {pkg.price}
+                      </span>
+                      {pkg.originalPrice && (
+                        <span style={{ fontSize: '0.9rem', color: '#94a3b8', textDecoration: 'line-through' }}>
+                          {pkg.originalPrice}
+                        </span>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => onOpenPackageBooking ? onOpenPackageBooking(pkg) : null}
+                      style={{
+                        width: '100%',
+                        padding: '0.8rem',
+                        borderRadius: '50px',
+                        background: 'linear-gradient(135deg, var(--nims-orange) 0%, #9e1217 100%)',
+                        color: '#ffffff',
+                        border: 'none',
+                        fontWeight: 700,
+                        fontSize: '0.9rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        boxShadow: '0 4px 15px rgba(189, 23, 28, 0.3)',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <FlaskConical size={16} />
+                      <span>Book Diagnostic Package</span>
+                    </button>
+                  </div>
+                </div>
+              </MotionItem>
+            ))}
+          </MotionStagger>
+        </div>
+      </section>
+
+      {/* SPECIALITIES PREVIEW SECTION */}
       <section className="spec-section-wrapper">
-        {/* Soft Background Medical Patterns / Elements */}
         <div className="spec-bg-shape-1"></div>
         <div className="spec-bg-shape-2"></div>
         <div className="spec-bg-pattern"></div>
@@ -333,9 +518,7 @@ export default function Home({ onOpenBooking }) {
         padding: '5rem 0',
         borderBottom: '1px solid #f0f4f8'
       }}>
-        {/* Decorative glowing orbs */}
-        <div style={{ position:'absolute', top:'-80px', right:'-80px', width:'400px', height:'400px', background:'radial-gradient(circle, rgba(200,16,46,0.06) 0%, transparent 70%)', borderRadius:'50%', pointerEvents:'none' }} />
-        <div style={{ position:'absolute', bottom:'-60px', left:'-60px', width:'300px', height:'300px', background:'radial-gradient(circle, rgba(200,16,46,0.04) 0%, transparent 70%)', borderRadius:'50%', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', top:'-80px', right:'-80px', width:'400px', height:'400px', background:'radial-gradient(circle, rgba(189,23,28,0.06) 0%, transparent 70%)', borderRadius:'50%', pointerEvents:'none' }} />
 
         <div className="container" style={{ position:'relative', zIndex:10 }}>
           <div style={{
@@ -347,18 +530,17 @@ export default function Home({ onOpenBooking }) {
             {/* Left: Text Content */}
             <MotionFadeIn direction="left">
               <div>
-                {/* Badge */}
                 <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'1.25rem' }}>
-                  <div style={{ width:'32px', height:'2px', background:'#C8102E', borderRadius:'2px' }} />
-                  <span style={{ color:'#C8102E', fontWeight:800, fontSize:'0.7rem', textTransform:'uppercase', letterSpacing:'0.15em' }}>
+                  <div style={{ width:'32px', height:'2px', background:'var(--nims-orange)', borderRadius:'2px' }} />
+                  <span style={{ color:'var(--nims-orange)', fontWeight:800, fontSize:'0.7rem', textTransform:'uppercase', letterSpacing:'0.15em' }}>
                     26+ Years of Trusted Care in Jaipur
                   </span>
                 </div>
 
-                <h2 style={{ fontSize:'clamp(1.8rem, 3vw, 2.6rem)', fontWeight:800, color:'#142235', lineHeight:1.15, marginBottom:'1.25rem', letterSpacing:'-0.02em' }}>
-                  The best healthcare<br />
-                  <span style={{ color:'#C8102E' }}>should never feel</span><br />
-                  out of reach.
+                <h2 style={{ fontSize:'clamp(1.8rem, 3vw, 2.6rem)', fontWeight:800, color:'var(--nims-navy)', lineHeight:1.15, marginBottom:'1.25rem', letterSpacing:'-0.02em' }}>
+                  World-Class Healthcare,<br />
+                  <span style={{ color:'var(--nims-orange)' }}>Accessible &amp; Compassionate</span><br />
+                  For Every Family.
                 </h2>
 
                 <p style={{ fontSize:'0.96rem', lineHeight:1.75, marginBottom:'0.9rem', color:'#475569' }}>
@@ -371,14 +553,14 @@ export default function Home({ onOpenBooking }) {
                 {/* Feature Grid */}
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem', marginBottom:'2.25rem' }}>
                   {[
-                    { label:'NABH Accredited', red: true },
-                    { label:'Award-Winning Care', red: false },
-                    { label:'500+ Specialists', red: true },
-                    { label:'Integrated Campus', red: false }
+                    { label:'NABH Accredited Hospital', red: true },
+                    { label:'NABL Accredited Labs', red: false },
+                    { label:'500+ Specialist Doctors', red: true },
+                    { label:'Single Integrated Campus', red: false }
                   ].map((item, i) => (
-                    <div key={i} style={{ display:'flex', alignItems:'center', gap:'8px', background:'#f8fafc', border:`1px solid ${item.red ? 'rgba(200,16,46,0.2)' : '#e2e8f0'}`, borderRadius:'10px', padding:'0.65rem 0.85rem' }}>
-                      <div style={{ width:'8px', height:'8px', borderRadius:'50%', background: item.red ? '#C8102E' : '#10B981', flexShrink:0 }} />
-                      <span style={{ fontSize:'0.83rem', fontWeight:700, color:'#142235' }}>{item.label}</span>
+                    <div key={i} style={{ display:'flex', alignItems:'center', gap:'8px', background:'#f8fafc', border:`1px solid ${item.red ? 'rgba(189,23,28,0.2)' : '#e2e8f0'}`, borderRadius:'10px', padding:'0.65rem 0.85rem' }}>
+                      <div style={{ width:'8px', height:'8px', borderRadius:'50%', background: item.red ? 'var(--nims-orange)' : '#10B981', flexShrink:0 }} />
+                      <span style={{ fontSize:'0.83rem', fontWeight:700, color:'var(--nims-navy)' }}>{item.label}</span>
                     </div>
                   ))}
                 </div>
@@ -386,10 +568,10 @@ export default function Home({ onOpenBooking }) {
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{ display:'inline-block' }}>
                   <Link to="/about" style={{
                     display:'inline-flex', alignItems:'center', gap:'8px',
-                    background:'linear-gradient(135deg, #C8102E, #9B0000)',
+                    background:'linear-gradient(135deg, var(--nims-orange), var(--nims-orange-hover))',
                     color:'#fff', fontWeight:700, fontSize:'0.9rem',
                     padding:'0.85rem 2rem', borderRadius:'9999px',
-                    boxShadow:'0 6px 20px rgba(200,16,46,0.35)',
+                    boxShadow:'0 6px 20px rgba(189,23,28,0.35)',
                     textDecoration:'none'
                   }}>
                     Learn More About Hospital &amp; Leadership
@@ -402,8 +584,7 @@ export default function Home({ onOpenBooking }) {
             {/* Right: Image + Stats */}
             <MotionFadeIn direction="right" delay={0.15}>
               <div style={{ position:'relative' }}>
-                {/* Main image */}
-                <div style={{ borderRadius:'20px', overflow:'hidden', border:'2px solid rgba(255,255,255,0.08)', boxShadow:'0 30px 80px rgba(0,0,0,0.4)' }}>
+                <div style={{ borderRadius:'20px', overflow:'hidden', border:'2px solid rgba(255,255,255,0.08)', boxShadow:'0 30px 80px rgba(0,0,0,0.2)' }}>
                   <img
                     src="/assets/images/hospital-img.png"
                     alt="NIMS Hospital Jaipur Campus"
@@ -412,8 +593,7 @@ export default function Home({ onOpenBooking }) {
                       e.currentTarget.src = "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1000&q=80";
                     }}
                   />
-                  {/* Gradient overlay on image */}
-                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(20,34,53,0.5) 0%, transparent 50%)', borderRadius:'20px' }} />
+                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(23,42,52,0.5) 0%, transparent 50%)', borderRadius:'20px' }} />
                 </div>
 
                 {/* Stat card - bottom left */}
@@ -422,15 +602,15 @@ export default function Home({ onOpenBooking }) {
                   transition={{ type:'spring', stiffness:350, damping:22 }}
                   style={{
                     position:'absolute', bottom:'-18px', left:'20px',
-                    background:'rgba(255,255,255,0.95)',
+                    background:'rgba(255,255,255,0.96)',
                     backdropFilter:'blur(12px)',
                     padding:'1rem 1.4rem', borderRadius:'14px',
-                    boxShadow:'0 16px 40px rgba(0,0,0,0.2)',
-                    border:'1px solid rgba(255,255,255,0.5)',
+                    boxShadow:'0 16px 40px rgba(0,0,0,0.18)',
+                    border:'1px solid rgba(255,255,255,0.8)',
                     cursor:'default', minWidth:'140px'
                   }}
                 >
-                  <div style={{ fontSize:'1.7rem', fontWeight:800, color:'#C8102E', lineHeight:1 }}>
+                  <div style={{ fontSize:'1.7rem', fontWeight:800, color:'var(--nims-orange)', lineHeight:1 }}>
                     <AnimatedCounter target={2400} suffix="+" />
                   </div>
                   <div style={{ fontSize:'0.75rem', fontWeight:600, color:'#475569', marginTop:'2px' }}>
@@ -444,13 +624,13 @@ export default function Home({ onOpenBooking }) {
                   transition={{ type:'spring', stiffness:350, damping:22 }}
                   style={{
                     position:'absolute', top:'20px', right:'-12px',
-                    background:'linear-gradient(135deg, #C8102E, #9B0000)',
+                    background:'linear-gradient(135deg, var(--nims-navy), var(--nims-navy-dark))',
                     color:'white', padding:'0.8rem 1.1rem', borderRadius:'14px',
-                    boxShadow:'0 12px 30px rgba(200,16,46,0.4)',
+                    boxShadow:'0 12px 30px rgba(23,42,52,0.4)',
                     cursor:'default', minWidth:'120px'
                   }}
                 >
-                  <div style={{ fontSize:'1.3rem', fontWeight:800, lineHeight:1 }}>26+</div>
+                  <div style={{ fontSize:'1.3rem', fontWeight:800, lineHeight:1, color: 'var(--nims-gold)' }}>26+</div>
                   <div style={{ fontSize:'0.65rem', fontWeight:600, opacity:0.85, marginTop:'2px', textTransform:'uppercase', letterSpacing:'0.08em' }}>Years of Care</div>
                 </motion.div>
               </div>
@@ -459,7 +639,7 @@ export default function Home({ onOpenBooking }) {
         </div>
       </section>
 
-      {/* OUR DOCTORS SECTION (Modern 2-Column Grid with Official Photos) */}
+      {/* OUR DOCTORS SECTION */}
       <section className="section" style={{ background: '#ffffff', borderBottom: '1px solid var(--nims-border)' }}>
         <div className="container">
           <MotionFadeIn>
@@ -470,7 +650,7 @@ export default function Home({ onOpenBooking }) {
             </div>
           </MotionFadeIn>
 
-          {/* Speciality Horizontal Scrollbar Tabs (Full Container Width) */}
+          {/* Speciality Horizontal Scrollbar Tabs */}
           <div className="doctor-tabs-wrapper">
             <button
               type="button"
@@ -507,7 +687,7 @@ export default function Home({ onOpenBooking }) {
             </button>
           </div>
 
-          {/* 2-Columns Grid - EXACT 2 CARDS PER ROW */}
+          {/* 2-Columns Grid */}
           {(() => {
             const list = doctorsData.filter(d => {
               if (d.isOpdAvailable === false) return false;
@@ -717,7 +897,7 @@ export default function Home({ onOpenBooking }) {
                               height: '42px',
                               borderRadius: '50%',
                               background: 'var(--nims-navy)',
-                              color: 'var(--nims-orange)',
+                              color: 'var(--nims-gold)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -762,11 +942,88 @@ export default function Home({ onOpenBooking }) {
             </div>
           )}
 
-          {/* Unified View All Button at the bottom */}
           <div style={{ textAlign: 'center', marginTop: '3rem' }}>
             <Link to="/reviews" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 2rem', borderRadius: '50px', fontSize: '1rem', fontWeight: 600 }}>
               <Video size={20} /> View All Patient Reviews
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* EMERGENCY HELPLINE CALLOUT BANNER */}
+      <section style={{
+        background: 'linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-dark) 100%)',
+        color: '#ffffff',
+        padding: '3.5rem 0',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '2rem',
+            background: 'rgba(255,255,255,0.05)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            borderRadius: '24px',
+            padding: '2.5rem',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div style={{ maxWidth: '650px' }}>
+              <span className="badge-pill" style={{ background: 'var(--nims-orange)', color: '#ffffff', marginBottom: '0.85rem' }}>
+                <Ambulance size={14} style={{ marginRight: '5px' }} /> 24×7 Level-1 Emergency &amp; Ambulance Care
+              </span>
+              <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 800, color: '#ffffff', marginBottom: '0.5rem' }}>
+                Need Immediate Medical Assistance?
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1rem', margin: 0 }}>
+                Our 24x7 Emergency, Cardiac Cath Lab, ICU &amp; ALS Ambulance services are on active standby.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <a 
+                href="tel:0141-2388999"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.65rem',
+                  padding: '1rem 2rem',
+                  borderRadius: '50px',
+                  background: 'linear-gradient(135deg, var(--nims-orange) 0%, #9e1217 100%)',
+                  color: '#ffffff',
+                  fontWeight: 800,
+                  fontSize: '1.05rem',
+                  textDecoration: 'none',
+                  boxShadow: '0 10px 25px rgba(189, 23, 28, 0.4)'
+                }}
+              >
+                <PhoneCall size={20} />
+                <span>Call 0141-23 88 999</span>
+              </a>
+
+              <button
+                onClick={() => onOpenBooking ? onOpenBooking() : null}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.65rem',
+                  padding: '1rem 2rem',
+                  borderRadius: '50px',
+                  background: 'rgba(255,255,255,0.15)',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '1rem',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  cursor: 'pointer'
+                }}
+              >
+                <Calendar size={18} />
+                <span>Book OPD Doctor</span>
+              </button>
+            </div>
           </div>
         </div>
       </section>

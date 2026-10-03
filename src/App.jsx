@@ -62,7 +62,7 @@ function AnimatedPageContent({ onOpenBooking, onOpenPackageBooking }) {
         style={{ width: '100%' }}
       >
         <Routes location={location}>
-          <Route path="/" element={<Home onOpenBooking={onOpenBooking} />} />
+          <Route path="/" element={<Home onOpenBooking={onOpenBooking} onOpenPackageBooking={onOpenPackageBooking} />} />
           <Route path="/about" element={<About onOpenBooking={onOpenBooking} />} />
           <Route path="/founder-and-chancellor" element={<About initialTab="founder" onOpenBooking={onOpenBooking} />} />
           <Route path="/our-purpose" element={<About initialTab="purpose" onOpenBooking={onOpenBooking} />} />
