@@ -1246,11 +1246,11 @@ button, input, select, textarea {
 
 .topbar-fluid-container {
   width: 100%;
-  padding: 0.45rem clamp(1.2rem, 2.5vw, 3rem);
+  padding: 0.05rem clamp(1rem, 2vw, 2.5rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .topbar-left {
@@ -1258,7 +1258,7 @@ button, input, select, textarea {
   align-items: center;
   gap: 0.45rem;
   flex-shrink: 0;
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   color: #cbd5e1;
 }
 
@@ -1276,8 +1276,8 @@ button, input, select, textarea {
   position: relative;
   display: flex;
   align-items: center;
-  margin: 0 1.5rem;
-  height: 28px;
+  margin: 0 1rem;
+  height: 16px;
   cursor: default;
   mask-image: linear-gradient(to right, transparent 0%, black 28px, black calc(100% - 28px), transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 28px, black calc(100% - 28px), transparent 100%);
@@ -4029,42 +4029,42 @@ button, input, select, textarea {
 }
 
 .topbar-fluid-container {
-  min-height: 64px;
-  padding: .7rem clamp(1rem, 3vw, 4rem);
-  gap: clamp(.8rem, 2vw, 2rem);
+  min-height: 18px;
+  padding: .05rem clamp(1rem, 2vw, 2.5rem);
+  gap: clamp(.6rem, 1.5vw, 1.5rem);
 }
 
 .topbar-marquee-container {
-  height: 34px;
+  height: 16px;
   margin: 0;
-  mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 15px, #000 calc(100% - 15px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 15px, #000 calc(100% - 15px), transparent);
 }
 
-.marquee-track { gap: 1.4rem; animation-duration: 50s; }
-.marquee-item { gap: .45rem; }
-.ticker-badge { font-size: clamp(.67rem, .72vw, .78rem) !important; letter-spacing: .045em; line-height: 1.15; }
-.marquee-separator { margin-left: .35rem; color: #d52b30; }
+.marquee-track { gap: 1rem; animation-duration: 50s; }
+.marquee-item { gap: .35rem; }
+.ticker-badge { font-size: .60rem !important; letter-spacing: .03em; line-height: 1.1; padding: .04rem .3rem !important; }
+.marquee-separator { margin-left: .25rem; color: #d52b30; font-size: .65rem; }
 
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: .55rem;
+  gap: .35rem;
   flex-shrink: 0;
 }
 
 .topbar-action {
   display: inline-flex;
-  min-height: 38px;
+  min-height: 16px;
   align-items: center;
   justify-content: center;
-  gap: .38rem;
-  padding: .45rem .78rem;
+  gap: .25rem;
+  padding: .04rem .38rem;
+  font-size: 0.60rem;
   border: 1px solid rgba(255,255,255,.24);
   border-radius: 999px;
   background: rgba(255,255,255,.04);
   color: #f8fafc;
-  font-size: .76rem;
   font-weight: 750;
   line-height: 1;
   text-decoration: none;
@@ -4111,9 +4111,9 @@ button, input, select, textarea {
 }
 
 @media (min-width: 1024px) {
-  .topbar-fluid-container { min-height: 54px; padding-top: .45rem; padding-bottom: .45rem; }
-  .topbar-marquee-container { height: 30px; }
-  .topbar-action { min-height: 32px; gap: .3rem; padding: .32rem .62rem; font-size: .69rem; }
-  .topbar-action svg { width: 13px; height: 13px; }
-  .topbar-right { gap: .42rem; }
+  .topbar-fluid-container { min-height: 24px; padding-top: .15rem; padding-bottom: .15rem; }
+  .topbar-marquee-container { height: 20px; }
+  .topbar-action { min-height: 20px; gap: .25rem; padding: .1rem .45rem; font-size: .65rem; }
+  .topbar-action svg { width: 12px; height: 12px; }
+  .topbar-right { gap: .4rem; }
 }

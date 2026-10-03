@@ -28,8 +28,28 @@ import {
   Ambulance,
   Award,
   Tag,
-  CheckCircle2
+  CheckCircle2,
+  Smartphone
 } from 'lucide-react';
+
+function AppStoreMark() {
+  return (
+    <svg viewBox="0 0 384 512" width="18" height="18" aria-hidden="true" focusable="false">
+      <path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.3 4 270.5c0 39.1 14.2 80.1 42.6 123.3 23.5 35.2 54.3 74.8 94.6 73.3 21 .5 35.8-14.9 63.2-14.9 26.6 0 40.3 14.9 62.7 14.9 40.7-.6 69.8-36.6 92.3-72.1 15.9-24.7 26.2-49.7 29.3-75-48.4-20.5-45.7-50.1-45.7-51.3zM252.6 96c18.1-21.5 16.5-41.1 16-48-16 1-34.5 10.9-45.1 23.1-11.7 13.1-18.6 29.3-17.1 48.2 17.3 1.3 33.8-7.6 46.2-23.3z" />
+    </svg>
+  );
+}
+
+function GooglePlayMark() {
+  return (
+    <svg viewBox="0 0 512 512" width="18" height="18" aria-hidden="true" focusable="false">
+      <path fill="#00A0FF" d="M50 32 286 256 50 480Z" />
+      <path fill="#00D084" d="m50 32 280 162-44 62Z" />
+      <path fill="#FFE14D" d="m286 256 44 62L50 480Z" />
+      <path fill="#FF3D59" d="m330 194 132 62-132 62-44-62Z" />
+    </svg>
+  );
+}
 import { specialitiesData } from '../data/specialitiesData';
 import './SpecialitiesSection.css';
 import { doctorsData } from '../data/doctorsData';
@@ -93,7 +113,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
   const heroSlides = [
     {
       id: 0,
-      image: '/assets/slider/nims-slider1.jpeg',
+      image: '/assets/slider/nims-slider3.jpeg',
       badge: '⚡ 24×7 Level-1 Emergency & Quaternary Care',
       titlePart1: 'Healing built on ',
       highlightWord: 'trust, ',
@@ -102,30 +122,6 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
       primaryCta: 'Book OPD Visit',
       secondaryCta: 'Explore Specialities',
       secondaryLink: '/specialities'
-    },
-    {
-      id: 1,
-      image: '/assets/slider/nims-slider2.jpeg',
-      badge: '🏆 NABH & NABL Accredited Center of Excellence',
-      titlePart1: 'Advanced Care. One Campus. ',
-      highlightWord: '2,400 Beds. ',
-      titlePart2: '500+ Specialist Doctors',
-      subtitle: 'World-class surgical suites, organ transplant care, and comprehensive ICU facilities.',
-      primaryCta: 'Book Appointment',
-      secondaryCta: 'About Hospital',
-      secondaryLink: '/about'
-    },
-    {
-      id: 2,
-      image: '/assets/slider/nims-slider3.jpeg',
-      badge: '🚑 Level-1 Trauma & Emergency Hotline Active',
-      titlePart1: 'Every emergency answered. ',
-      highlightWord: '24 Hours ',
-      titlePart2: 'of every day.',
-      subtitle: 'Critical care, blood bank support, advanced cardiac cath lab, and life-support ambulances.',
-      primaryCta: 'Call Emergency',
-      secondaryCta: 'Health Checkup Packages',
-      secondaryLink: '/health-packages'
     }
   ];
 
@@ -950,79 +946,214 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
         </div>
       </section>
 
-      {/* EMERGENCY HELPLINE CALLOUT BANNER */}
+      {/* NIMS TATKAAL SEVA & EMERGENCY APP DOWNLOAD BANNER */}
       <section style={{
-        background: 'linear-gradient(135deg, var(--nims-navy) 0%, var(--nims-navy-dark) 100%)',
+        background: 'linear-gradient(135deg, #09131d 0%, #111e2b 60%, #0d1722 100%)',
         color: '#ffffff',
         padding: '3.5rem 0',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        borderTop: '1px solid rgba(229,182,74,0.2)'
       }}>
         <div className="container" style={{ position: 'relative', zIndex: 10 }}>
           <div style={{
-            display: 'flex',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '2rem',
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.15)',
+            gap: '2.5rem',
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.12)',
             borderRadius: '24px',
-            padding: '2.5rem',
-            backdropFilter: 'blur(10px)'
+            padding: '2.5rem 3rem',
+            backdropFilter: 'blur(12px)',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.4)'
           }}>
-            <div style={{ maxWidth: '650px' }}>
-              <span className="badge-pill" style={{ background: 'var(--nims-orange)', color: '#ffffff', marginBottom: '0.85rem' }}>
-                <Ambulance size={14} style={{ marginRight: '5px' }} /> 24×7 Level-1 Emergency &amp; Ambulance Care
-              </span>
-              <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 800, color: '#ffffff', marginBottom: '0.5rem' }}>
+            {/* LEFT SIDE: TEXT & CALL CTA */}
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.85rem', flexWrap: 'wrap' }}>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  background: 'linear-gradient(135deg, #c8102e 0%, #9e0c15 100%)',
+                  color: '#ffffff',
+                  padding: '0.3rem 0.85rem',
+                  borderRadius: '50px',
+                  fontSize: '0.75rem',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  <Ambulance size={14} color="#ffffff" /> 24×7 LEVEL-1 EMERGENCY &amp; AMBULANCE
+                </span>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  background: 'rgba(229, 182, 74, 0.15)',
+                  border: '1px solid rgba(229, 182, 74, 0.4)',
+                  color: 'var(--nims-gold)',
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '50px',
+                  fontSize: '0.75rem',
+                  fontWeight: 800
+                }}>
+                  <Sparkles size={13} /> NIMS TATKAL SEVA
+                </span>
+              </div>
+
+              <h2 style={{ 
+                fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', 
+                fontWeight: 800, 
+                color: '#ffffff', 
+                marginBottom: '0.75rem',
+                lineHeight: 1.2
+              }}>
                 Need Immediate Medical Assistance?
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1rem', margin: 0 }}>
-                Our 24x7 Emergency, Cardiac Cath Lab, ICU &amp; ALS Ambulance services are on active standby.
+
+              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.98rem', marginBottom: '1.75rem', lineHeight: 1.6 }}>
+                Book 24/7 ICU Beds, Request Emergency ALS Ambulances, or Schedule Specialist OPD Consultations instantly via the <strong>NIMS Tatkaal Seva Mobile App</strong> or call our Emergency Hotline.
               </p>
+
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <a 
+                  href="tel:0141-2388999"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    padding: '0.85rem 1.8rem',
+                    borderRadius: '50px',
+                    background: 'linear-gradient(135deg, #c8102e 0%, #9e1217 100%)',
+                    color: '#ffffff',
+                    fontWeight: 800,
+                    fontSize: '0.98rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 8px 22px rgba(200, 16, 46, 0.45)'
+                  }}
+                >
+                  <PhoneCall size={19} />
+                  <span>Call 0141-23 88 999</span>
+                </a>
+
+                <button
+                  onClick={() => onOpenBooking ? onOpenBooking() : null}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    padding: '0.85rem 1.8rem',
+                    borderRadius: '50px',
+                    background: 'rgba(255,255,255,0.12)',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    fontSize: '0.95rem',
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Calendar size={18} />
+                  <span>Book OPD Doctor</span>
+                </button>
+              </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <a 
-                href="tel:0141-2388999"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.65rem',
-                  padding: '1rem 2rem',
-                  borderRadius: '50px',
-                  background: 'linear-gradient(135deg, var(--nims-orange) 0%, #9e1217 100%)',
-                  color: '#ffffff',
-                  fontWeight: 800,
-                  fontSize: '1.05rem',
-                  textDecoration: 'none',
-                  boxShadow: '0 10px 25px rgba(189, 23, 28, 0.4)'
-                }}
-              >
-                <PhoneCall size={20} />
-                <span>Call 0141-23 88 999</span>
-              </a>
+            {/* RIGHT SIDE: NIMS TATKAAL SEVA LOGO & APP STORE / GOOGLE PLAY BUTTONS */}
+            <div style={{
+              background: 'rgba(15, 23, 42, 0.75)',
+              border: '1.5px solid rgba(229, 182, 74, 0.45)',
+              borderRadius: '20px',
+              padding: '1.85rem 2rem',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              gap: '1.25rem',
+              boxShadow: '0 15px 35px rgba(0,0,0,0.5)',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', width: '100%', justifyContent: 'center' }}>
+                <img 
+                  src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg" 
+                  alt="NIMS Hospital Logo"
+                  style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)' }}
+                />
+                <div style={{ textAlign: 'left' }}>
+                  <span style={{
+                    display: 'block',
+                    fontSize: '0.65rem',
+                    fontWeight: 900,
+                    color: 'var(--nims-gold)',
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase'
+                  }}>
+                    OFFICIAL MOBILE APP
+                  </span>
+                  <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
+                    NIMS TATKAAL SEVA
+                  </h3>
+                </div>
+              </div>
 
-              <button
-                onClick={() => onOpenBooking ? onOpenBooking() : null}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.65rem',
-                  padding: '1rem 2rem',
-                  borderRadius: '50px',
-                  background: 'rgba(255,255,255,0.15)',
-                  color: '#ffffff',
-                  fontWeight: 700,
-                  fontSize: '1rem',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  cursor: 'pointer'
-                }}
-              >
-                <Calendar size={18} />
-                <span>Book OPD Doctor</span>
-              </button>
+              <p style={{ margin: 0, fontSize: '0.86rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.45 }}>
+                Download the mobile app for 1-tap ICU bed booking, emergency tracking &amp; lab reports.
+              </p>
+
+              {/* APP STORE & GOOGLE PLAY DOWNLOAD BUTTONS */}
+              <div style={{ display: 'flex', gap: '0.75rem', width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Link 
+                  to="/tatkaal-booking"
+                  style={{
+                    flex: '1',
+                    minWidth: '140px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.55rem',
+                    padding: '0.65rem 0.9rem',
+                    background: '#090d16',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    borderRadius: '12px',
+                    textDecoration: 'none',
+                    boxShadow: '0 6px 18px rgba(0,0,0,0.4)',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <AppStoreMark />
+                  <div style={{ textAlign: 'left', lineHeight: 1.15 }}>
+                    <span style={{ display: 'block', fontSize: '0.62rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Download on</span>
+                    <strong style={{ fontSize: '0.86rem', fontWeight: 800 }}>App Store</strong>
+                  </div>
+                </Link>
+
+                <Link 
+                  to="/tatkaal-booking"
+                  style={{
+                    flex: '1',
+                    minWidth: '140px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.55rem',
+                    padding: '0.65rem 0.9rem',
+                    background: '#090d16',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    borderRadius: '12px',
+                    textDecoration: 'none',
+                    boxShadow: '0 6px 18px rgba(0,0,0,0.4)',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <GooglePlayMark />
+                  <div style={{ textAlign: 'left', lineHeight: 1.15 }}>
+                    <span style={{ display: 'block', fontSize: '0.62rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>GET IT ON</span>
+                    <strong style={{ fontSize: '0.86rem', fontWeight: 800 }}>Google Play</strong>
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

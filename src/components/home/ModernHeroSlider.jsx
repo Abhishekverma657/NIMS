@@ -71,15 +71,6 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
     }, 4000);
   };
 
-  const serviceCards = [
-    { id: 1, title: 'ICU Bed Booking', icon: Bed, isLive: true, action: () => onOpenBooking ? onOpenBooking() : null },
-    { id: 2, title: 'OPD Booking', icon: Stethoscope, action: () => onOpenBooking ? onOpenBooking() : null },
-    { id: 3, title: 'Ambulance Booking', icon: Ambulance, isLive: true, isTel: true, href: 'tel:0141-2388999' },
-    { id: 4, title: 'Online Appointment', icon: CalendarDays, action: () => onOpenBooking ? onOpenBooking() : null },
-    { id: 5, title: 'Health Checkup Packages', icon: FlaskConical, action: () => onOpenPackageBooking ? onOpenPackageBooking() : null },
-    { id: 6, title: 'Sample Collect From Home', icon: HomeIcon, action: () => onOpenPackageBooking ? onOpenPackageBooking() : null },
-  ];
-
   return (
     <div className="nims-hero-custom-container">
       {/* 1. BACKGROUND FULL HERO SLIDER */}
@@ -105,7 +96,7 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
 
       {/* 2. HERO CONTENT WRAPPER */}
       <div className="container nims-hero-content-wrapper">
-        {/* LEFT SIDE: ULTRA-TRANSPARENT CRYSTAL GLASS CALLBACK CARD SHIFTED UP */}
+        {/* LEFT SIDE: ULTRA-TRANSPARENT CRYSTAL GLASS CALLBACK CARD */}
         <div className="hero-request-column-left">
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
@@ -164,7 +155,7 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
             )}
           </motion.div>
 
-          {/* APP STORE & GOOGLE PLAY DOWNLOAD BADGES WITH BLINKING DOT */}
+          {/* APP STORE & GOOGLE PLAY DOWNLOAD BADGES */}
           <div className="hero-store-downloads-wrap">
             <div className="download-app-header-label">
               <span className="pulse-dot-live-gold" />
@@ -188,35 +179,39 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
         <div className="hero-right-open-view" />
       </div>
 
-      {/* FLOATING NAV ARROWS */}
-      <button onClick={prevSlide} className="hero-nav-arrow arrow-prev" aria-label="Previous slide">
-        <ChevronLeft size={22} />
-      </button>
-      <button onClick={nextSlide} className="hero-nav-arrow arrow-next" aria-label="Next slide">
-        <ChevronRight size={22} />
-      </button>
+      {/* FLOATING NAV ARROWS (Only shown if multiple slides exist) */}
+      {slides.length > 1 && (
+        <>
+          <button onClick={prevSlide} className="hero-nav-arrow arrow-prev" aria-label="Previous slide">
+            <ChevronLeft size={22} />
+          </button>
+          <button onClick={nextSlide} className="hero-nav-arrow arrow-next" aria-label="Next slide">
+            <ChevronRight size={22} />
+          </button>
 
-      {/* TOP RIGHT SLIDE DOTS */}
-      <div className="hero-top-controls">
-        <div className="hero-dots-wrap">
-          {slides.map((_, idx) => (
-            <button 
-              key={idx} 
-              className={`hero-dot ${idx === current ? 'active' : ''}`}
-              onClick={() => {
-                setAutoplay(false);
-                setCurrent(idx);
-              }}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
-      </div>
+          {/* TOP RIGHT SLIDE DOTS */}
+          <div className="hero-top-controls">
+            <div className="hero-dots-wrap">
+              {slides.map((_, idx) => (
+                <button 
+                  key={idx} 
+                  className={`hero-dot ${idx === current ? 'active' : ''}`}
+                  onClick={() => {
+                    setAutoplay(false);
+                    setCurrent(idx);
+                  }}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
 
-      {/* 3. RED ORGANIC WAVE CONTAINER WITH SEAMLESS INFINITE MARQUEE LOOP */}
+      {/* 3. RED ORGANIC WAVE CONTAINER WITH 6 STATIC QUICK ACTION CARDS */}
       <div className="hero-bottom-wave-bar">
         <div className="bottom-wave-svg-overlay">
-          <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className="bottom-wave-svg">
+          <svg viewBox="0 0 1440 140" preserveAspectRatio="none" className="bottom-wave-svg">
             <defs>
               <linearGradient id="bottomBarRedGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#7a0000" />
@@ -233,43 +228,64 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
 
             {/* Accent Highlight Line along wave curve top */}
             <path 
-              d="M0,35 Q360,-15 720,32 T1440,18 L1440,180 L0,180 Z" 
+              d="M0,32 Q360,-12 720,28 T1440,16 L1440,140 L0,140 Z" 
               fill="none" 
               stroke="url(#waveBorderHighlight)" 
-              strokeWidth="3.5"
+              strokeWidth="3"
             />
             {/* Main Rich Crimson Red Wave Fill */}
             <path 
-              d="M0,38 Q360,-12 720,35 T1440,20 L1440,180 L0,180 Z" 
+              d="M0,35 Q360,-10 720,30 T1440,18 L1440,140 L0,140 Z" 
               fill="url(#bottomBarRedGrad)" 
             />
           </svg>
         </div>
 
         <div className="container relative z-10 width-100">
-          {/* SEAMLESS INFINITE MARQUEE TRACK */}
-          <div className="nims-hero-marquee-viewport">
-            <div className="nims-hero-marquee-track">
-              {[...serviceCards, ...serviceCards].map((item, idx) => {
-                const IconComponent = item.icon;
-                return item.isTel ? (
-                  <a key={idx} href={item.href} className="wave-item-card marquee-item">
-                    <div className="wave-icon-bubble">
-                      <IconComponent size={18} color="#c8102e" />
-                    </div>
-                    <span className="wave-card-text">{item.title}</span>
-                    {item.isLive && <span className="card-live-badge-dot" />}
-                  </a>
-                ) : (
-                  <div key={idx} onClick={item.action} className="wave-item-card marquee-item">
-                    <div className="wave-icon-bubble">
-                      <IconComponent size={18} color="#c8102e" />
-                    </div>
-                    <span className="wave-card-text">{item.title}</span>
-                    {item.isLive && <span className="card-live-badge-dot" />}
-                  </div>
-                );
-              })}
+          {/* STATIC 6 SERVICE CARDS EVENLY DISTRIBUTED */}
+          <div className="wave-bar-items">
+            <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
+              <div className="wave-icon-bubble">
+                <Bed size={20} color="#ffffff" />
+              </div>
+              <span>ICU Bed<br/>Booking</span>
+              <span className="card-live-badge-dot" />
+            </div>
+
+            <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
+              <div className="wave-icon-bubble">
+                <Stethoscope size={20} color="#ffffff" />
+              </div>
+              <span>OPD<br/>Booking</span>
+            </div>
+
+            <a href="tel:0141-2388999" className="wave-item-card">
+              <div className="wave-icon-bubble">
+                <Ambulance size={20} color="#ffffff" />
+              </div>
+              <span>Ambulance<br/>Booking</span>
+              <span className="card-live-badge-dot" />
+            </a>
+
+            <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
+              <div className="wave-icon-bubble">
+                <CalendarDays size={20} color="#ffffff" />
+              </div>
+              <span>Online<br/>Appointment</span>
+            </div>
+
+            <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
+              <div className="wave-icon-bubble">
+                <FlaskConical size={20} color="#ffffff" />
+              </div>
+              <span>Health Checkup<br/>Packages</span>
+            </div>
+
+            <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
+              <div className="wave-icon-bubble">
+                <HomeIcon size={20} color="#ffffff" />
+              </div>
+              <span>Sample Collect<br/>From Home</span>
             </div>
           </div>
         </div>

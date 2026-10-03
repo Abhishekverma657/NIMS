@@ -1,23 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  MapPin,
-  Clock,
-  Briefcase,
-  CreditCard,
-  User,
   ShieldCheck,
-  Award,
-  PhoneCall,
-  Sparkles
+  User
 } from 'lucide-react';
 
 export default function Topbar({ onOpenVacancies }) {
   const newsItems = [
     {
       fullText: '⚡ NIMS TATKAAL SEVA: 24/7 ONLINE ICU BED BOOKING (PRE-BOOKING ₹5,000/-)',
-      color: '#bd171c', // Text color inside yellow box
-      bg: '#fde047',    // Yellow box
+      color: '#facc15',
+      bg: 'transparent',
     },
     {
       fullText: '🔴 ADMISSIONS OPEN 2026 - 2027 FOR MBBS',
@@ -45,32 +38,25 @@ export default function Topbar({ onOpenVacancies }) {
     <div className="nims-topbar-wrapper">
       {/* Fluid full-width container utilizing left and right screen space */}
       <div className="topbar-fluid-container">
-
-
-        {/* Center: Continuous News Headline Marquee (Right to Left Scrolling) */}
+        {/* Center: Continuous News Headline Marquee */}
         <div
           className="topbar-marquee-container"
           title="Hospital Live News Headlines (Hover to pause)"
         >
           <div className="marquee-track">
-            {/* First sequence of news headlines */}
             {newsItems.map((item, idx) => (
               <div className="marquee-item" key={`orig-${idx}`}>
                 <span
                   className="ticker-badge"
                   style={{
-                    background: item.bg,
                     color: item.color,
-                    fontWeight: 900,
-                    padding: item.bg !== 'transparent' ? '0.3rem 0.6rem' : '0.3rem 0',
-                    border: 'none',
-                    borderRadius: '4px',
-                    display: 'flex',
+                    fontWeight: 700,
+                    display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.4rem',
-                    fontSize: '0.75rem',
-                    textTransform: 'uppercase',
-                    height: '100%'
+                    gap: '0.35rem',
+                    fontSize: '0.7rem',
+                    letterSpacing: '0.03em',
+                    textTransform: 'uppercase'
                   }}
                 >
                   {item.fullText}
@@ -79,24 +65,20 @@ export default function Topbar({ onOpenVacancies }) {
               </div>
             ))}
 
-            {/* Duplicated sequence for seamless, continuous infinite scroll */}
+            {/* Duplicated sequence for seamless infinite scroll */}
             {newsItems.map((item, idx) => (
               <div className="marquee-item" key={`dup-${idx}`}>
                 <span
                   className="ticker-badge"
                   style={{
-                    background: item.bg,
                     color: item.color,
-                    fontWeight: 900,
-                    padding: item.bg !== 'transparent' ? '0.3rem 0.6rem' : '0.3rem 0',
-                    border: 'none',
-                    borderRadius: '4px',
-                    display: 'flex',
+                    fontWeight: 700,
+                    display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.4rem',
-                    fontSize: '0.75rem',
-                    textTransform: 'uppercase',
-                    height: '100%'
+                    gap: '0.35rem',
+                    fontSize: '0.7rem',
+                    letterSpacing: '0.03em',
+                    textTransform: 'uppercase'
                   }}
                 >
                   {item.fullText}
@@ -107,23 +89,14 @@ export default function Topbar({ onOpenVacancies }) {
           </div>
         </div>
 
-        {/* Right Side: Fixed Action Links (Careers, Loyalty Card, Patient Portal in uniform UI) */}
+        {/* Right Side: Fixed Action Links (Health Schemes & Patient Portal) */}
         <div className="topbar-right">
-          <Link
-            to="/vacancies"
-            className="topbar-action"
-            title="Careers and Open Positions at NIMS Hospital"
-          >
-            <Briefcase size={15} />
-            <span>Careers</span>
-          </Link>
-
           <Link
             to="/loyalty-card"
             className="topbar-action"
             title="NIMS Empaneled Government Healthcare Benefit Schemes & TPA"
           >
-            <ShieldCheck size={15} />
+            <ShieldCheck size={12} />
             <span>Health Schemes</span>
           </Link>
 
@@ -132,25 +105,19 @@ export default function Topbar({ onOpenVacancies }) {
             className="topbar-action topbar-action--portal"
             title="Patient Portal & Online Records"
           >
-            <User size={15} />
+            <User size={12} />
             <span>Patient Portal</span>
           </Link>
         </div>
       </div>
 
-      {/* Mobile-Only Responsive Quick Action Bar */}
+      {/* Mobile-Only Quickbar */}
       <div className="topbar-mobile-quickbar">
         <div className="mobile-quickbar-inner">
-
-
           <div className="mobile-actions-group">
             <Link to="/loyalty-card" className="mobile-quick-link">
               <ShieldCheck size={11} color="var(--nims-orange)" />
               <span>Health Schemes</span>
-            </Link>
-            <Link to="/vacancies" className="mobile-quick-link">
-              <Briefcase size={11} color="var(--nims-orange)" />
-              <span>Careers</span>
             </Link>
             <Link to="/patient-portal" className="mobile-quick-link">
               <User size={11} color="var(--nims-orange)" />
