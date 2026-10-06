@@ -517,8 +517,16 @@
 
 /* WHITE PILL SERVICE CARDS ENCLOSED INSIDE RED WAVE */
 /* NIMS TATKAAL SEVA WAVE BAR HEADER & MARQUEE SLIDER */
+@media (min-width: 769px) {
+  .wave-bar-header {
+    display: none !important;
+  }
+}
+
 .wave-bar-header {
-  display: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .wave-bar-title-badge {
@@ -699,6 +707,9 @@
   }
 
   .wave-bar-header {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
     padding-top: 6px;
     padding-bottom: 12px;
     margin-bottom: 4px;
