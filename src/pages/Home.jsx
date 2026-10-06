@@ -185,7 +185,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
       {/* LIVE EMERGENCY TICKER STRIP */}
       <div className="nims-live-status-bar">
         <div className="container nims-live-status-inner">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <div className="nims-live-status-group">
             <span className="nims-live-status-badge">
               <span className="pulse-dot-live" style={{ background: '#ffffff' }} />
               24×7 LIVE STATUS
@@ -976,22 +976,10 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                 Book 24/7 ICU Beds, Request Emergency ALS Ambulances, or Schedule Specialist OPD Consultations instantly via the <strong>NIMS Tatkaal Seva Mobile App</strong> or call our Emergency Hotline.
               </p>
 
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div className="nims-emergency-call-group">
                 <a 
                   href="tel:0141-2388999"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.65rem',
-                    padding: '0.85rem 1.8rem',
-                    borderRadius: '50px',
-                    background: 'linear-gradient(135deg, #c8102e 0%, #9e1217 100%)',
-                    color: '#ffffff',
-                    fontWeight: 800,
-                    fontSize: '0.98rem',
-                    textDecoration: 'none',
-                    boxShadow: '0 8px 22px rgba(200, 16, 46, 0.45)'
-                  }}
+                  className="nims-call-btn"
                 >
                   <PhoneCall size={19} />
                   <span>Call 0141-23 88 999</span>
@@ -999,19 +987,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
 
                 <button
                   onClick={() => onOpenBooking ? onOpenBooking() : null}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.65rem',
-                    padding: '0.85rem 1.8rem',
-                    borderRadius: '50px',
-                    background: 'rgba(255,255,255,0.12)',
-                    color: '#ffffff',
-                    fontWeight: 700,
-                    fontSize: '0.95rem',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    cursor: 'pointer'
-                  }}
+                  className="nims-opd-btn"
                 >
                   <Calendar size={18} />
                   <span>Book OPD Doctor</span>
@@ -1020,66 +996,32 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
             </div>
 
             {/* RIGHT SIDE: NIMS TATKAAL SEVA LOGO & APP STORE / GOOGLE PLAY BUTTONS */}
-            <div style={{
-              background: 'rgba(15, 23, 42, 0.75)',
-              border: '1.5px solid rgba(229, 182, 74, 0.45)',
-              borderRadius: '20px',
-              padding: '1.85rem 2rem',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              gap: '1.25rem',
-              boxShadow: '0 15px 35px rgba(0,0,0,0.5)',
-              backdropFilter: 'blur(10px)'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', width: '100%', justifyContent: 'center' }}>
+            <div className="nims-app-download-box">
+              <div className="nims-app-brand-header">
                 <img 
                   src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg" 
                   alt="NIMS Hospital Logo"
-                  style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)' }}
+                  className="nims-app-card-logo"
                 />
-                <div style={{ textAlign: 'left' }}>
-                  <span style={{
-                    display: 'block',
-                    fontSize: '0.65rem',
-                    fontWeight: 900,
-                    color: 'var(--nims-gold)',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase'
-                  }}>
+                <div className="nims-app-brand-text">
+                  <span className="nims-app-badge">
                     OFFICIAL MOBILE APP
                   </span>
-                  <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
+                  <h3 className="nims-app-title">
                     NIMS TATKAAL SEVA
                   </h3>
                 </div>
               </div>
 
-              <p style={{ margin: 0, fontSize: '0.86rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.45 }}>
+              <p className="nims-app-desc">
                 Download the mobile app for 1-tap ICU bed booking, emergency tracking &amp; lab reports.
               </p>
 
               {/* APP STORE & GOOGLE PLAY DOWNLOAD BUTTONS */}
-              <div style={{ display: 'flex', gap: '0.75rem', width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div className="nims-app-store-grid">
                 <Link 
                   to="/tatkaal-booking"
-                  style={{
-                    flex: '1',
-                    minWidth: '140px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.55rem',
-                    padding: '0.65rem 0.9rem',
-                    background: '#090d16',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    borderRadius: '12px',
-                    textDecoration: 'none',
-                    boxShadow: '0 6px 18px rgba(0,0,0,0.4)',
-                    transition: 'all 0.2s ease'
-                  }}
+                  className="nims-store-btn"
                 >
                   <AppStoreMark />
                   <div style={{ textAlign: 'left', lineHeight: 1.15 }}>
@@ -1090,22 +1032,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
 
                 <Link 
                   to="/tatkaal-booking"
-                  style={{
-                    flex: '1',
-                    minWidth: '140px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.55rem',
-                    padding: '0.65rem 0.9rem',
-                    background: '#090d16',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    borderRadius: '12px',
-                    textDecoration: 'none',
-                    boxShadow: '0 6px 18px rgba(0,0,0,0.4)',
-                    transition: 'all 0.2s ease'
-                  }}
+                  className="nims-store-btn"
                 >
                   <GooglePlayMark />
                   <div style={{ textAlign: 'left', lineHeight: 1.15 }}>

@@ -242,50 +242,106 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
         </div>
 
         <div className="container relative z-10 width-100">
-          {/* STATIC 6 SERVICE CARDS EVENLY DISTRIBUTED */}
-          <div className="wave-bar-items">
-            <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
-              <div className="wave-icon-bubble">
-                <Bed size={20} color="#c8102e" />
-              </div>
-              <span>ICU Bed<br/>Booking</span>
-              <span className="card-live-badge-dot" />
+          {/* NIMS TATKAAL SEVA HEADER BADGE */}
+          <div className="wave-bar-header">
+            <div className="wave-bar-title-badge">
+              <Sparkles size={14} color="var(--nims-gold)" />
+              <span>NIMS TATKAAL SEVA — 24/7 INSTANT SERVICES</span>
             </div>
+          </div>
 
-            <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
-              <div className="wave-icon-bubble">
-                <Stethoscope size={20} color="#c8102e" />
+          {/* INFINITE MARQUEE SLIDING TRACK */}
+          <div className="nims-hero-marquee-wrapper">
+            <div className="nims-hero-marquee-track">
+              {/* SET 1 */}
+              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <Bed size={19} color="#c8102e" />
+                </div>
+                <span>ICU Bed<br/>Booking</span>
+                <span className="card-live-badge-dot" />
               </div>
-              <span>OPD<br/>Booking</span>
-            </div>
 
-            <a href="tel:0141-2388999" className="wave-item-card">
-              <div className="wave-icon-bubble">
-                <Ambulance size={20} color="#c8102e" />
+              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <Stethoscope size={19} color="#c8102e" />
+                </div>
+                <span>OPD<br/>Booking</span>
               </div>
-              <span>Ambulance<br/>Booking</span>
-              <span className="card-live-badge-dot" />
-            </a>
 
-            <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
-              <div className="wave-icon-bubble">
-                <CalendarDays size={20} color="#c8102e" />
-              </div>
-              <span>Online<br/>Appointment</span>
-            </div>
+              <a href="tel:0141-2388999" className="wave-item-card">
+                <div className="wave-icon-bubble">
+                  <Ambulance size={19} color="#c8102e" />
+                </div>
+                <span>Ambulance<br/>Booking</span>
+                <span className="card-live-badge-dot" />
+              </a>
 
-            <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
-              <div className="wave-icon-bubble">
-                <FlaskConical size={20} color="#c8102e" />
+              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <CalendarDays size={19} color="#c8102e" />
+                </div>
+                <span>Online<br/>Appointment</span>
               </div>
-              <span>Health Checkup<br/>Packages</span>
-            </div>
 
-            <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
-              <div className="wave-icon-bubble">
-                <HomeIcon size={20} color="#c8102e" />
+              <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <FlaskConical size={19} color="#c8102e" />
+                </div>
+                <span>Health Checkup<br/>Packages</span>
               </div>
-              <span>Sample Collect<br/>From Home</span>
+
+              <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <HomeIcon size={19} color="#c8102e" />
+                </div>
+                <span>Sample Collect<br/>From Home</span>
+              </div>
+
+              {/* SET 2 (DUPLICATE FOR CONTINUOUS INFINITE LOOP) */}
+              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <Bed size={19} color="#c8102e" />
+                </div>
+                <span>ICU Bed<br/>Booking</span>
+                <span className="card-live-badge-dot" />
+              </div>
+
+              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <Stethoscope size={19} color="#c8102e" />
+                </div>
+                <span>OPD<br/>Booking</span>
+              </div>
+
+              <a href="tel:0141-2388999" className="wave-item-card">
+                <div className="wave-icon-bubble">
+                  <Ambulance size={19} color="#c8102e" />
+                </div>
+                <span>Ambulance<br/>Booking</span>
+                <span className="card-live-badge-dot" />
+              </a>
+
+              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <CalendarDays size={19} color="#c8102e" />
+                </div>
+                <span>Online<br/>Appointment</span>
+              </div>
+
+              <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <FlaskConical size={19} color="#c8102e" />
+                </div>
+                <span>Health Checkup<br/>Packages</span>
+              </div>
+
+              <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
+                <div className="wave-icon-bubble">
+                  <HomeIcon size={19} color="#c8102e" />
+                </div>
+                <span>Sample Collect<br/>From Home</span>
+              </div>
             </div>
           </div>
         </div>
