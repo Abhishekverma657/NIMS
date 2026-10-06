@@ -6,12 +6,12 @@ import {
   Printer, Check, AlertCircle, Award, Stethoscope
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { vacanciesData } from '../../data/vacanciesData';
 
-export default function VacanciesModal({ isOpen, onClose, initialJob }) {
+export default function VacanciesModal({ isOpen, onClose, initialJob, vacanciesData = [] }) {
   const [selectedJob, setSelectedJob] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [tokenNumber, setTokenNumber] = useState('');
   const [activeStep, setActiveStep] = useState(1); // 1: Personal, 2: Qualification & Council, 3: Experience & Resume
 
@@ -55,6 +55,8 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
     resumeSize: ''
   });
 
+  const [resumeFile, setResumeFile] = useState(null);
+
   if (!isOpen) return null;
 
   const categories = ['All', 'Nursing', 'Doctors', 'Allied Health', 'Pharmacy', 'Administration'];
@@ -67,6 +69,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setResumeFile(file);
       const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
       setApplicant(prev => ({
         ...prev,
@@ -93,15 +96,45 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!applicant.name || !applicant.phone) {
       alert('Please fill in candidate name and mobile number.');
       return;
     }
-    const token = 'NIMS-HR-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
-    setTokenNumber(token);
-    setFormSubmitted(true);
+    
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+      Object.keys(applicant).forEach(key => {
+        if (key !== 'resumeName' && key !== 'resumeSize') {
+          formData.append(key, applicant[key]);
+        }
+      });
+      if (resumeFile) {
+        formData.append('resume', resumeFile);
+      }
+
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+      const res = await fetch(`${baseUrl}/hr/jobs/${selectedJob.id}/apply`, {
+        method: 'POST',
+        body: formData
+      });
+      
+      const data = await res.json();
+      if (data.success) {
+        const token = 'NIMS-HR-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
+        setTokenNumber(token);
+        setFormSubmitted(true);
+      } else {
+        alert(data.message || 'Error submitting application.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Network error while submitting application.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCloseAll = () => {
@@ -293,7 +326,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                 <img src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg" alt="NIMS Hospital" />
               </div>
               <div class="hospital-text">
-                <h1>NIMS HOSPITAL & MEDICAL UNIVERSITY</h1>
+                <h1>NIMS HOSPITAL (Unit of NIMS UNIVERSITY Rajasthan)</h1>
                 <p>National Highway 11C, Delhi-Jaipur Expressway, Jaipur, Rajasthan 303121</p>
                 <p>Medical Recruitment & HR Directorate &bull; 2,400 Bed Super Speciality Hospital</p>
               </div>
@@ -876,7 +909,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                   <div className="v-form-grid-2">
                     <div>
                       <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
-                        Total Relevant Clinical Experience *
+                        Total Experience *
                       </label>
                       <select
                         value={applicant.experience}
@@ -986,11 +1019,32 @@ export default function VacanciesModal({ isOpen, onClose, initialJob }) {
                     </button>
                     <button
                       type="submit"
+                      disabled={isSubmitting}
                       className="btn btn-primary"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.75rem 1.6rem', fontSize: '0.95rem' }}
+                      style={{ 
+                        display: 'inline-flex', 
+                        alignItems: 'center', 
+                        gap: '8px', 
+                        padding: '0.75rem 1.6rem', 
+                        fontSize: '0.95rem',
+                        opacity: isSubmitting ? 0.7 : 1,
+                        cursor: isSubmitting ? 'not-allowed' : 'pointer'
+                      }}
                     >
-                      <Send size={16} />
-                      <span>Submit Official Application</span>
+                      {isSubmitting ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style={{ animation: 'spin 1s linear infinite' }}>
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span>Submitting...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send size={16} />
+                          <span>Submit Official Application</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </motion.div>

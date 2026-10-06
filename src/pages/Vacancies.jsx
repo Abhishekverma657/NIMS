@@ -43,112 +43,21 @@ export default function Vacancies() {
     resumeName: ''
   });
 
-  const vacanciesData = [
-    {
-      id: 'nurse-staff',
-      title: 'Staff Nurse (ICU / OT / General Wards)',
-      department: 'Nursing',
-      deptCategory: 'Nursing',
-      qualification: 'B.Sc Nursing / GNM (State Nursing Council Registered)',
-      experience: '1 - 6 Years in NABH Hospital',
-      location: 'NIMS Hospital, NH-11C, Jaipur',
-      type: 'Full-time',
-      vacanciesCount: 15,
-      description: 'Provide high-quality patient care in intensive care units, post-operative wards, and modular operation theatres under senior nursing leadership.',
-      skills: ['Critical Care', 'IV Cannulation', 'Patient Monitoring', 'NABH Protocols']
-    },
-    {
-      id: 'res-doctor',
-      title: 'Resident Doctor (MD / MS / DNB)',
-      department: 'General Medicine & Emergency',
-      deptCategory: 'Doctors',
-      qualification: 'MBBS + MD/MS/DNB (MCI / State Medical Council Registered)',
-      experience: '0 - 4 Years',
-      location: 'NIMS Hospital, NH-11C, Jaipur',
-      type: 'Full-time',
-      vacanciesCount: 6,
-      description: 'Manage clinical admissions, round-the-clock emergency triage, IPD patient management, and work alongside tertiary super specialists.',
-      skills: ['Emergency Triage', 'IPD Care', 'Clinical Diagnosis', 'Patient Counseling']
-    },
-    {
-      id: 'lab-technician',
-      title: 'Senior Pathology Lab Technician',
-      department: 'Pathology & Blood Bank',
-      deptCategory: 'Allied Health',
-      qualification: 'DMLT / BMLT / MMLT',
-      experience: '2 - 5 Years in Automated Diagnostic Lab',
-      location: 'NIMS Hospital, NH-11C, Jaipur',
-      type: 'Full-time',
-      vacanciesCount: 4,
-      description: 'Operate advanced automated biochemistry, hematology, and histopathology analyzers under strict NABL quality standards.',
-      skills: ['Hematology', 'Biochemistry', 'Quality Control', 'Blood Bank']
-    },
-    {
-      id: 'front-desk',
-      title: 'Front Desk Executive & Patient Care Officer',
-      department: 'Hospital Administration',
-      deptCategory: 'Admin',
-      qualification: 'Graduate / BBA / MHA / Hotel Management',
-      experience: '1 - 4 Years in Healthcare or Hospitality',
-      location: 'NIMS Hospital, NH-11C, Jaipur',
-      type: 'Full-time',
-      vacanciesCount: 5,
-      description: 'Handle patient registration, OPD appointments, VIP coordination, and insurance/TPA inquiry desk with empathetic communication.',
-      skills: ['HIS Software', 'Patient Communication', 'Billing Coordination', 'Multilingual']
-    },
-    {
-      id: 'ot-technician',
-      title: 'OT & Anesthesia Technician',
-      department: 'Surgical OT Services',
-      deptCategory: 'Allied Health',
-      qualification: 'Diploma / Degree in Operation Theatre Technology',
-      experience: '2 - 6 Years in Modular Surgical Suites',
-      location: 'NIMS Hospital, NH-11C, Jaipur',
-      type: 'Full-time',
-      vacanciesCount: 4,
-      description: 'Prepare laparoscopic suites, maintain sterile surgical equipment, assist surgical teams, and monitor anesthesia delivery systems.',
-      skills: ['Sterilization', 'Anesthesia Equipment', 'Laparoscopy Setup', 'Surgical Assisting']
-    },
-    {
-      id: 'dialysis-technician',
-      title: 'Dialysis Technician',
-      department: 'Nephrology & Renal Sciences',
-      deptCategory: 'Allied Health',
-      qualification: 'Diploma / B.Sc in Dialysis Technology',
-      experience: '1 - 5 Years Hemodialysis Unit',
-      location: 'NIMS Hospital, NH-11C, Jaipur',
-      type: 'Full-time',
-      vacanciesCount: 3,
-      description: 'Operate advanced hemodialysis machines, initiate and monitor dialyzer circuits, and ensure safety for end-stage renal disease patients.',
-      skills: ['Hemodialysis', 'Vascular Access', 'Water Treatment RO', 'Patient Safety']
-    },
-    {
-      id: 'clinical-pharmacist',
-      title: 'Hospital Pharmacist',
-      department: 'Pharmacy Services',
-      deptCategory: 'Allied Health',
-      qualification: 'B.Pharm / D.Pharm (Registered with Pharmacy Council)',
-      experience: '1 - 3 Years Inpatient/Outpatient Pharmacy',
-      location: 'NIMS Hospital, NH-11C, Jaipur',
-      type: 'Full-time',
-      vacanciesCount: 4,
-      description: 'Dispense prescribed pharmaceuticals, review medication charts for drug interactions, and maintain narcotic/emergency drug inventories.',
-      skills: ['Drug Dispensing', 'Inventory Control', 'Prescription Audits', 'Cold Chain']
-    },
-    {
-      id: 'radiology-consultant',
-      title: 'Consultant Radiologist',
-      department: 'Radio-Diagnosis & Imaging',
-      deptCategory: 'Doctors',
-      qualification: 'MD / DNB / DMRD in Radio-Diagnosis',
-      experience: '3+ Years Experience',
-      location: 'NIMS Hospital, NH-11C, Jaipur',
-      type: 'Full-time',
-      vacanciesCount: 2,
-      description: 'Lead 128-slice CT scans, 3.0 Tesla MRI reporting, ultrasound Doppler examinations, and non-vascular image-guided procedures.',
-      skills: ['MRI 3.0T', 'CT 128-Slice', 'USG Doppler', 'Guided Biopsies']
-    }
-  ];
+  const [vacanciesData, setVacanciesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+    fetch(`${baseUrl}/hr/jobs?activeOnly=true`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setVacanciesData(data.jobs.map(job => ({ ...job, id: job._id })));
+        }
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
 
   const categories = [
     { id: 'All', label: 'All Open Roles' },
@@ -210,7 +119,7 @@ export default function Vacancies() {
       <body>
         <div class="wrapper">
           <div class="header">
-            <h1>NIMS HOSPITAL & MEDICAL UNIVERSITY</h1>
+            <h1>NIMS HOSPITAL (Unit of NIMS UNIVERSITY Rajasthan)</h1>
             <p>National Highway 11C, Delhi-Jaipur Expressway, Jaipur, Rajasthan 303121 &bull; Central Recruitment Directorate</p>
           </div>
           <div class="token-strip">
@@ -519,6 +428,7 @@ export default function Vacancies() {
           setModalJob(null);
         }}
         initialJob={modalJob}
+        vacanciesData={vacanciesData}
       />
     </div>
   );
