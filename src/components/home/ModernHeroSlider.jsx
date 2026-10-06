@@ -211,7 +211,7 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
       {/* 3. RED ORGANIC WAVE CONTAINER WITH 6 STATIC QUICK ACTION CARDS */}
       <div className="hero-bottom-wave-bar">
         <div className="bottom-wave-svg-overlay">
-          <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className="bottom-wave-svg">
+          <svg viewBox="0 0 1440 130" preserveAspectRatio="none" className="bottom-wave-svg">
             <defs>
               <linearGradient id="bottomBarRedGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#7a0000" />
@@ -228,14 +228,14 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
 
             {/* Accent Highlight Line along wave curve top */}
             <path 
-              d="M0,28 Q360,0 720,24 T1440,14 L1440,180 L0,180 Z" 
+              d="M0,22 Q360,0 720,20 T1440,12 L1440,130 L0,130 Z" 
               fill="none" 
               stroke="url(#waveBorderHighlight)" 
               strokeWidth="3"
             />
             {/* Main Rich Crimson Red Wave Fill */}
             <path 
-              d="M0,30 Q360,2 720,26 T1440,16 L1440,180 L0,180 Z" 
+              d="M0,24 Q360,2 720,22 T1440,14 L1440,130 L0,130 Z" 
               fill="url(#bottomBarRedGrad)" 
             />
           </svg>

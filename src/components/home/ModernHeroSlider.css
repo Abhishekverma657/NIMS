@@ -52,7 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 155px; /* Accounts for bottom wave container */
+  padding-bottom: 100px; /* Accounts for bottom wave container */
 }
 
 /* LEFT SIDE: FLOATING REQUEST CALLBACK COLUMN (SHIFTED HIGHER UP) */
@@ -453,12 +453,12 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 210px;
+  height: 125px;
   z-index: 20;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
 }
 
 .bottom-wave-svg-overlay {
@@ -518,12 +518,7 @@
 /* WHITE PILL SERVICE CARDS ENCLOSED INSIDE RED WAVE */
 /* NIMS TATKAAL SEVA WAVE BAR HEADER & MARQUEE SLIDER */
 .wave-bar-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 36px;
-  padding-bottom: 12px;
-  margin-bottom: 0;
+  display: none !important;
 }
 
 .wave-bar-title-badge {
