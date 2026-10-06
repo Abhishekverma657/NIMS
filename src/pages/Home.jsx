@@ -183,50 +183,21 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
       />
 
       {/* LIVE EMERGENCY TICKER STRIP */}
-      <div style={{
-        background: 'linear-gradient(90deg, #172a34 0%, #0f232e 100%)',
-        color: '#ffffff',
-        padding: '0.75rem 0',
-        borderBottom: '2px solid var(--nims-gold)',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-      }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              background: 'var(--nims-orange)',
-              color: '#ffffff',
-              padding: '0.25rem 0.75rem',
-              borderRadius: '9999px',
-              fontSize: '0.72rem',
-              fontWeight: 800,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase'
-            }}>
+      <div className="nims-live-status-bar">
+        <div className="container nims-live-status-inner">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <span className="nims-live-status-badge">
               <span className="pulse-dot-live" style={{ background: '#ffffff' }} />
               24×7 LIVE STATUS
             </span>
-            <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)' }}>
+            <span className="nims-live-status-text">
               Level-1 Emergency &amp; Trauma Unit Active • OPD Open • Cashless Insurance Accepted
             </span>
           </div>
 
-          <a 
-            href="tel:0141-2388999"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              color: 'var(--nims-gold)',
-              fontWeight: 800,
-              fontSize: '0.92rem',
-              textDecoration: 'none'
-            }}
-          >
-            <PhoneCall size={16} />
-            Emergency Hotline: 0141-23 88 999
+          <a href="tel:0141-2388999" className="nims-live-status-hotline">
+            <PhoneCall size={15} />
+            <span>Emergency Hotline: 0141-23 88 999</span>
           </a>
         </div>
       </div>
@@ -956,18 +927,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
         borderTop: '1px solid rgba(229,182,74,0.2)'
       }}>
         <div className="container" style={{ position: 'relative', zIndex: 10 }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            alignItems: 'center',
-            gap: '2.5rem',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            borderRadius: '24px',
-            padding: '2.5rem 3rem',
-            backdropFilter: 'blur(12px)',
-            boxShadow: '0 20px 50px rgba(0,0,0,0.4)'
-          }}>
+          <div className="nims-emergency-callout-card">
             {/* LEFT SIDE: TEXT & CALL CTA */}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.85rem', flexWrap: 'wrap' }}>
