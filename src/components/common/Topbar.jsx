@@ -121,7 +121,7 @@ export default function Topbar({ onOpenVacancies }) {
             </Link>
             <Link to="/patient-portal" className="mobile-quick-link">
               <User size={11} color="var(--nims-orange)" />
-              <span>Portal</span>
+              <span>Patient Portal</span>
             </Link>
           </div>
         </div>

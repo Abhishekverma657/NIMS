@@ -118,7 +118,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
       titlePart1: 'Healing built on ',
       highlightWord: 'trust, ',
       titlePart2: 'powered by clinical expertise.',
-      subtitle: "One of India's largest 2,400-bed super-speciality teaching & research hospitals.",
+      subtitle: "One of India's largest 2,400-bed super-speciality & research hospitals.",
       primaryCta: 'Book OPD Visit',
       secondaryCta: 'Explore Specialities',
       secondaryLink: '/specialities'
@@ -183,50 +183,21 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
       />
 
       {/* LIVE EMERGENCY TICKER STRIP */}
-      <div style={{
-        background: 'linear-gradient(90deg, #172a34 0%, #0f232e 100%)',
-        color: '#ffffff',
-        padding: '0.75rem 0',
-        borderBottom: '2px solid var(--nims-gold)',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-      }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              background: 'var(--nims-orange)',
-              color: '#ffffff',
-              padding: '0.25rem 0.75rem',
-              borderRadius: '9999px',
-              fontSize: '0.72rem',
-              fontWeight: 800,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase'
-            }}>
+      <div className="nims-live-status-bar">
+        <div className="container nims-live-status-inner">
+          <div className="nims-live-status-group">
+            <span className="nims-live-status-badge">
               <span className="pulse-dot-live" style={{ background: '#ffffff' }} />
               24×7 LIVE STATUS
             </span>
-            <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'rgba(255,255,255,0.92)' }}>
+            <span className="nims-live-status-text">
               Level-1 Emergency &amp; Trauma Unit Active • OPD Open • Cashless Insurance Accepted
             </span>
           </div>
 
-          <a 
-            href="tel:0141-2388999"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              color: 'var(--nims-gold)',
-              fontWeight: 800,
-              fontSize: '0.92rem',
-              textDecoration: 'none'
-            }}
-          >
-            <PhoneCall size={16} />
-            Emergency Hotline: 0141-23 88 999
+          <a href="tel:0141-2388999" className="nims-live-status-hotline">
+            <PhoneCall size={15} />
+            <span>Emergency Hotline: 0141-23 88 999</span>
           </a>
         </div>
       </div>
@@ -766,64 +737,23 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
               <p>Listen directly to patients and families who experienced critical recoveries and compassionate care at NIMS Hospital.</p>
 
               {/* Review Type Filter Tabs */}
-              <div style={{
-                display: 'inline-flex',
-                background: '#ffffff',
-                padding: '0.3rem',
-                borderRadius: 'var(--radius-xl)',
-                border: '1px solid var(--nims-border)',
-                marginTop: '1.5rem',
-                gap: '0.35rem'
-              }}>
+              <div className="nims-review-filter-wrapper">
                 <button
                   onClick={() => setReviewFilter('all')}
-                  style={{
-                    padding: '0.45rem 1rem',
-                    borderRadius: 'var(--radius-xl)',
-                    border: 'none',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    background: reviewFilter === 'all' ? 'var(--nims-navy)' : 'transparent',
-                    color: reviewFilter === 'all' ? '#fff' : 'var(--color-text-secondary)'
-                  }}
+                  className={`nims-review-tab-btn ${reviewFilter === 'all' ? 'active-all' : ''}`}
                 >
-                  All Stories
+                  <span>All Stories</span>
                 </button>
                 <button
                   onClick={() => setReviewFilter('video')}
-                  style={{
-                    padding: '0.45rem 1rem',
-                    borderRadius: 'var(--radius-xl)',
-                    border: 'none',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    background: reviewFilter === 'video' ? 'var(--nims-orange)' : 'transparent',
-                    color: reviewFilter === 'video' ? '#fff' : 'var(--color-text-secondary)'
-                  }}
+                  className={`nims-review-tab-btn ${reviewFilter === 'video' ? 'active-video' : ''}`}
                 >
                   <Video size={15} />
                   <span>Video Reviews</span>
                 </button>
                 <button
                   onClick={() => setReviewFilter('written')}
-                  style={{
-                    padding: '0.45rem 1rem',
-                    borderRadius: 'var(--radius-xl)',
-                    border: 'none',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    background: reviewFilter === 'written' ? 'var(--nims-navy)' : 'transparent',
-                    color: reviewFilter === 'written' ? '#fff' : 'var(--color-text-secondary)'
-                  }}
+                  className={`nims-review-tab-btn ${reviewFilter === 'written' ? 'active-written' : ''}`}
                 >
                   <FileText size={15} />
                   <span>Google Reviews (5.0 ★)</span>
@@ -886,8 +816,8 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                       }}
                     >
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: '1', minWidth: '180px' }}>
                             <div style={{
                               width: '42px',
                               height: '42px',
@@ -898,7 +828,8 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                               alignItems: 'center',
                               justifyContent: 'center',
                               fontWeight: 700,
-                              fontSize: '0.9rem'
+                              fontSize: '0.9rem',
+                              flexShrink: 0
                             }}>
                               {testi.initials}
                             </div>
@@ -912,7 +843,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                             </div>
                           </div>
 
-                          <span className="badge-pill badge-green" style={{ fontSize: '0.7rem' }}>
+                          <span className="badge-pill badge-green" style={{ fontSize: '0.7rem', whiteSpace: 'nowrap', flexShrink: 0 }}>
                             Google Review
                           </span>
                         </div>
@@ -956,18 +887,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
         borderTop: '1px solid rgba(229,182,74,0.2)'
       }}>
         <div className="container" style={{ position: 'relative', zIndex: 10 }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            alignItems: 'center',
-            gap: '2.5rem',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            borderRadius: '24px',
-            padding: '2.5rem 3rem',
-            backdropFilter: 'blur(12px)',
-            boxShadow: '0 20px 50px rgba(0,0,0,0.4)'
-          }}>
+          <div className="nims-emergency-callout-card">
             {/* LEFT SIDE: TEXT & CALL CTA */}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.85rem', flexWrap: 'wrap' }}>
@@ -1016,22 +936,10 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                 Book 24/7 ICU Beds, Request Emergency ALS Ambulances, or Schedule Specialist OPD Consultations instantly via the <strong>NIMS Tatkaal Seva Mobile App</strong> or call our Emergency Hotline.
               </p>
 
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div className="nims-emergency-call-group">
                 <a 
                   href="tel:0141-2388999"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.65rem',
-                    padding: '0.85rem 1.8rem',
-                    borderRadius: '50px',
-                    background: 'linear-gradient(135deg, #c8102e 0%, #9e1217 100%)',
-                    color: '#ffffff',
-                    fontWeight: 800,
-                    fontSize: '0.98rem',
-                    textDecoration: 'none',
-                    boxShadow: '0 8px 22px rgba(200, 16, 46, 0.45)'
-                  }}
+                  className="nims-call-btn"
                 >
                   <PhoneCall size={19} />
                   <span>Call 0141-23 88 999</span>
@@ -1039,19 +947,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
 
                 <button
                   onClick={() => onOpenBooking ? onOpenBooking() : null}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.65rem',
-                    padding: '0.85rem 1.8rem',
-                    borderRadius: '50px',
-                    background: 'rgba(255,255,255,0.12)',
-                    color: '#ffffff',
-                    fontWeight: 700,
-                    fontSize: '0.95rem',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    cursor: 'pointer'
-                  }}
+                  className="nims-opd-btn"
                 >
                   <Calendar size={18} />
                   <span>Book OPD Doctor</span>
@@ -1060,66 +956,32 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
             </div>
 
             {/* RIGHT SIDE: NIMS TATKAAL SEVA LOGO & APP STORE / GOOGLE PLAY BUTTONS */}
-            <div style={{
-              background: 'rgba(15, 23, 42, 0.75)',
-              border: '1.5px solid rgba(229, 182, 74, 0.45)',
-              borderRadius: '20px',
-              padding: '1.85rem 2rem',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              gap: '1.25rem',
-              boxShadow: '0 15px 35px rgba(0,0,0,0.5)',
-              backdropFilter: 'blur(10px)'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', width: '100%', justifyContent: 'center' }}>
+            <div className="nims-app-download-box">
+              <div className="nims-app-brand-header">
                 <img 
                   src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg" 
                   alt="NIMS Hospital Logo"
-                  style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)' }}
+                  className="nims-app-card-logo"
                 />
-                <div style={{ textAlign: 'left' }}>
-                  <span style={{
-                    display: 'block',
-                    fontSize: '0.65rem',
-                    fontWeight: 900,
-                    color: 'var(--nims-gold)',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase'
-                  }}>
+                <div className="nims-app-brand-text">
+                  <span className="nims-app-badge">
                     OFFICIAL MOBILE APP
                   </span>
-                  <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
+                  <h3 className="nims-app-title">
                     NIMS TATKAAL SEVA
                   </h3>
                 </div>
               </div>
 
-              <p style={{ margin: 0, fontSize: '0.86rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.45 }}>
+              <p className="nims-app-desc">
                 Download the mobile app for 1-tap ICU bed booking, emergency tracking &amp; lab reports.
               </p>
 
               {/* APP STORE & GOOGLE PLAY DOWNLOAD BUTTONS */}
-              <div style={{ display: 'flex', gap: '0.75rem', width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div className="nims-app-store-grid">
                 <Link 
                   to="/tatkaal-booking"
-                  style={{
-                    flex: '1',
-                    minWidth: '140px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.55rem',
-                    padding: '0.65rem 0.9rem',
-                    background: '#090d16',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    borderRadius: '12px',
-                    textDecoration: 'none',
-                    boxShadow: '0 6px 18px rgba(0,0,0,0.4)',
-                    transition: 'all 0.2s ease'
-                  }}
+                  className="nims-store-btn"
                 >
                   <AppStoreMark />
                   <div style={{ textAlign: 'left', lineHeight: 1.15 }}>
@@ -1130,22 +992,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
 
                 <Link 
                   to="/tatkaal-booking"
-                  style={{
-                    flex: '1',
-                    minWidth: '140px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.55rem',
-                    padding: '0.65rem 0.9rem',
-                    background: '#090d16',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    borderRadius: '12px',
-                    textDecoration: 'none',
-                    boxShadow: '0 6px 18px rgba(0,0,0,0.4)',
-                    transition: 'all 0.2s ease'
-                  }}
+                  className="nims-store-btn"
                 >
                   <GooglePlayMark />
                   <div style={{ textAlign: 'left', lineHeight: 1.15 }}>
