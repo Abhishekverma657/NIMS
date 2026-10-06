@@ -118,7 +118,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
       titlePart1: 'Healing built on ',
       highlightWord: 'trust, ',
       titlePart2: 'powered by clinical expertise.',
-      subtitle: "One of India's largest 2,400-bed super-speciality teaching & research hospitals.",
+      subtitle: "One of India's largest 2,400-bed super-speciality & research hospitals.",
       primaryCta: 'Book OPD Visit',
       secondaryCta: 'Explore Specialities',
       secondaryLink: '/specialities'
@@ -737,64 +737,23 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
               <p>Listen directly to patients and families who experienced critical recoveries and compassionate care at NIMS Hospital.</p>
 
               {/* Review Type Filter Tabs */}
-              <div style={{
-                display: 'inline-flex',
-                background: '#ffffff',
-                padding: '0.3rem',
-                borderRadius: 'var(--radius-xl)',
-                border: '1px solid var(--nims-border)',
-                marginTop: '1.5rem',
-                gap: '0.35rem'
-              }}>
+              <div className="nims-review-filter-wrapper">
                 <button
                   onClick={() => setReviewFilter('all')}
-                  style={{
-                    padding: '0.45rem 1rem',
-                    borderRadius: 'var(--radius-xl)',
-                    border: 'none',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    background: reviewFilter === 'all' ? 'var(--nims-navy)' : 'transparent',
-                    color: reviewFilter === 'all' ? '#fff' : 'var(--color-text-secondary)'
-                  }}
+                  className={`nims-review-tab-btn ${reviewFilter === 'all' ? 'active-all' : ''}`}
                 >
-                  All Stories
+                  <span>All Stories</span>
                 </button>
                 <button
                   onClick={() => setReviewFilter('video')}
-                  style={{
-                    padding: '0.45rem 1rem',
-                    borderRadius: 'var(--radius-xl)',
-                    border: 'none',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    background: reviewFilter === 'video' ? 'var(--nims-orange)' : 'transparent',
-                    color: reviewFilter === 'video' ? '#fff' : 'var(--color-text-secondary)'
-                  }}
+                  className={`nims-review-tab-btn ${reviewFilter === 'video' ? 'active-video' : ''}`}
                 >
                   <Video size={15} />
                   <span>Video Reviews</span>
                 </button>
                 <button
                   onClick={() => setReviewFilter('written')}
-                  style={{
-                    padding: '0.45rem 1rem',
-                    borderRadius: 'var(--radius-xl)',
-                    border: 'none',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    background: reviewFilter === 'written' ? 'var(--nims-navy)' : 'transparent',
-                    color: reviewFilter === 'written' ? '#fff' : 'var(--color-text-secondary)'
-                  }}
+                  className={`nims-review-tab-btn ${reviewFilter === 'written' ? 'active-written' : ''}`}
                 >
                   <FileText size={15} />
                   <span>Google Reviews (5.0 ★)</span>
@@ -857,8 +816,8 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                       }}
                     >
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: '1', minWidth: '180px' }}>
                             <div style={{
                               width: '42px',
                               height: '42px',
@@ -869,7 +828,8 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                               alignItems: 'center',
                               justifyContent: 'center',
                               fontWeight: 700,
-                              fontSize: '0.9rem'
+                              fontSize: '0.9rem',
+                              flexShrink: 0
                             }}>
                               {testi.initials}
                             </div>
@@ -883,7 +843,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                             </div>
                           </div>
 
-                          <span className="badge-pill badge-green" style={{ fontSize: '0.7rem' }}>
+                          <span className="badge-pill badge-green" style={{ fontSize: '0.7rem', whiteSpace: 'nowrap', flexShrink: 0 }}>
                             Google Review
                           </span>
                         </div>

@@ -94,7 +94,8 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
 
 
       {/* Main 4-Column Footer Content */}
-      <div className="container" style={{ padding: '3.75rem 1.5rem 2.5rem' }}>
+      <div style={{ padding: '3.75rem 0 2.5rem' }}>
+        <div className="container">
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
@@ -124,7 +125,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
               </Link>
             </div>
             <p style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.65, marginBottom: '1.25rem' }}>
-              One of Northern India's largest 2,400-bed quaternary medical teaching hospitals. Bringing together renowned clinicians, organ transplantation, and advanced diagnostics on a single integrated campus.
+              One of Northern India's largest 2,400-bed quaternary medical super-speciality hospitals. Bringing together renowned clinicians, organ transplantation, and advanced diagnostics on a single integrated campus.
             </p>
 
             {/* Quality Badges */}
@@ -484,6 +485,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
   );
 }

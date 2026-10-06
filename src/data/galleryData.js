@@ -8,7 +8,7 @@ export const galleryData = [
   },
   {
     id: "g-01",
-    title: "NIMS Quaternary Teaching Hospital Main Facade",
+    title: "NIMS Hospital Jaipur Main Facade",
     category: "Campus & Facilities",
     image: "/assets/images/gallery/gallery01.png",
     caption: "Northern India's landmark healthcare campus spanning extensive acres on the Jaipur-Delhi Expressway NH-11C."

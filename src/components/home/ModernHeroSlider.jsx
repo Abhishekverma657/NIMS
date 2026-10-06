@@ -211,7 +211,7 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
       {/* 3. RED ORGANIC WAVE CONTAINER WITH 6 STATIC QUICK ACTION CARDS */}
       <div className="hero-bottom-wave-bar">
         <div className="bottom-wave-svg-overlay">
-          <svg viewBox="0 0 1440 140" preserveAspectRatio="none" className="bottom-wave-svg">
+          <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className="bottom-wave-svg">
             <defs>
               <linearGradient id="bottomBarRedGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#7a0000" />
@@ -228,29 +228,31 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
 
             {/* Accent Highlight Line along wave curve top */}
             <path 
-              d="M0,32 Q360,-12 720,28 T1440,16 L1440,140 L0,140 Z" 
+              d="M0,28 Q360,0 720,24 T1440,14 L1440,180 L0,180 Z" 
               fill="none" 
               stroke="url(#waveBorderHighlight)" 
               strokeWidth="3"
             />
             {/* Main Rich Crimson Red Wave Fill */}
             <path 
-              d="M0,35 Q360,-10 720,30 T1440,18 L1440,140 L0,140 Z" 
+              d="M0,30 Q360,2 720,26 T1440,16 L1440,180 L0,180 Z" 
               fill="url(#bottomBarRedGrad)" 
             />
           </svg>
         </div>
 
-        <div className="container relative z-10 width-100">
+        <div className="relative z-10 width-100">
           {/* NIMS TATKAAL SEVA HEADER BADGE */}
-          <div className="wave-bar-header">
-            <div className="wave-bar-title-badge">
-              <Sparkles size={14} color="var(--nims-gold)" />
-              <span>NIMS TATKAAL SEVA — 24/7 INSTANT SERVICES</span>
+          <div className="container">
+            <div className="wave-bar-header">
+              <div className="wave-bar-title-badge">
+                <Sparkles size={14} color="var(--nims-gold)" />
+                <span>NIMS TATKAAL SEVA — 24/7 INSTANT SERVICES</span>
+              </div>
             </div>
           </div>
 
-          {/* INFINITE MARQUEE SLIDING TRACK */}
+          {/* INFINITE MARQUEE SLIDING TRACK (100% Full Screen Width) */}
           <div className="nims-hero-marquee-wrapper">
             <div className="nims-hero-marquee-track">
               {/* SET 1 */}
