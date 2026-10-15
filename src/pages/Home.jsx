@@ -113,7 +113,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
   const heroSlides = [
     {
       id: 0,
-      image: '/assets/slider/nims-slider3.jpeg',
+      image: '/assets/slider/slider3.png',
       badge: '⚡ 24×7 Level-1 Emergency & Quaternary Care',
       titlePart1: 'Healing built on ',
       highlightWord: 'trust, ',
