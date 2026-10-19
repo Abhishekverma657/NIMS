@@ -52,7 +52,7 @@ function GooglePlayMark() {
 }
 import { specialitiesData } from '../data/specialitiesData';
 import './SpecialitiesSection.css';
-import { doctorsData } from '../data/doctorsData';
+import { useDoctors } from '../context/DoctorContext';
 import { packagesData } from '../data/packagesData';
 import SpecialityCard from '../components/specialities/SpecialityCard';
 import DoctorCard from '../components/doctors/DoctorCard';
@@ -66,6 +66,7 @@ import { writtenTestimonialsData } from '../data/writtenTestimonialsData';
 import ModernHeroSlider from '../components/home/ModernHeroSlider';
 
 export default function Home({ onOpenBooking, onOpenPackageBooking }) {
+  const { doctors } = useDoctors();
   const [activeTab, setActiveTab] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [reviewFilter, setReviewFilter] = useState('all');
@@ -656,7 +657,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
 
           {/* 2-Columns Grid */}
           {(() => {
-            const list = doctorsData.filter(d => {
+            const list = doctors.filter(d => {
               if (d.isOpdAvailable === false) return false;
               if (doctorDeptFilter === 'All' || doctorDeptFilter === 'All Doctors') return true;
               const filter = doctorDeptFilter.toLowerCase();

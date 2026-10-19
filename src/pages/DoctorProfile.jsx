@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, MapPin, CheckCircle2, ShieldCheck, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MotionFadeIn, MotionStagger } from '../components/motion/MotionWrapper';
-import { doctorsData } from '../data/doctorsData';
+import { useDoctors } from '../context/DoctorContext';
 import { videoReviewsData } from '../data/videoReviewsData';
 import VideoCard from '../components/video/VideoCard';
 import VideoGalleryModal from '../components/video/VideoGalleryModal';
@@ -11,13 +11,40 @@ import VideoGalleryModal from '../components/video/VideoGalleryModal';
 export default function DoctorProfile({ onOpenBooking }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { getDoctor, fetchDoctor } = useDoctors();
   const [activeVideoIndex, setActiveVideoIndex] = useState(null);
+  const [profileDoctor, setProfileDoctor] = useState(() => getDoctor(id));
+  const [isLoading, setIsLoading] = useState(!profileDoctor);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [id]);
+    let isMounted = true;
+    const found = getDoctor(id);
+    if (found) {
+      setProfileDoctor(found);
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+      fetchDoctor(id).then((doc) => {
+        if (isMounted) {
+          setProfileDoctor(doc || null);
+          setIsLoading(false);
+        }
+      });
+    }
+    return () => { isMounted = false; };
+  }, [id, getDoctor, fetchDoctor]);
 
-  const doctor = doctorsData.find((d) => d.id === id);
+  const doctor = profileDoctor;
+
+  if (isLoading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '10rem 1rem', minHeight: '60vh', background: '#fff' }}>
+        <div className="spinner" style={{ width: '40px', height: '40px', margin: '0 auto 1.5rem', border: '3px solid #f3f3f3', borderTop: '3px solid var(--nims-navy)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        <p style={{ color: 'var(--nims-navy)', fontSize: '1.1rem', fontWeight: 600 }}>Doctor Profile Load Ho Rahi Hai...</p>
+      </div>
+    );
+  }
 
   if (!doctor) {
     return (
@@ -30,7 +57,7 @@ export default function DoctorProfile({ onOpenBooking }) {
     );
   }
 
-  const doctorVideos = videoReviewsData.filter(v => v.doctorId === id);
+  const doctorVideos = videoReviewsData.filter(v => v.doctorId === doctor.id || v.doctorId === doctor.doctorId || v.doctorId === id);
 
   return (
     <div className="page-transition" style={{ background: '#fff' }}>

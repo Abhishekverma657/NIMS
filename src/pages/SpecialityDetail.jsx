@@ -17,18 +17,19 @@ import {
   HeartPulse
 } from 'lucide-react';
 import { specialitiesData } from '../data/specialitiesData';
-import { doctorsData } from '../data/doctorsData';
+import { useDoctors } from '../context/DoctorContext';
 import DoctorCard from '../components/doctors/DoctorCard';
 
 export default function SpecialityDetail({ onOpenBooking }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { doctors } = useDoctors();
 
   // Find the current speciality by ID
   const speciality = specialitiesData.find((s) => s.id === id) || specialitiesData[0];
 
   // Find related doctors for this department
-  const departmentDoctors = doctorsData.filter((doc) => {
+  const departmentDoctors = doctors.filter((doc) => {
     if (doc.isOpdAvailable === false) return false;
     if (!doc.specialityId && !doc.department) return false;
     return (

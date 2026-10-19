@@ -7,6 +7,7 @@ import Footer from './components/common/Footer';
 import BookingDrawer from './components/booking/BookingDrawer';
 import PackageBookingModal from './components/booking/PackageBookingModal';
 import VacanciesModal from './components/vacancies/VacanciesModal';
+import { DoctorProvider } from './context/DoctorContext';
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -129,10 +130,11 @@ export default function App() {
 
   return (
     <Router>
-      <ScrollToTop />
-      <RouteProgressBar />
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
-        {/* Top Utility Bar */}
+      <DoctorProvider>
+        <ScrollToTop />
+        <RouteProgressBar />
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
+          {/* Top Utility Bar */}
         <Topbar onOpenVacancies={() => setVacanciesOpen(true)} />
 
         {/* Sticky Clean Single-Line Navbar (No Call button clutter, Logo = Home) */}
@@ -220,6 +222,7 @@ export default function App() {
           </div>
         </motion.a>
       </div>
+      </DoctorProvider>
     </Router>
   );
 }
