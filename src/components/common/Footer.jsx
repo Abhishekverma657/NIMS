@@ -124,6 +124,15 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 </div>
               </Link>
             </div>
+            <div style={{
+              color: 'var(--nims-orange)',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              letterSpacing: '0.02em',
+              marginBottom: '0.65rem'
+            }}>
+              NIMS Hospital — Unit of NIMS University Rajasthan
+            </div>
             <p style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.65, marginBottom: '1.25rem' }}>
               One of Northern India's largest 2,400-bed quaternary medical super-speciality hospitals. Bringing together renowned clinicians, organ transplantation, and advanced diagnostics on a single integrated campus.
             </p>
@@ -410,7 +419,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
           color: '#64748b'
         }}>
           <div>
-            © {new Date().getFullYear()} NIMS Hospital (National Institute of Medical Sciences &amp; Research). All Rights Reserved.
+            © {new Date().getFullYear()} NIMS Hospital — Unit of NIMS University Rajasthan. All Rights Reserved.
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>

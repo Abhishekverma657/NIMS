@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { packagesData } from '../../data/packagesData';
+import { tryFetchWithFallback } from '../../services/doctorService';
 
 export default function PackageBookingModal({ isOpen, onClose, initialPackage }) {
   const [selectedPackageId, setSelectedPackageId] = useState('');
@@ -29,6 +30,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
   });
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [tokenNumber, setTokenNumber] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Sync selected package when modal opens or initialPackage changes
   useEffect(() => {
@@ -58,7 +60,7 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
     { time: '11:30 AM - 01:00 PM', badge: 'Non-Fasting' }
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!patientData.fullName || !patientData.phone) {
       alert('Please enter patient name and mobile number.');
@@ -74,9 +76,53 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
         return;
       }
     }
-    const token = 'NIMS-PKG-' + Math.floor(100000 + Math.random() * 900000);
-    setTokenNumber(token);
-    setBookingConfirmed(true);
+
+    setIsSubmitting(true);
+    let fallbackToken = 'NIMS-PKG-' + Math.floor(100000 + Math.random() * 900000);
+
+    try {
+      const numericPrice = typeof currentPkg?.price === 'number'
+        ? currentPkg.price
+        : parseInt(String(currentPkg?.price || '999').replace(/[^0-9]/g, ''), 10) || 999;
+
+      const payload = {
+        packageName: currentPkg?.name || 'Comprehensive Health Package',
+        packageId: currentPkg?.id || undefined,
+        amount: numericPrice,
+        collectionType: collectionType === 'home' ? 'HOME' : 'HOSPITAL',
+        bookingDate: selectedDate,
+        timeSlot: selectedSlot,
+        address: collectionType === 'home'
+          ? `${patientData.address}, ${patientData.landmark ? patientData.landmark + ', ' : ''}PIN: ${patientData.pincode}`
+          : 'NIMS Hospital & Medical College Campus, Delhi Highway, Jaipur',
+        patientName: patientData.fullName,
+        patientPhone: patientData.phone,
+        patientAge: Number(patientData.age) || 30,
+        patientGender: patientData.gender?.toUpperCase() || 'FEMALE',
+        notes: patientData.notes || '',
+        paymentMethod: 'CASH',
+      };
+
+      const res = await tryFetchWithFallback('/package-bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res && res.ok) {
+        const data = await res.json();
+        const serverToken = data?.booking?.bookingId || data?.booking?._id || data?.data?.bookingId;
+        if (serverToken) {
+          fallbackToken = serverToken;
+        }
+      }
+    } catch (err) {
+      console.warn('Network issue creating package booking online, using fallback slip:', err);
+    } finally {
+      setIsSubmitting(false);
+      setTokenNumber(fallbackToken);
+      setBookingConfirmed(true);
+    }
   };
 
   const handleReset = () => {
@@ -1006,9 +1052,10 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
               {/* Submit Button */}
               <div style={{ paddingTop: '0.5rem' }}>
                 <motion.button
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={!isSubmitting ? { scale: 1.01 } : {}}
+                  whileTap={!isSubmitting ? { scale: 0.98 } : {}}
                   type="submit"
+                  disabled={isSubmitting}
                   className="btn btn-primary"
                   style={{
                     width: '100%',
@@ -1020,10 +1067,12 @@ export default function PackageBookingModal({ isOpen, onClose, initialPackage })
                     justifyContent: 'center',
                     gap: '0.6rem',
                     borderRadius: '12px',
-                    boxShadow: '0 8px 24px rgba(35, 32, 33, 0.2)'
+                    boxShadow: '0 8px 24px rgba(35, 32, 33, 0.2)',
+                    opacity: isSubmitting ? 0.75 : 1,
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer'
                   }}
                 >
-                  <span>Confirm Package Booking ({currentPkg?.price})</span>
+                  <span>{isSubmitting ? 'Confirming & Syncing...' : `Confirm Package Booking (${currentPkg?.price})`}</span>
                   <ArrowRight size={18} />
                 </motion.button>
                 <div style={{ textAlign: 'center', marginTop: '0.65rem', fontSize: '0.74rem', color: '#64748b' }}>

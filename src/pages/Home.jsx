@@ -501,7 +501,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                 <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'1.25rem' }}>
                   <div style={{ width:'32px', height:'2px', background:'var(--nims-orange)', borderRadius:'2px' }} />
                   <span style={{ color:'var(--nims-orange)', fontWeight:800, fontSize:'0.7rem', textTransform:'uppercase', letterSpacing:'0.15em' }}>
-                    26+ Years of Trusted Care in Jaipur
+                    Unit of NIMS University Rajasthan • 26+ Years of Trusted Care
                   </span>
                 </div>
 
@@ -512,7 +512,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                 </h2>
 
                 <p style={{ fontSize:'0.96rem', lineHeight:1.75, marginBottom:'0.9rem', color:'#475569' }}>
-                  NIMS Hospital was built on a simple belief — that care should be advanced enough to treat the most complex conditions, affordable enough for every family, and compassionate enough that every patient feels cared for from the moment they arrive.
+                  <strong>NIMS Hospital is a unit of NIMS University Rajasthan</strong>, built on a simple belief — that care should be advanced enough to treat the most complex conditions, affordable enough for every family, and compassionate enough that every patient feels cared for from the moment they arrive.
                 </p>
                 <p style={{ fontSize:'0.96rem', lineHeight:1.75, marginBottom:'2rem', color:'#64748b' }}>
                   From preventive care and diagnostics to organ transplantation, critical care and complex surgeries — seamless, coordinated treatment on a single campus.

@@ -285,7 +285,7 @@ export default function About({ onOpenBooking, initialTab = 'overview' }) {
                   display: 'inline-block'
                 }}
               >
-                About NIMS Hospital
+                NIMS Hospital is a unit of NIMS University Rajasthan
               </span>
               <h2 className="nims-about2-heading">
                 Advanced care, delivered with compassion.

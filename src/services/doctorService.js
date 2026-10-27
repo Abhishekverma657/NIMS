@@ -26,7 +26,7 @@ function getApiCandidates() {
 
 let activeBaseUrl = null;
 
-async function tryFetchWithFallback(path, options = {}) {
+export async function tryFetchWithFallback(path, options = {}) {
   if (activeBaseUrl) {
     try {
       const res = await fetch(`${activeBaseUrl}${path}`, options);
