@@ -13,7 +13,9 @@ import {
   Home as HomeIcon,
   Phone,
   Sparkles,
-  Smartphone
+  Smartphone,
+  ShieldCheck,
+  Loader2
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './ModernHeroSlider.css';
@@ -37,11 +39,146 @@ function GooglePlayMark() {
   );
 }
 
+const insurancePartners = [
+  // 1. Central & State Government Healthcare Schemes (Empaneled Tie-Ups)
+  {
+    id: 'ayushman-bharat',
+    name: 'Ayushman Bharat (PM-JAY)',
+    logo: '/assets/images/clients/Ayushman-Bharat-Logo.webp',
+    alt: 'Ayushman Bharat PM-JAY'
+  },
+  {
+    id: 'rghs',
+    name: 'RGHS — Rajasthan Govt Health Scheme',
+    logo: '/assets/images/clients/rghs.webp',
+    alt: 'Rajasthan Government Health Scheme'
+  },
+  {
+    id: 'maa-yojana',
+    name: 'Mukhyamantri Ayushman Arogya (MAA Yojana)',
+    logo: '/assets/images/insurance/maa-yojana-logo.jpg',
+    alt: 'Mukhyamantri Ayushman Arogya Yojana Rajasthan'
+  },
+  {
+    id: 'cghs',
+    name: 'CGHS — Central Government Health Scheme',
+    logo: '/assets/images/clients/5-1-1_11zon.webp',
+    alt: 'Central Government Health Scheme (CGHS)'
+  },
+  {
+    id: 'echs',
+    name: 'ECHS — Ex-Servicemen Contributory Health Scheme',
+    logo: '/assets/images/clients/logo1-1_11zon.webp',
+    alt: 'Ex-Servicemen Contributory Health Scheme (ECHS)'
+  },
+  {
+    id: 'capf',
+    name: 'CAPF — Central Armed Police Forces',
+    logo: '/assets/images/clients/capf-1_11zon-150x150.webp',
+    alt: 'Central Armed Police Forces Healthcare (CAPF)'
+  },
+  {
+    id: 'indian-railways',
+    name: 'Indian Railways Medical Care',
+    logo: '/assets/images/clients/indian-railways-logo.webp',
+    alt: 'Indian Railways North Western Railway'
+  },
+  {
+    id: 'esic',
+    name: 'ESIC — Employees State Insurance Corporation',
+    logo: '/assets/images/clients/esic-logo.webp',
+    alt: 'Employees State Insurance Corporation (ESIC)'
+  },
+  {
+    id: 'pm-rahat-yojana',
+    name: 'PM Rahat Yojana',
+    displayText: 'PM Rahat Yojana',
+    logo: '/assets/images/insurance/pm-rahat-yojana-card.png',
+    alt: 'Prime Minister National Relief Fund / PM Rahat Yojana'
+  },
+
+  // 2. Leading Cashless Private & PSU Health Insurers
+  {
+    id: 'star-health',
+    name: 'Star Health Insurance',
+    logo: '/assets/images/insurance/star-health-logo.svg',
+    alt: 'Star Health and Allied Insurance'
+  },
+  {
+    id: 'hdfc-ergo',
+    name: 'HDFC ERGO General Insurance',
+    logo: '/assets/images/insurance/hdfc-ergo-logo.svg',
+    alt: 'HDFC ERGO General Insurance'
+  },
+  {
+    id: 'iffco-tokio',
+    name: 'IFFCO TOKIO General Insurance',
+    logo: '/assets/images/insurance/iffco-tokio-logo.svg',
+    alt: 'IFFCO TOKIO General Insurance'
+  },
+  {
+    id: 'aditya-birla',
+    name: 'Aditya Birla Health Insurance',
+    logo: '/assets/images/insurance/aditya-birla-health-insurance.png',
+    alt: 'Aditya Birla Health Insurance'
+  },
+  {
+    id: 'fhpl',
+    name: 'Family Health Plan TPA (FHPL)',
+    logo: '/assets/images/insurance/fhpl-logo.png',
+    alt: 'Family Health Plan Insurance TPA Limited'
+  },
+  {
+    id: 'gipsa',
+    name: 'GIPSA (New India • National • Oriental • United India)',
+    logo: '/assets/images/insurance/gipsa-insurance.png',
+    alt: 'General Insurance Public Sector Association'
+  },
+  {
+    id: 'gic-re',
+    name: 'GIC Re (आपत्काले रक्षिष्यामि)',
+    logo: '/assets/images/insurance/gic-re-logo.png',
+    alt: 'General Insurance Corporation of India'
+  },
+  {
+    id: 'saras-dairy',
+    name: 'Saras Dairy Scheme (सरस)',
+    logo: '/assets/images/insurance/saras-dairy-logo.jpg',
+    alt: 'Saras Dairy Health Benefit Scheme'
+  },
+  {
+    id: 'gic-council',
+    name: 'General Insurance Council',
+    logo: '/assets/images/insurance/gic-council-logo.png',
+    alt: 'General Insurance Council'
+  }
+];
+
 export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageBooking }) {
   const [current, setCurrent] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
   const [callbackSubmitted, setCallbackSubmitted] = useState(false);
   const [callbackForm, setCallbackForm] = useState({ name: '', phone: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [callbackError, setCallbackError] = useState('');
+  const [callbackSuccessMsg, setCallbackSuccessMsg] = useState('');
+
+  // Dynamically synchronize header height for 100% pixel-perfect full-screen hero coverage
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      const topbar = document.querySelector('.nims-topbar-wrapper');
+      const nav = document.querySelector('nav');
+      const topbarH = topbar ? topbar.getBoundingClientRect().height : 0;
+      const navH = nav ? nav.getBoundingClientRect().height : 0;
+      const totalHeader = topbarH + navH;
+      if (totalHeader > 0) {
+        document.documentElement.style.setProperty('--nims-header-actual-height', `${totalHeader}px`);
+      }
+    };
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+    return () => window.removeEventListener('resize', updateHeaderHeight);
+  }, []);
 
   useEffect(() => {
     if (!autoplay) return;
@@ -61,14 +198,73 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const handleCallbackSubmit = (e) => {
+  const handleCallbackSubmit = async (e) => {
     e.preventDefault();
-    if (!callbackForm.phone) return;
-    setCallbackSubmitted(true);
-    setTimeout(() => {
-      setCallbackSubmitted(false);
-      setCallbackForm({ name: '', phone: '' });
-    }, 4000);
+    setCallbackError('');
+
+    const cleanName = (callbackForm.name || '').trim();
+    const cleanPhone = (callbackForm.phone || '').trim().replace(/[^0-9+]/g, '');
+
+    if (!cleanName) {
+      setCallbackError('Please enter your full name');
+      return;
+    }
+    if (cleanPhone.length < 10) {
+      setCallbackError('Please enter a valid 10-digit phone number');
+      return;
+    }
+
+    setIsSubmitting(true);
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://api.nimshospitals.net/api';
+    const localFallbackUrl = 'http://localhost:5001/api';
+
+    try {
+      let res;
+      try {
+        res = await fetch(`${baseUrl}/callbacks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: cleanName,
+            phone: cleanPhone,
+            source: 'WEBSITE_HERO'
+          })
+        });
+      } catch (primaryErr) {
+        // Fallback to local server if primary network call fails
+        if (!baseUrl.includes('localhost:5001')) {
+          res = await fetch(`${localFallbackUrl}/callbacks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: cleanName,
+              phone: cleanPhone,
+              source: 'WEBSITE_HERO'
+            })
+          });
+        } else {
+          throw primaryErr;
+        }
+      }
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCallbackSubmitted(true);
+        setCallbackSuccessMsg(data.message || 'We have received your call-back request.');
+        setCallbackForm({ name: '', phone: '' });
+        setTimeout(() => {
+          setCallbackSubmitted(false);
+          setCallbackSuccessMsg('');
+        }, 5000);
+      } else {
+        setCallbackError(data.message || 'Failed to submit request. Please try again.');
+      }
+    } catch (err) {
+      console.error('Call-back submit error:', err);
+      setCallbackError('Connection error. Please call our 24/7 hotline directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -121,17 +317,24 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
               <div className="callback-success-box">
                 <Sparkles size={34} color="#10b981" />
                 <h4>Thank You!</h4>
-                <p>We have received your call-back request.</p>
+                <p>{callbackSuccessMsg || 'We have received your call-back request.'}</p>
               </div>
             ) : (
               <form onSubmit={handleCallbackSubmit} className="callback-form-inner">
+                {callbackError && (
+                  <p className="callback-error-msg">{callbackError}</p>
+                )}
                 <div className="callback-input-field">
                   <User size={18} className="input-field-icon" />
                   <input 
                     type="text" 
                     placeholder="Full Name" 
                     value={callbackForm.name}
-                    onChange={(e) => setCallbackForm({ ...callbackForm, name: e.target.value })}
+                    onChange={(e) => {
+                      setCallbackForm({ ...callbackForm, name: e.target.value });
+                      if (callbackError) setCallbackError('');
+                    }}
+                    disabled={isSubmitting}
                     required
                   />
                 </div>
@@ -142,14 +345,32 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
                     type="tel" 
                     placeholder="Phone Number" 
                     value={callbackForm.phone}
-                    onChange={(e) => setCallbackForm({ ...callbackForm, phone: e.target.value })}
+                    onChange={(e) => {
+                      setCallbackForm({ ...callbackForm, phone: e.target.value });
+                      if (callbackError) setCallbackError('');
+                    }}
+                    disabled={isSubmitting}
                     required
                   />
                 </div>
 
-                <button type="submit" className="callback-red-btn">
-                  <PhoneCall size={17} />
-                  <span>Request Call-back</span>
+                <button 
+                  type="submit" 
+                  className="callback-red-btn" 
+                  disabled={isSubmitting}
+                  style={{ opacity: isSubmitting ? 0.75 : 1, cursor: isSubmitting ? 'wait' : 'pointer' }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 size={17} className="spinner" style={{ animation: 'spin 0.8s linear infinite' }} />
+                      <span>Submitting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <PhoneCall size={17} />
+                      <span>Request Call-back</span>
+                    </>
+                  )}
                 </button>
               </form>
             )}
@@ -242,108 +463,72 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
         </div>
 
         <div className="relative z-10 width-100">
-          {/* NIMS TATKAAL SEVA HEADER BADGE */}
-          <div className="container">
-            <div className="wave-bar-header">
-              <div className="wave-bar-title-badge">
-                <Sparkles size={14} color="var(--nims-gold)" />
-                <span>NIMS TATKAAL SEVA — 24/7 INSTANT SERVICES</span>
-              </div>
-            </div>
-          </div>
-
           {/* INFINITE MARQUEE SLIDING TRACK (100% Full Screen Width) */}
           <div className="nims-hero-marquee-wrapper">
             <div className="nims-hero-marquee-track">
               {/* SET 1 */}
-              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <Bed size={19} color="#c8102e" />
-                </div>
-                <span>ICU Bed<br/>Booking</span>
-                <span className="card-live-badge-dot" />
-              </div>
-
-              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <Stethoscope size={19} color="#c8102e" />
-                </div>
-                <span>OPD<br/>Booking</span>
-              </div>
-
-              <a href="tel:0141-2388999" className="wave-item-card">
-                <div className="wave-icon-bubble">
-                  <Ambulance size={19} color="#c8102e" />
-                </div>
-                <span>Ambulance<br/>Booking</span>
-                <span className="card-live-badge-dot" />
-              </a>
-
-              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <CalendarDays size={19} color="#c8102e" />
-                </div>
-                <span>Online<br/>Appointment</span>
-              </div>
-
-              <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <FlaskConical size={19} color="#c8102e" />
-                </div>
-                <span>Health Checkup<br/>Packages</span>
-              </div>
-
-              <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <HomeIcon size={19} color="#c8102e" />
-                </div>
-                <span>Sample Collect<br/>From Home</span>
-              </div>
+              {insurancePartners.map((item) => (
+                <Link
+                  key={`partner-set1-${item.id}`}
+                  to="/loyalty-card"
+                  className="insurance-logo-card"
+                  title={`${item.name} — Cashless Care at NIMS Hospital`}
+                >
+                  {item.logo ? (
+                    <img
+                      src={item.logo}
+                      alt={item.alt}
+                      className="insurance-logo-img"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        const parent = e.currentTarget.parentElement;
+                        const textSpan = parent.querySelector('.insurance-card-text-fallback');
+                        if (textSpan) textSpan.style.display = 'block';
+                      }}
+                    />
+                  ) : null}
+                  <span
+                    className="insurance-card-text-fallback"
+                    style={{ display: item.logo ? 'none' : 'block' }}
+                  >
+                    {item.displayText || item.name}
+                  </span>
+                </Link>
+              ))}
 
               {/* SET 2 (DUPLICATE FOR CONTINUOUS INFINITE LOOP) */}
-              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <Bed size={19} color="#c8102e" />
-                </div>
-                <span>ICU Bed<br/>Booking</span>
-                <span className="card-live-badge-dot" />
-              </div>
-
-              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <Stethoscope size={19} color="#c8102e" />
-                </div>
-                <span>OPD<br/>Booking</span>
-              </div>
-
-              <a href="tel:0141-2388999" className="wave-item-card">
-                <div className="wave-icon-bubble">
-                  <Ambulance size={19} color="#c8102e" />
-                </div>
-                <span>Ambulance<br/>Booking</span>
-                <span className="card-live-badge-dot" />
-              </a>
-
-              <div className="wave-item-card" onClick={() => onOpenBooking ? onOpenBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <CalendarDays size={19} color="#c8102e" />
-                </div>
-                <span>Online<br/>Appointment</span>
-              </div>
-
-              <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <FlaskConical size={19} color="#c8102e" />
-                </div>
-                <span>Health Checkup<br/>Packages</span>
-              </div>
-
-              <div className="wave-item-card" onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}>
-                <div className="wave-icon-bubble">
-                  <HomeIcon size={19} color="#c8102e" />
-                </div>
-                <span>Sample Collect<br/>From Home</span>
-              </div>
+              {insurancePartners.map((item) => (
+                <Link
+                  key={`partner-set2-${item.id}`}
+                  to="/loyalty-card"
+                  className="insurance-logo-card"
+                  title={`${item.name} — Cashless Care at NIMS Hospital`}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                >
+                  {item.logo ? (
+                    <img
+                      src={item.logo}
+                      alt={item.alt}
+                      className="insurance-logo-img"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        const parent = e.currentTarget.parentElement;
+                        const textSpan = parent.querySelector('.insurance-card-text-fallback');
+                        if (textSpan) textSpan.style.display = 'block';
+                      }}
+                    />
+                  ) : null}
+                  <span
+                    className="insurance-card-text-fallback"
+                    style={{ display: item.logo ? 'none' : 'block' }}
+                  >
+                    {item.displayText || item.name}
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
         </div>

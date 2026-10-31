@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ShieldCheck,
-  User
+  ShieldCheck
 } from 'lucide-react';
 
 export default function Topbar({ onOpenVacancies }) {
@@ -54,9 +53,12 @@ export default function Topbar({ onOpenVacancies }) {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.35rem',
-                    fontSize: '0.7rem',
+                    fontSize: '0.72rem',
                     letterSpacing: '0.03em',
-                    textTransform: 'uppercase'
+                    textTransform: 'uppercase',
+                    border: 'none',
+                    background: 'transparent',
+                    padding: 0
                   }}
                 >
                   {item.fullText}
@@ -76,9 +78,12 @@ export default function Topbar({ onOpenVacancies }) {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.35rem',
-                    fontSize: '0.7rem',
+                    fontSize: '0.72rem',
                     letterSpacing: '0.03em',
-                    textTransform: 'uppercase'
+                    textTransform: 'uppercase',
+                    border: 'none',
+                    background: 'transparent',
+                    padding: 0
                   }}
                 >
                   {item.fullText}
@@ -89,7 +94,7 @@ export default function Topbar({ onOpenVacancies }) {
           </div>
         </div>
 
-        {/* Right Side: Fixed Action Links (Health Schemes & Patient Portal) */}
+        {/* Right Side: Fixed Action Link (Health Schemes) */}
         <div className="topbar-right">
           <Link
             to="/loyalty-card"
@@ -99,29 +104,16 @@ export default function Topbar({ onOpenVacancies }) {
             <ShieldCheck size={12} />
             <span>Health Schemes</span>
           </Link>
-
-          <Link
-            to="/patient-portal"
-            className="topbar-action topbar-action--portal"
-            title="Patient Portal & Online Records"
-          >
-            <User size={12} />
-            <span>Patient Portal</span>
-          </Link>
         </div>
       </div>
 
       {/* Mobile-Only Quickbar */}
       <div className="topbar-mobile-quickbar">
         <div className="mobile-quickbar-inner">
-          <div className="mobile-actions-group">
+          <div className="mobile-actions-group" style={{ gridTemplateColumns: '1fr', width: 'auto', minWidth: '180px' }}>
             <Link to="/loyalty-card" className="mobile-quick-link">
               <ShieldCheck size={11} color="var(--nims-orange)" />
               <span>Health Schemes</span>
-            </Link>
-            <Link to="/patient-portal" className="mobile-quick-link">
-              <User size={11} color="var(--nims-orange)" />
-              <span>Patient Portal</span>
             </Link>
           </div>
         </div>

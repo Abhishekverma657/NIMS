@@ -2,9 +2,10 @@
 .nims-hero-custom-container {
   position: relative;
   width: 100%;
-  height: 680px;
-  min-height: 610px;
-  max-height: 720px;
+  height: calc(100vh - var(--nims-header-actual-height, 85.2px));
+  height: calc(100dvh - var(--nims-header-actual-height, 85.2px));
+  min-height: 400px;
+  max-height: none;
   overflow: hidden;
   background: #090f14;
   font-family: var(--font-family-heading, 'Plus Jakarta Sans', sans-serif);
@@ -52,19 +53,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 100px; /* Accounts for bottom wave container */
+  padding-bottom: clamp(110px, 8.5vh, 128px);
 }
 
-/* LEFT SIDE: FLOATING REQUEST CALLBACK COLUMN (SHIFTED HIGHER UP) */
+/* LEFT SIDE: FLOATING REQUEST CALLBACK COLUMN */
 .hero-request-column-left {
-  width: 325px;
+  width: clamp(345px, 24vw, 415px);
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.65rem;
   flex-shrink: 0;
   position: relative;
   z-index: 15;
-  margin-top: -85px; /* Shifts container higher up over hero background */
+  margin-top: -15px; /* Optically centered above bottom wave bar */
 }
 
 /* COMPACT ULTRA-TRANSPARENT FROSTED GLASS CALLBACK CARD */
@@ -101,18 +102,18 @@
 }
 
 .callback-card-inner-header h3 {
-  font-size: 1.02rem;
+  font-size: clamp(1.1rem, 1.25vw, 1.25rem);
   font-weight: 800;
   color: #ffffff;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.25;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .callback-card-inner-header p {
-  font-size: 0.74rem;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 1px 0 0 0;
+  font-size: clamp(0.82rem, 0.88vw, 0.92rem);
+  color: rgba(255, 255, 255, 0.92);
+  margin: 2px 0 0 0;
   font-weight: 500;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
@@ -139,10 +140,10 @@
 
 .glass-transparent-card .callback-input-field input {
   width: 100%;
-  padding: 0.6rem 0.75rem 0.6rem 2.25rem;
+  padding: 0.72rem 0.85rem 0.72rem 2.45rem;
   border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 10px;
-  font-size: 0.82rem;
+  border-radius: 12px;
+  font-size: clamp(0.9rem, 0.95vw, 1rem);
   color: #ffffff;
   background: rgba(255, 255, 255, 0.18);
   outline: none;
@@ -167,23 +168,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.68rem;
+  gap: 0.6rem;
+  padding: 0.82rem 1.2rem;
   background: linear-gradient(135deg, #c8102e 0%, #a30018 100%);
   color: #ffffff;
   border: none;
   border-radius: 50px;
-  font-size: 0.88rem;
+  font-size: clamp(0.95rem, 1vw, 1.05rem);
   font-weight: 800;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 5px 16px rgba(200, 16, 46, 0.45);
-  margin-top: 0.1rem;
+  margin-top: 0.15rem;
 }
 
 .callback-red-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 7px 22px rgba(200, 16, 46, 0.6);
+}
+
+.callback-error-msg {
+  background: rgba(220, 38, 38, 0.28);
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  color: #fecaca;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  margin: 0 0 0.45rem 0;
+  text-align: center;
+  line-height: 1.3;
 }
 
 .callback-success-box {
@@ -295,20 +309,20 @@
 .download-app-header-label {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   color: #ffffff;
-  font-size: 0.78rem;
+  font-size: clamp(0.8rem, 0.85vw, 0.92rem);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.45rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
 
 .hero-store-downloads {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.65rem;
   width: 100%;
 }
 
@@ -317,13 +331,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  padding: 0.45rem 0.6rem;
+  gap: 0.55rem;
+  padding: 0.55rem 0.8rem;
   color: #ffffff;
-  background: rgba(9, 13, 22, 0.85);
+  background: rgba(9, 13, 22, 0.88);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 10px;
+  border-radius: 12px;
   text-decoration: none;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
   transition: all 0.25s ease;
@@ -338,24 +352,24 @@
 .hero-store-badge span {
   display: flex;
   flex-direction: column;
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
 .hero-store-badge small {
-  font-size: 0.5rem;
-  opacity: 0.85;
-  font-weight: 500;
+  font-size: 0.62rem;
+  opacity: 0.9;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
 .hero-store-badge strong {
-  font-size: 0.76rem;
+  font-size: 0.88rem;
   font-weight: 800;
 }
 
 .store-brand-icon {
-  width: 16px;
-  height: 18px;
+  width: 18px;
+  height: 20px;
   flex-shrink: 0;
 }
 
@@ -453,12 +467,12 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 125px;
+  height: clamp(112px, 8.5vh, 128px);
   z-index: 20;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-bottom: 0.85rem;
+  padding-bottom: 0.95rem;
 }
 
 .bottom-wave-svg-overlay {
@@ -475,7 +489,7 @@
   height: 100%;
 }
 
-/* MARQUEE SCROLL SYSTEM FOR SERVICE CARDS */
+/* MARQUEE SCROLL SYSTEM FOR CASHLESS PARTNER & SCHEME CARDS */
 .nims-hero-marquee-viewport {
   width: 100%;
   overflow: hidden;
@@ -492,9 +506,9 @@
 .nims-hero-marquee-track {
   display: flex;
   align-items: center;
-  gap: 1.15rem;
+  gap: 1.35rem;
   width: max-content;
-  animation: nimsHeroMarquee 32s linear infinite;
+  animation: nimsHeroMarquee 34s linear infinite;
 }
 
 .nims-hero-marquee-track:hover {
@@ -515,63 +529,124 @@
   white-space: nowrap;
 }
 
-/* WHITE PILL SERVICE CARDS ENCLOSED INSIDE RED WAVE */
-/* NIMS TATKAAL SEVA WAVE BAR HEADER & MARQUEE SLIDER */
-@media (min-width: 769px) {
-  .wave-bar-header {
-    display: none !important;
-  }
-}
-
-.wave-bar-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.wave-bar-title-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(15, 23, 42, 0.85);
-  border: 1.5px solid rgba(229, 182, 74, 0.6);
-  color: #ffffff;
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.32rem 1.05rem;
-  border-radius: 50px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
 .nims-hero-marquee-wrapper {
   width: 100%;
   overflow: hidden;
   position: relative;
-  padding-bottom: 10px;
-  /* Mask image removed so cards move 100% full screen width without edge shadow cutoff */
+  padding: 4px 0 2px;
 }
 
-.nims-hero-marquee-track {
-  display: flex;
+/* PROMINENT HIGH-VISIBILITY CASHLESS INSURANCE & TPA LOGO CARD WITH ANIMATING GLOWING BORDER */
+.insurance-logo-card {
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  gap: 1.25rem;
-  width: max-content;
-  animation: nimsHeroMarquee 26s linear infinite;
+  justify-content: center;
+  background: #ffffff;
+  height: clamp(66px, 4.4vw, 76px);
+  width: clamp(176px, 11.2vw, 215px);
+  min-width: clamp(176px, 11.2vw, 215px);
+  padding: 7px 18px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), 0 0 16px rgba(255, 215, 0, 0.42);
+  flex-shrink: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 1;
 }
 
-.nims-hero-marquee-track:hover {
-  animation-play-state: paused;
+/* ROTATING SHINING GOLD & WHITE HIGHLIGHT BEAM */
+.insurance-logo-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 45deg,
+    rgba(255, 215, 0, 0.6) 65deg,
+    #ffd700 85deg,
+    #ffffff 92deg,
+    #ffd700 99deg,
+    rgba(255, 215, 0, 0.6) 120deg,
+    transparent 140deg,
+    transparent 225deg,
+    rgba(255, 215, 0, 0.6) 245deg,
+    #ffd700 265deg,
+    #ffffff 272deg,
+    #ffd700 279deg,
+    rgba(255, 215, 0, 0.6) 300deg,
+    transparent 320deg,
+    transparent 360deg
+  );
+  animation: rotateGlowingBorder 3.2s linear infinite;
+  z-index: 1;
 }
 
-@keyframes nimsHeroMarquee {
+/* CRISP INNER WHITE CORE CONTAINER */
+.insurance-logo-card::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: #ffffff;
+  border-radius: 11px;
+  z-index: 2;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.insurance-logo-card:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), 0 0 25px rgba(255, 215, 0, 0.75);
+}
+
+.insurance-logo-card:hover::before {
+  animation-duration: 1.8s; /* Spins faster on hover */
+}
+
+.insurance-logo-img {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  max-height: clamp(48px, 3.2vw, 56px);
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  transition: transform 0.22s ease;
+}
+
+.insurance-logo-card:hover .insurance-logo-img {
+  transform: scale(1.06);
+}
+
+.insurance-card-text-fallback {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #172a34;
+  text-align: center;
+  line-height: 1.25;
+  position: relative;
+  z-index: 3;
+  letter-spacing: -0.01em;
+  padding: 0 6px;
+  text-transform: uppercase;
+}
+
+@keyframes rotateGlowingBorder {
   0% {
-    transform: translateX(0);
+    transform: rotate(0deg);
   }
   100% {
-    transform: translateX(-50%);
+    transform: rotate(360deg);
   }
 }
 
@@ -643,7 +718,7 @@
     min-height: auto;
     max-height: none;
     background: #090f14;
-    padding-bottom: 1.5rem;
+    padding-bottom: 0 !important;
   }
 
   .nims-hero-bg-slider {
@@ -706,28 +781,30 @@
     display: none;
   }
 
-  .wave-bar-header {
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    padding-top: 6px;
-    padding-bottom: 12px;
-    margin-bottom: 4px;
-  }
-
-  .wave-bar-title-badge {
-    font-size: 0.68rem;
-    padding: 0.25rem 0.85rem;
-    gap: 0.4rem;
-  }
-
   .nims-hero-marquee-wrapper {
-    padding-bottom: 8px;
+    padding-bottom: 4px;
   }
 
   .nims-hero-marquee-track {
-    gap: 0.75rem;
-    animation-duration: 20s;
+    gap: 0.85rem;
+    animation-duration: 26s;
+  }
+
+  .insurance-logo-card {
+    height: 54px !important;
+    width: 144px !important;
+    min-width: 144px !important;
+    padding: 5px 12px !important;
+    border-radius: 11px !important;
+  }
+
+  .insurance-logo-card::after {
+    inset: 2px !important;
+    border-radius: 9px !important;
+  }
+
+  .insurance-logo-img {
+    max-height: 40px !important;
   }
 
   .wave-item-card {
@@ -757,30 +834,36 @@
   }
 
   .hero-bottom-wave-bar {
-    padding: 0.75rem 0 !important; /* Left & Right = 0 */
+    padding: 0.65rem 0 !important; /* Left & Right = 0 */
     margin: 0 !important;
   }
 
-  .wave-bar-header {
-    padding-top: 4px;
-    padding-bottom: 10px;
-    margin-bottom: 2px;
-  }
-
-  .wave-bar-title-badge {
-    font-size: 0.64rem;
-    padding: 0.22rem 0.75rem;
-  }
-
   .nims-hero-marquee-wrapper {
-    padding-bottom: 6px;
+    padding-bottom: 2px;
   }
 
   .nims-hero-marquee-track {
-    gap: 0.6rem;
-    animation-duration: 18s;
+    gap: 0.65rem;
+    animation-duration: 22s;
   }
   
+  .insurance-logo-card {
+    height: 48px !important;
+    width: 130px !important;
+    min-width: 130px !important;
+    padding: 4px 10px !important;
+    border-radius: 10px !important;
+  }
+
+  .insurance-logo-card::after {
+    inset: 2px !important;
+    border-radius: 8px !important;
+  }
+
+  .insurance-logo-img {
+    max-height: 35px !important;
+  }
+
   .wave-item-card {
     padding: 0.4rem 0.75rem !important;
     font-size: 0.72rem !important;

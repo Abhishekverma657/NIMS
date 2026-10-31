@@ -124,6 +124,17 @@ export default function LoyaltyCard({ onOpenBooking }) {
       eligibility: 'Ex-Servicemen pensioners of Indian Army, Navy, Air Force and dependents',
       documents: ['ECHS Smart Card (64 KB)', 'Polyclinic Referral Slip', 'Discharge Book Copy'],
       description: 'Dedicated veteran healthcare desk ensuring prompt cashless inpatient treatments, ICU stays, and joint replacements for proud veterans of the Indian Armed Forces.'
+    },
+    {
+      id: 'pm-rahat-yojana',
+      name: 'PM RAHAT YOJANA',
+      fullName: 'Pradhan Mantri National Relief Fund / PM Rahat Yojana (PMNRF)',
+      logo: '/assets/images/insurance/pm-rahat-yojana-emblem.webp',
+      category: 'Central Government Relief',
+      coverage: 'Life-Saving Critical Care & Surgeries Financial Aid',
+      eligibility: 'Citizens needing emergency assistance for expensive tertiary treatments',
+      documents: ['Medical Estimate Certificate from NIMS', 'Income / BPL Certificate', 'Aadhaar Card', 'Application Form'],
+      description: 'Humanitarian financial grant provided through the Prime Minister National Relief Fund for life-threatening medical ailments including open heart surgeries, cancer chemotherapy, renal transplants, and trauma care at NIMS Hospital.'
     }
   ];
 
@@ -335,16 +346,37 @@ export default function LoyaltyCard({ onOpenBooking }) {
             </p>
           </div>
 
-          {/* 8 Official Scheme Cards Grid with Authentic Client Logos (Matching nimshospitals.in/loyalty-card.php) */}
+          {/* Official Scheme Cards Grid with Authentic Client Logos (Matching nimshospitals.in/loyalty-card.php) */}
           <div className="scheme-grid" style={{ marginBottom: '3.5rem' }}>
             {officialSchemes.map((scheme) => (
               <div key={scheme.id} className="scheme-card">
                 <div className="scheme-logo-wrap">
-                  <img
-                    src={scheme.logo}
-                    alt={scheme.name}
-                    loading="lazy"
-                  />
+                  {scheme.logo ? (
+                    <img
+                      src={scheme.logo}
+                      alt={scheme.name}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        const fallback = e.currentTarget.parentElement.querySelector('.scheme-logo-fallback-text');
+                        if (fallback) fallback.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <div
+                    className="scheme-logo-fallback-text"
+                    style={{
+                      display: scheme.logo ? 'none' : 'flex',
+                      fontWeight: 800,
+                      fontSize: '1.05rem',
+                      color: 'var(--nims-navy)',
+                      textAlign: 'center',
+                      padding: '0.5rem',
+                      lineHeight: 1.3
+                    }}
+                  >
+                    {scheme.name}
+                  </div>
                 </div>
                 <div className="scheme-name-bar">
                   <span>{scheme.name}</span>

@@ -42,7 +42,7 @@ export default function Navbar({ onOpenBooking }) {
       transition: 'all 0.2s ease',
       width: '100%',
       maxWidth: '100vw',
-      overflowX: 'hidden'
+      overflowX: 'clip'
     }}>
       <div style={{
         display: 'flex',

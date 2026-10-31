@@ -278,15 +278,15 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
 
           <MotionStagger style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
-            gap: '1.75rem'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
+            gap: 'clamp(1.5rem, 2.2vw, 2.25rem)'
           }} staggerDelay={0.08}>
             {featuredPackages.map((pkg) => (
               <MotionItem key={pkg.id}>
                 <div style={{
                   background: '#ffffff',
-                  borderRadius: '20px',
-                  padding: '1.75rem',
+                  borderRadius: '24px',
+                  padding: 'clamp(1.75rem, 2.2vw, 2.35rem)',
                   border: '1px solid var(--nims-border)',
                   boxShadow: '0 10px 30px rgba(23, 42, 52, 0.06)',
                   display: 'flex',
@@ -296,43 +296,43 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                   transition: 'all 0.3s ease'
                 }}>
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.1rem' }}>
                       <span style={{
                         background: 'rgba(189, 23, 28, 0.1)',
                         color: 'var(--nims-orange)',
-                        padding: '0.3rem 0.75rem',
+                        padding: '0.35rem 0.85rem',
                         borderRadius: '9999px',
-                        fontSize: '0.75rem',
+                        fontSize: '0.85rem',
                         fontWeight: 800
                       }}>
                         {pkg.discount || 'Special Price'}
                       </span>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                        <Tag size={14} color="var(--nims-gold)" />
+                      <span style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <Tag size={15} color="var(--nims-gold)" />
                         {pkg.category}
                       </span>
                     </div>
 
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.4rem' }}>
+                    <h3 style={{ fontSize: 'clamp(1.3rem, 1.6vw, 1.55rem)', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.5rem', lineHeight: 1.3 }}>
                       {pkg.name}
                     </h3>
-                    <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', marginBottom: '1.25rem', lineHeight: 1.4 }}>
+                    <p style={{ fontSize: '0.94rem', color: 'var(--color-text-secondary)', marginBottom: '1.35rem', lineHeight: 1.5 }}>
                       {pkg.badge}
                     </p>
 
-                    <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '12px', marginBottom: '1.5rem', border: '1px solid #e2e8f0' }}>
-                      <div style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <div style={{ background: '#f8fafc', padding: '1.2rem', borderRadius: '14px', marginBottom: '1.5rem', border: '1px solid #e2e8f0' }}>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                         Key Included Parameters ({pkg.testsCount} Tests):
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
                         {pkg.tests.slice(0, 4).map((test, idx) => (
-                          <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: '#475569' }}>
-                            <CheckCircle2 size={14} color="#10b981" style={{ flexShrink: 0 }} />
+                          <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', fontSize: '0.94rem', color: '#334155' }}>
+                            <CheckCircle2 size={16} color="#10b981" style={{ flexShrink: 0 }} />
                             <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{test}</span>
                           </div>
                         ))}
                         {pkg.tests.length > 4 && (
-                          <div style={{ fontSize: '0.76rem', color: 'var(--nims-orange)', fontWeight: 700, marginTop: '0.2rem' }}>
+                          <div style={{ fontSize: '0.88rem', color: 'var(--nims-orange)', fontWeight: 700, marginTop: '0.3rem' }}>
                             + {pkg.tests.length - 4} more vital tests included
                           </div>
                         )}
@@ -341,12 +341,12 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                   </div>
 
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.6rem', marginBottom: '1.25rem' }}>
-                      <span style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--nims-navy)' }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.65rem', marginBottom: '1.35rem' }}>
+                      <span style={{ fontSize: 'clamp(1.8rem, 2.2vw, 2.25rem)', fontWeight: 900, color: 'var(--nims-navy)' }}>
                         {pkg.price}
                       </span>
                       {pkg.originalPrice && (
-                        <span style={{ fontSize: '0.9rem', color: '#94a3b8', textDecoration: 'line-through' }}>
+                        <span style={{ fontSize: '1.05rem', color: '#94a3b8', textDecoration: 'line-through' }}>
                           {pkg.originalPrice}
                         </span>
                       )}
@@ -356,23 +356,23 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                       onClick={() => onOpenPackageBooking ? onOpenPackageBooking(pkg) : null}
                       style={{
                         width: '100%',
-                        padding: '0.8rem',
+                        padding: '0.92rem 1.4rem',
                         borderRadius: '50px',
                         background: 'linear-gradient(135deg, var(--nims-orange) 0%, #9e1217 100%)',
                         color: '#ffffff',
                         border: 'none',
                         fontWeight: 700,
-                        fontSize: '0.9rem',
+                        fontSize: 'clamp(0.95rem, 1vw, 1.05rem)',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '0.5rem',
+                        gap: '0.55rem',
                         boxShadow: '0 4px 15px rgba(189, 23, 28, 0.3)',
                         transition: 'all 0.2s ease'
                       }}
                     >
-                      <FlaskConical size={16} />
+                      <FlaskConical size={18} />
                       <span>Book Diagnostic Package</span>
                     </button>
                   </div>

@@ -1,0 +1,111 @@
+[
+  {
+    "id": "fhpl",
+    "name": "Family Health Plan Insurance TPA Limited (FHPL)",
+    "category": "TPA",
+    "file": "fhpl-logo.png",
+    "path": "/assets/images/insurance/fhpl-logo.png",
+    "format": "PNG",
+    "dimensions": "4084x2304",
+    "sourceUrl": "https://www.fhpl.net/assets/images/logo.png"
+  },
+  {
+    "id": "gic-council",
+    "name": "General Insurance Council (Official Vector)",
+    "category": "Regulatory / Council",
+    "file": "gic-official-logo.svg",
+    "path": "/assets/images/insurance/gic-official-logo.svg",
+    "format": "SVG",
+    "sourceUrl": "https://www.gicouncil.in/Images/Logo/GIC-Official_Logo.svg"
+  },
+  {
+    "id": "gic-council-transparent",
+    "name": "General Insurance Council (Transparent PNG)",
+    "category": "Regulatory / Council",
+    "file": "gic-council-logo.png",
+    "path": "/assets/images/insurance/gic-council-logo.png",
+    "format": "PNG",
+    "dimensions": "554x450",
+    "sourceUrl": "https://www.gicouncil.in/Images/Logo/gic_logo-removebg-preview.png"
+  },
+  {
+    "id": "gipsa",
+    "name": "General Insurance Public Sector Association (GIPSA - New India, National, Oriental, United India)",
+    "category": "Public Sector Insurers",
+    "file": "gipsa-insurance.png",
+    "path": "/assets/images/insurance/gipsa-insurance.png",
+    "format": "PNG",
+    "dimensions": "1024x701",
+    "sourceUrl": "https://www.plancover.com/simplify-insurance/wp-content/uploads/2024/01/ill-1024x701.png"
+  },
+  {
+    "id": "gic-re",
+    "name": "General Insurance Corporation of India (GIC Re)",
+    "category": "Reinsurance",
+    "file": "gic-re-logo.png",
+    "path": "/assets/images/insurance/gic-re-logo.png",
+    "format": "PNG",
+    "dimensions": "759x696",
+    "sourceUrl": "https://images.indianexpress.com/2017/10/g-759.png"
+  },
+  {
+    "id": "saras-dairy",
+    "name": "Saras Dairy Health Benefit Scheme (सरस)",
+    "category": "Cooperative / Scheme",
+    "file": "saras-dairy-logo.jpg",
+    "path": "/assets/images/insurance/saras-dairy-logo.jpg",
+    "format": "JPEG",
+    "dimensions": "738x378",
+    "sourceUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXK4iXZWXfN3YsthJK2oEj01zLc4XRS-yTa5nuClYssQ&s=10"
+  },
+  {
+    "id": "iffco-tokio",
+    "name": "IFFCO TOKIO General Insurance",
+    "category": "General Insurance",
+    "file": "iffco-tokio-logo.png",
+    "path": "/assets/images/insurance/iffco-tokio-logo.png",
+    "svgFile": "iffco-tokio-logo.svg",
+    "svgPath": "/assets/images/insurance/iffco-tokio-logo.svg",
+    "format": "PNG / SVG",
+    "dimensions": "1920x1080",
+    "sourceUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/IFFCO_TOKIO_Logo.svg/1920px-IFFCO_TOKIO_Logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20250703061105"
+  },
+  {
+    "id": "aditya-birla-health",
+    "name": "Aditya Birla Health Insurance (ABHICL)",
+    "category": "Health Insurance",
+    "file": "aditya-birla-health-insurance.png",
+    "path": "/assets/images/insurance/aditya-birla-health-insurance.png",
+    "format": "PNG",
+    "dimensions": "161x78",
+    "sourceUrl": "https://healthinsuranceblob.abhicl.in/marketingcontent/assets/img/header-footer/footer/logo_health_insurance.png"
+  },
+  {
+    "id": "maa-yojana",
+    "name": "Mukhyamantri Ayushman Arogya Yojana (MAA Yojana Rajasthan)",
+    "category": "State Government Health Scheme",
+    "file": "maa-yojana-logo.jpg",
+    "path": "/assets/images/insurance/maa-yojana-logo.jpg",
+    "format": "JPEG",
+    "dimensions": "200x200",
+    "sourceUrl": "https://maayojana.rajasthan.gov.in/assets/images/logo.jpg"
+  },
+  {
+    "id": "hdfc-ergo",
+    "name": "HDFC ERGO General Insurance Company",
+    "category": "General Insurance",
+    "file": "hdfc-ergo-logo.svg",
+    "path": "/assets/images/insurance/hdfc-ergo-logo.svg",
+    "format": "SVG",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/aa/HDFC_ERGO_General_Insurance_Company.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+  },
+  {
+    "id": "star-health",
+    "name": "Star Health and Allied Insurance Company",
+    "category": "Health Insurance",
+    "file": "star-health-logo.svg",
+    "path": "/assets/images/insurance/star-health-logo.svg",
+    "format": "SVG",
+    "sourceUrl": "https://d28c6jni2fmamz.cloudfront.net/star_health_new_logo_4a65bab316.svg"
+  }
+]
