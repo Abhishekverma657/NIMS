@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ShieldCheck,
   Award,
@@ -7,10 +7,22 @@ import {
   ChevronRight,
   Clock,
   HeartPulse,
-  ArrowRight
+  ArrowRight,
+  FileText,
+  Search,
+  X,
+  Sparkles,
+  CheckCircle2,
+  Building2,
+  Info
 } from 'lucide-react';
+import { healthcareSchemes } from '../data/healthcareSchemesData';
 
 export default function LoyaltyCard({ onOpenBooking }) {
+  const [activeTab, setActiveTab] = useState('all'); // 'all' | 'govt' | 'insurance'
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedScheme, setSelectedScheme] = useState(null);
+
   // Trust Bar stats from live nimshospitals.in/loyalty-card.php
   const trustStats = [
     {
@@ -35,108 +47,38 @@ export default function LoyaltyCard({ onOpenBooking }) {
     }
   ];
 
-  // The 8 Official Empaneled Schemes using exact images from public/assets/images/clients/
-  const officialSchemes = [
-    {
-      id: 'rghs',
-      name: 'RGHS',
-      fullName: 'Rajasthan Government Health Scheme',
-      logo: '/assets/images/clients/rghs.webp',
-      category: 'State Government',
-      coverage: 'Complete Cashless IPD, OPD & Diagnostics',
-      eligibility: 'Serving Rajasthan government employees, MLAs, and pensioners',
-      documents: ['RGHS E-Card / Jan Aadhaar', 'Government Employee ID', 'Aadhaar Card'],
-      description: 'Comprehensive cashless medical facility covering outdoor patient consultations, medicines from empaneled pharmacies, and indoor hospital treatments with zero out-of-pocket expenses.'
-    },
-    {
-      id: 'maa-yojana',
-      name: 'MAA YOJANA',
-      fullName: 'Mukhyamantri Ayushman Arogya Yojana',
-      logo: '/assets/images/clients/Maa-yojana-CKS-2.png',
-      category: 'Rajasthan Universal Scheme',
-      coverage: 'Up to ₹25 Lakh Critical Health Protection',
-      eligibility: 'All resident families of Rajasthan registered under Jan Aadhaar',
-      documents: ['Jan Aadhaar Card', 'Ration Card', 'Patient Aadhaar Card'],
-      description: 'Rajasthan government flagship universal healthcare scheme providing cashless coverage up to ₹25 lakhs per family per year for major tertiary surgeries, heart care, neurosurgery, and oncology.'
-    },
-    {
-      id: 'ayushman-bharat',
-      name: 'AYUSHMAN BHARAT',
-      fullName: 'Pradhan Mantri Jan Arogya Yojana (PM-JAY)',
-      logo: '/assets/images/clients/Ayushman-Bharat-Logo.webp',
-      category: 'Central Government',
-      coverage: '₹5 Lakh Cashless Family Cover / Year',
-      eligibility: 'Identified eligible families as per SECC census & PM-JAY cards',
-      documents: ['Ayushman Golden Card / PM-JAY Letter', 'Aadhaar Card'],
-      description: 'Worlds largest government-funded healthcare program offering up to ₹5,00,000 per family per year for secondary and tertiary care hospitalization across NIMS Super Specialities.'
-    },
-    {
-      id: 'capf',
-      name: 'CAPF',
-      fullName: 'Central Armed Police Forces Healthcare',
-      logo: '/assets/images/clients/capf-1_11zon-150x150.webp',
-      category: 'Paramilitary Services',
-      coverage: '100% Cashless Quaternary Treatment',
-      eligibility: 'Serving & retired personnel of BSF, CRPF, CISF, ITBP, SSB, and dependents',
-      documents: ['CAPF Health Card', 'Force Identity Card', 'Referral / Permission Slip'],
-      description: 'Cashless medical treatment for central armed police personnel and their families across advanced surgical, orthopedic, cardiac, and trauma specialties at NIMS Hospital.'
-    },
-    {
-      id: 'cghs',
-      name: 'CGHS',
-      fullName: 'Central Government Health Scheme',
-      logo: '/assets/images/clients/5-1-1_11zon.webp',
-      category: 'Central Government',
-      coverage: 'Comprehensive Cashless Hospitalization',
-      eligibility: 'Central government civil employees, pensioners, and eligible dependents',
-      documents: ['CGHS Plastic Card', 'Permission / Referral Letter', 'Valid Photo ID'],
-      description: 'Empaneled quaternary clinical care for Central Government employees and pensioners in accordance with official CGHS reimbursement rates and seamless cashless admissions.'
-    },
-    {
-      id: 'indian-railways',
-      name: 'INDIAN RAILWAYS',
-      fullName: 'North Western Railway Empaneled Care',
-      logo: '/assets/images/clients/indian-railways-logo.webp',
-      category: 'Railways Medical Card',
-      coverage: 'Emergency & Quaternary Surgeries',
-      eligibility: 'Serving and retired Railway employees with UMID Card',
-      documents: ['UMID Card (Unique Medical ID)', 'Railway Hospital Referral Letter', 'Service ID'],
-      description: 'Tie-up with Indian Railways providing specialized surgical interventions, cardiac cath lab procedures, and multi-organ care for railway families on immediate referral.'
-    },
-    {
-      id: 'esic',
-      name: 'ESIC',
-      fullName: "Employees' State Insurance Corporation",
-      logo: '/assets/images/clients/esic-logo.webp',
-      category: 'Social Security',
-      coverage: 'Super Speciality Treatment (SST)',
-      eligibility: 'Insured Persons (IP) and family members registered under ESIC',
-      documents: ['ESIC Pehchan Card', 'Branch Office / Dispensary Referral', 'Aadhaar Card'],
-      description: 'Advanced secondary and tertiary healthcare for industrial and corporate workforce covered under ESI Act, backed by computerized online eligibility verification.'
-    },
-    {
-      id: 'echs',
-      name: 'ECHS',
-      fullName: 'Ex-Servicemen Contributory Health Scheme',
-      logo: '/assets/images/clients/logo1-1_11zon.webp',
-      category: 'Defense Veterans',
-      coverage: 'Complete Cashless Defense Care',
-      eligibility: 'Ex-Servicemen pensioners of Indian Army, Navy, Air Force and dependents',
-      documents: ['ECHS Smart Card (64 KB)', 'Polyclinic Referral Slip', 'Discharge Book Copy'],
-      description: 'Dedicated veteran healthcare desk ensuring prompt cashless inpatient treatments, ICU stays, and joint replacements for proud veterans of the Indian Armed Forces.'
-    },
-    {
-      id: 'pm-rahat-yojana',
-      name: 'PM RAHAT YOJANA',
-      fullName: 'Pradhan Mantri National Relief Fund / PM Rahat Yojana (PMNRF)',
-      logo: '/assets/images/insurance/pm-rahat-yojana-emblem.webp',
-      category: 'Central Government Relief',
-      coverage: 'Life-Saving Critical Care & Surgeries Financial Aid',
-      eligibility: 'Citizens needing emergency assistance for expensive tertiary treatments',
-      documents: ['Medical Estimate Certificate from NIMS', 'Income / BPL Certificate', 'Aadhaar Card', 'Application Form'],
-      description: 'Humanitarian financial grant provided through the Prime Minister National Relief Fund for life-threatening medical ailments including open heart surgeries, cancer chemotherapy, renal transplants, and trauma care at NIMS Hospital.'
-    }
-  ];
+  // Auto-select or open scheme modal if navigated with hash (e.g. /loyalty-card#star-health)
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash) {
+        const hashId = window.location.hash.replace('#', '').toLowerCase();
+        const found = healthcareSchemes.find((s) => s.id.toLowerCase() === hashId);
+        if (found) {
+          setSelectedScheme(found);
+        }
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  // Filter schemes based on active category tab & search query
+  const filteredSchemes = healthcareSchemes.filter((scheme) => {
+    const matchesTab = activeTab === 'all' || scheme.type === activeTab;
+    const q = searchQuery.trim().toLowerCase();
+    const matchesSearch =
+      !q ||
+      scheme.name.toLowerCase().includes(q) ||
+      scheme.fullName.toLowerCase().includes(q) ||
+      scheme.category.toLowerCase().includes(q) ||
+      (scheme.description && scheme.description.toLowerCase().includes(q)) ||
+      (scheme.coverage && scheme.coverage.toLowerCase().includes(q));
+    return matchesTab && matchesSearch;
+  });
+
+  const govtCount = healthcareSchemes.filter((s) => s.type === 'govt').length;
+  const insuranceCount = healthcareSchemes.filter((s) => s.type === 'insurance').length;
 
   return (
     <div style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '5rem' }}>
@@ -182,7 +124,7 @@ export default function LoyaltyCard({ onOpenBooking }) {
               marginBottom: '0.85rem'
             }}
           >
-            Government Healthcare Schemes
+            Government & Cashless Healthcare Schemes
           </span>
 
           <h1
@@ -198,7 +140,7 @@ export default function LoyaltyCard({ onOpenBooking }) {
           </h1>
 
           <p style={{ color: '#f1f5f9', fontSize: '1.05rem', maxWidth: '720px', lineHeight: 1.6, margin: 0 }}>
-            NIMS Hospital is linked with all central and state government healthcare schemes. We understand that financial concerns can add stress during treatment, and we ensure our patients receive the best care without financial hardship.
+            NIMS Hospital is linked with all central and state government healthcare schemes, leading private health insurance providers, and TPAs. We ensure our patients receive world-class quaternary care without financial hardship.
           </p>
         </div>
       </section>
@@ -336,54 +278,208 @@ export default function LoyaltyCard({ onOpenBooking }) {
       {/* Choose The Right Healthcare Benefit Scheme (Exact title from live page) */}
       <section className="section" style={{ background: '#ffffff', padding: '4.5rem 0' }}>
         <div className="container">
-          <div className="section-header" style={{ maxWidth: '820px' }}>
+          <div className="section-header" style={{ maxWidth: '840px', marginBottom: '2.5rem' }}>
             <span className="section-subtitle">Cashless Treatment Tie-Ups</span>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.5rem)', color: 'var(--nims-navy)' }}>
-              Choose The Right Healthcare Benefit Scheme<br />For The Treatment
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.5rem)', color: 'var(--nims-navy)', marginBottom: '0.85rem' }}>
+              Choose The Right Healthcare Benefit Scheme<br />For Your Treatment
             </h2>
             <p style={{ fontSize: '1.02rem', color: '#64748b', lineHeight: 1.65 }}>
-              NIMS Hospital is linked with all central and state government healthcare schemes. We understand that financial concerns can add stress during treatment and the burden of healthcare expenses. We ensure that our patients receive the best possible care without worrying about their financial state.
+              NIMS Hospital is linked with all central and state government healthcare schemes, leading private health insurance providers, and TPAs. We ensure our patients receive the best possible care with zero out-of-pocket stress.
             </p>
           </div>
 
-          {/* Official Scheme Cards Grid with Authentic Client Logos (Matching nimshospitals.in/loyalty-card.php) */}
-          <div className="scheme-grid" style={{ marginBottom: '3.5rem' }}>
-            {officialSchemes.map((scheme) => (
-              <div key={scheme.id} className="scheme-card">
-                <div className="scheme-logo-wrap">
-                  {scheme.logo ? (
-                    <img
-                      src={scheme.logo}
-                      alt={scheme.name}
-                      loading="lazy"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        const fallback = e.currentTarget.parentElement.querySelector('.scheme-logo-fallback-text');
-                        if (fallback) fallback.style.display = 'flex';
+          {/* Filter Tabs & Quick Search Controls */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1rem',
+              marginBottom: '2rem',
+              padding: '0.5rem 0',
+              borderBottom: '1px solid #edf2f7'
+            }}
+          >
+            {/* Category Filter Pills */}
+            <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => setActiveTab('all')}
+                style={{
+                  padding: '0.6rem 1.35rem',
+                  borderRadius: '999px',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  cursor: 'pointer',
+                  border: 'none',
+                  transition: 'all 0.25s ease',
+                  background: activeTab === 'all' ? 'var(--nims-navy)' : '#f1f5f9',
+                  color: activeTab === 'all' ? '#ffffff' : '#475569',
+                  boxShadow: activeTab === 'all' ? '0 4px 12px rgba(7, 31, 61, 0.2)' : 'none'
+                }}
+              >
+                All Tie-Ups ({healthcareSchemes.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('govt')}
+                style={{
+                  padding: '0.6rem 1.35rem',
+                  borderRadius: '999px',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  cursor: 'pointer',
+                  border: 'none',
+                  transition: 'all 0.25s ease',
+                  background: activeTab === 'govt' ? 'var(--nims-navy)' : '#f1f5f9',
+                  color: activeTab === 'govt' ? '#ffffff' : '#475569',
+                  boxShadow: activeTab === 'govt' ? '0 4px 12px rgba(7, 31, 61, 0.2)' : 'none'
+                }}
+              >
+                Government Schemes ({govtCount})
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('insurance')}
+                style={{
+                  padding: '0.6rem 1.35rem',
+                  borderRadius: '999px',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  cursor: 'pointer',
+                  border: 'none',
+                  transition: 'all 0.25s ease',
+                  background: activeTab === 'insurance' ? 'var(--nims-navy)' : '#f1f5f9',
+                  color: activeTab === 'insurance' ? '#ffffff' : '#475569',
+                  boxShadow: activeTab === 'insurance' ? '0 4px 12px rgba(7, 31, 61, 0.2)' : 'none'
+                }}
+              >
+                Private Insurance & TPAs ({insuranceCount})
+              </button>
+            </div>
+
+            {/* Search Input Box */}
+            <div style={{ position: 'relative', minWidth: '270px', flex: '1', maxWidth: '340px' }}>
+              <Search
+                size={16}
+                style={{
+                  position: 'absolute',
+                  left: '14px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: '#94a3b8',
+                  pointerEvents: 'none'
+                }}
+              />
+              <input
+                type="text"
+                placeholder="Search scheme, insurer or TPA..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.6rem 2.2rem 0.6rem 2.4rem',
+                  borderRadius: '999px',
+                  border: '1.5px solid #e2e8f0',
+                  fontSize: '0.88rem',
+                  outline: 'none',
+                  transition: 'border-color 0.2s',
+                  background: '#ffffff'
+                }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--nims-orange)'; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = '#e2e8f0'; }}
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  style={{
+                    position: 'absolute',
+                    right: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: '#94a3b8',
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '2px'
+                  }}
+                  title="Clear search"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Scheme Cards Grid with Authentic Brand Logos (Displaying all 18 Empaneled Tie-Ups) */}
+          {filteredSchemes.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '4rem 1rem', background: '#f8fafc', borderRadius: '16px' }}>
+              <p style={{ color: '#64748b', fontSize: '1.05rem', margin: 0 }}>
+                No healthcare scheme or insurer matches your search for "<strong>{searchQuery}</strong>".
+              </p>
+              <button
+                type="button"
+                onClick={() => { setSearchQuery(''); setActiveTab('all'); }}
+                className="btn btn-outline"
+                style={{ marginTop: '1rem', padding: '0.5rem 1.25rem', fontSize: '0.88rem' }}
+              >
+                Reset Filters
+              </button>
+            </div>
+          ) : (
+            <div className="scheme-grid" style={{ marginBottom: '3.5rem' }}>
+              {filteredSchemes.map((scheme) => (
+                <div
+                  key={scheme.id}
+                  id={scheme.id}
+                  className="scheme-card"
+                  onClick={() => setSelectedScheme(scheme)}
+                  style={{ cursor: 'pointer' }}
+                  title={`Click to view coverage details for ${scheme.fullName}`}
+                >
+                  <div className="scheme-logo-wrap">
+                    {scheme.logo ? (
+                      <img
+                        src={scheme.logo}
+                        alt={scheme.alt || scheme.name}
+                        loading="lazy"
+                        onError={(e) => {
+                          if (scheme.fallbackLogo && e.currentTarget.src !== scheme.fallbackLogo) {
+                            e.currentTarget.src = scheme.fallbackLogo;
+                            return;
+                          }
+                          e.currentTarget.style.display = 'none';
+                          const fallback = e.currentTarget.parentElement.querySelector('.scheme-logo-fallback-text');
+                          if (fallback) fallback.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div
+                      className="scheme-logo-fallback-text"
+                      style={{
+                        display: scheme.logo ? 'none' : 'flex',
+                        fontWeight: 800,
+                        fontSize: '1.05rem',
+                        color: 'var(--nims-navy)',
+                        textAlign: 'center',
+                        padding: '0.5rem',
+                        lineHeight: 1.3
                       }}
-                    />
-                  ) : null}
-                  <div
-                    className="scheme-logo-fallback-text"
-                    style={{
-                      display: scheme.logo ? 'none' : 'flex',
-                      fontWeight: 800,
-                      fontSize: '1.05rem',
-                      color: 'var(--nims-navy)',
-                      textAlign: 'center',
-                      padding: '0.5rem',
-                      lineHeight: 1.3
-                    }}
-                  >
-                    {scheme.name}
+                    >
+                      {scheme.name}
+                    </div>
+                  </div>
+                  <div className="scheme-name-bar">
+                    <span>{scheme.name}</span>
                   </div>
                 </div>
-                <div className="scheme-name-bar">
-                  <span>{scheme.name}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Cashless TPA Helpdesk Information Banner */}
           <div
@@ -401,12 +497,25 @@ export default function LoyaltyCard({ onOpenBooking }) {
             }}
           >
             <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(189, 23, 28, 0.25)', color: 'var(--nims-orange)', padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.78rem', fontWeight: 700, marginBottom: '0.5rem' }}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: 'rgba(189, 23, 28, 0.25)',
+                  color: 'var(--nims-orange)',
+                  padding: '0.25rem 0.75rem',
+                  borderRadius: '20px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  marginBottom: '0.5rem'
+                }}
+              >
                 <ShieldCheck size={15} />
                 <span>24×7 Central Cashless TPA Desk</span>
               </div>
               <h3 style={{ fontSize: '1.55rem', color: '#ffffff', margin: '0 0 0.5rem 0', fontWeight: 800 }}>
-                Need Assistance With Your Health Scheme?
+                Need Assistance With Your Health Scheme or Cashless Pre-Auth?
               </h3>
               <p style={{ color: '#cbd5e1', fontSize: '0.96rem', margin: 0, maxWidth: '640px', lineHeight: 1.55 }}>
                 Our on-campus TPA and Government Scheme Helpdesk is staffed 24×7 to assist with e-card verification, pre-authorizations, biometric validation, and zero-cash discharge.
@@ -434,6 +543,231 @@ export default function LoyaltyCard({ onOpenBooking }) {
         </div>
       </section>
 
+      {/* Interactive Scheme Detail Modal */}
+      {selectedScheme && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.75)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.25rem'
+          }}
+          onClick={() => setSelectedScheme(null)}
+        >
+          <div
+            style={{
+              background: '#ffffff',
+              borderRadius: '24px',
+              maxWidth: '640px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div
+              style={{
+                padding: '1.5rem 1.75rem',
+                borderBottom: '1px solid #f1f5f9',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '1rem',
+                position: 'sticky',
+                top: 0,
+                background: '#ffffff',
+                zIndex: 10
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '12px',
+                    border: '1.5px solid #e2e8f0',
+                    padding: '0.4rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: '#ffffff',
+                    flexShrink: 0
+                  }}
+                >
+                  <img
+                    src={selectedScheme.logo}
+                    alt={selectedScheme.name}
+                    style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                    onError={(e) => {
+                      if (selectedScheme.fallbackLogo && e.currentTarget.src !== selectedScheme.fallbackLogo) {
+                        e.currentTarget.src = selectedScheme.fallbackLogo;
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      background: selectedScheme.type === 'govt' ? '#eff6ff' : '#fffbeb',
+                      color: selectedScheme.type === 'govt' ? '#1d4ed8' : '#b45309',
+                      border: `1px solid ${selectedScheme.type === 'govt' ? '#bfdbfe' : '#fde68a'}`,
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      padding: '0.2rem 0.65rem',
+                      borderRadius: '999px',
+                      marginBottom: '0.25rem'
+                    }}
+                  >
+                    {selectedScheme.category}
+                  </span>
+                  <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--nims-navy)', margin: 0, lineHeight: 1.2 }}>
+                    {selectedScheme.name}
+                  </h3>
+                  <p style={{ fontSize: '0.84rem', color: '#64748b', margin: '2px 0 0', lineHeight: 1.3 }}>
+                    {selectedScheme.fullName}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedScheme(null)}
+                style={{
+                  background: '#f1f5f9',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: '#64748b',
+                  flexShrink: 0,
+                  transition: 'background 0.2s'
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = '#e2e8f0'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = '#f1f5f9'; }}
+                aria-label="Close dialog"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div style={{ padding: '1.75rem' }}>
+              {/* Coverage & Eligibility Cards */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ background: '#f8fafc', padding: '1rem 1.15rem', borderRadius: '14px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: 'var(--nims-orange)', fontWeight: 700, fontSize: '0.78rem', marginBottom: '0.35rem' }}>
+                    <ShieldCheck size={16} />
+                    <span>COVERAGE & BENEFITS</span>
+                  </div>
+                  <p style={{ fontSize: '0.92rem', fontWeight: 700, color: '#1e293b', margin: 0, lineHeight: 1.4 }}>
+                    {selectedScheme.coverage}
+                  </p>
+                </div>
+
+                <div style={{ background: '#f8fafc', padding: '1rem 1.15rem', borderRadius: '14px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: 'var(--nims-navy)', fontWeight: 700, fontSize: '0.78rem', marginBottom: '0.35rem' }}>
+                    <Users size={16} />
+                    <span>ELIGIBILITY CRITERIA</span>
+                  </div>
+                  <p style={{ fontSize: '0.88rem', fontWeight: 600, color: '#334155', margin: 0, lineHeight: 1.4 }}>
+                    {selectedScheme.eligibility}
+                  </p>
+                </div>
+              </div>
+
+              {/* Description */}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--nims-navy)', fontWeight: 700, fontSize: '0.88rem', marginBottom: '0.4rem' }}>
+                  <Info size={16} color="var(--nims-navy)" />
+                  <span>Scheme Details</span>
+                </div>
+                <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: 1.65, margin: 0 }}>
+                  {selectedScheme.description}
+                </p>
+              </div>
+
+              {/* Mandatory Documents Checklist */}
+              {selectedScheme.documents && selectedScheme.documents.length > 0 && (
+                <div
+                  style={{
+                    marginBottom: '1.75rem',
+                    background: '#f0fdf4',
+                    padding: '1.25rem',
+                    borderRadius: '16px',
+                    border: '1px solid #bbf7d0'
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      color: '#166534',
+                      fontWeight: 700,
+                      fontSize: '0.84rem',
+                      marginBottom: '0.65rem'
+                    }}
+                  >
+                    <FileText size={16} />
+                    <span>MANDATORY DOCUMENTS AT CASHLESS COUNTER</span>
+                  </div>
+                  <ul
+                    style={{
+                      margin: 0,
+                      paddingLeft: '1.25rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.35rem'
+                    }}
+                  >
+                    {selectedScheme.documents.map((doc, dIdx) => (
+                      <li key={dIdx} style={{ fontSize: '0.86rem', color: '#14532d', fontWeight: 600 }}>
+                        {doc}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <a
+                  href="tel:01412388999"
+                  className="btn btn-orange"
+                  style={{ flex: 1, minWidth: '220px', justifyContent: 'center', padding: '0.85rem 1.25rem', fontSize: '0.92rem' }}
+                >
+                  <PhoneCall size={16} />
+                  <span>Call TPA Desk: 0141-23 88 999</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedScheme(null);
+                    if (onOpenBooking) onOpenBooking();
+                  }}
+                  className="btn btn-primary"
+                  style={{ flex: 1, minWidth: '200px', justifyContent: 'center', padding: '0.85rem 1.25rem', fontSize: '0.92rem' }}
+                >
+                  <span>Book Cashless OPD</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

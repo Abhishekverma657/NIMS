@@ -506,9 +506,9 @@
 .nims-hero-marquee-track {
   display: flex;
   align-items: center;
-  gap: 1.35rem;
+  gap: clamp(1rem, 1.6vw, 1.8rem);
   width: max-content;
-  animation: nimsHeroMarquee 34s linear infinite;
+  animation: nimsHeroMarquee 58s linear infinite;
 }
 
 .nims-hero-marquee-track:hover {
@@ -533,121 +533,75 @@
   width: 100%;
   overflow: hidden;
   position: relative;
-  padding: 4px 0 2px;
+  padding: 6px 0 4px;
 }
 
-/* PROMINENT HIGH-VISIBILITY CASHLESS INSURANCE & TPA LOGO CARD WITH ANIMATING GLOWING BORDER */
+/* OPTION 2: LUXURY UNIFORM WHITE PILL CAPSULES */
 .insurance-logo-card {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
-  height: clamp(66px, 4.4vw, 76px);
-  width: clamp(176px, 11.2vw, 215px);
-  min-width: clamp(176px, 11.2vw, 215px);
-  padding: 7px 18px;
-  border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), 0 0 16px rgba(255, 215, 0, 0.42);
+  background: #ffffff !important;
+  height: clamp(44px, 3.5vw, 50px);
+  width: auto !important;
+  min-width: clamp(140px, 11vw, 175px);
+  max-width: clamp(180px, 14vw, 220px);
+  padding: 4px clamp(12px, 1.2vw, 18px);
+  border-radius: 9999px !important; /* Perfect seamless pill */
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.08) !important;
   flex-shrink: 0;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease !important;
   box-sizing: border-box;
   overflow: hidden;
-  z-index: 1;
-}
-
-/* ROTATING SHINING GOLD & WHITE HIGHLIGHT BEAM */
-.insurance-logo-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 45deg,
-    rgba(255, 215, 0, 0.6) 65deg,
-    #ffd700 85deg,
-    #ffffff 92deg,
-    #ffd700 99deg,
-    rgba(255, 215, 0, 0.6) 120deg,
-    transparent 140deg,
-    transparent 225deg,
-    rgba(255, 215, 0, 0.6) 245deg,
-    #ffd700 265deg,
-    #ffffff 272deg,
-    #ffd700 279deg,
-    rgba(255, 215, 0, 0.6) 300deg,
-    transparent 320deg,
-    transparent 360deg
-  );
-  animation: rotateGlowingBorder 3.2s linear infinite;
-  z-index: 1;
-}
-
-/* CRISP INNER WHITE CORE CONTAINER */
-.insurance-logo-card::after {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  background: #ffffff;
-  border-radius: 11px;
   z-index: 2;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.insurance-logo-card::before,
+.insurance-logo-card::after {
+  display: none !important;
 }
 
 .insurance-logo-card:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), 0 0 25px rgba(255, 215, 0, 0.75);
-}
-
-.insurance-logo-card:hover::before {
-  animation-duration: 1.8s; /* Spins faster on hover */
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.26), 0 0 16px rgba(255, 215, 0, 0.45) !important;
 }
 
 .insurance-logo-img {
   position: relative;
   z-index: 3;
-  width: 100%;
-  height: 100%;
-  max-height: clamp(48px, 3.2vw, 56px);
+  width: auto;
+  height: clamp(32px, 2.5vw, 38px);
+  max-height: clamp(32px, 2.5vw, 38px);
   max-width: 100%;
   object-fit: contain;
   object-position: center;
   display: block;
   user-select: none;
   pointer-events: none;
-  transition: transform 0.22s ease;
+  filter: none !important;
+  transition: transform 0.25s ease;
 }
 
 .insurance-logo-card:hover .insurance-logo-img {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .insurance-card-text-fallback {
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   font-weight: 800;
-  color: #172a34;
+  color: #1e293b;
   text-align: center;
-  line-height: 1.25;
+  line-height: 1.2;
   position: relative;
   z-index: 3;
   letter-spacing: -0.01em;
-  padding: 0 6px;
+  padding: 0 4px;
   text-transform: uppercase;
-}
-
-@keyframes rotateGlowingBorder {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  white-space: nowrap;
 }
 
 .wave-item-card {
@@ -786,25 +740,22 @@
   }
 
   .nims-hero-marquee-track {
-    gap: 0.85rem;
-    animation-duration: 26s;
+    gap: 0.95rem;
+    animation-duration: 48s;
   }
 
   .insurance-logo-card {
-    height: 54px !important;
-    width: 144px !important;
-    min-width: 144px !important;
-    padding: 5px 12px !important;
-    border-radius: 11px !important;
-  }
-
-  .insurance-logo-card::after {
-    inset: 2px !important;
-    border-radius: 9px !important;
+    height: 42px !important;
+    min-width: 130px !important;
+    max-width: 175px !important;
+    padding: 3px 12px !important;
+    border-radius: 9999px !important;
+    background: #ffffff !important;
   }
 
   .insurance-logo-img {
-    max-height: 40px !important;
+    height: 28px !important;
+    max-height: 28px !important;
   }
 
   .wave-item-card {
@@ -843,25 +794,22 @@
   }
 
   .nims-hero-marquee-track {
-    gap: 0.65rem;
-    animation-duration: 22s;
+    gap: 0.75rem;
+    animation-duration: 42s;
   }
   
   .insurance-logo-card {
-    height: 48px !important;
-    width: 130px !important;
-    min-width: 130px !important;
-    padding: 4px 10px !important;
-    border-radius: 10px !important;
-  }
-
-  .insurance-logo-card::after {
-    inset: 2px !important;
-    border-radius: 8px !important;
+    height: 38px !important;
+    min-width: 115px !important;
+    max-width: 155px !important;
+    padding: 3px 10px !important;
+    border-radius: 9999px !important;
+    background: #ffffff !important;
   }
 
   .insurance-logo-img {
-    max-height: 35px !important;
+    height: 25px !important;
+    max-height: 25px !important;
   }
 
   .wave-item-card {

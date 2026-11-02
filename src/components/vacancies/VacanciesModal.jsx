@@ -41,6 +41,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob, vacanciesD
     city: '',
     gender: 'Female',
     qualification: '',
+    specialization: '',
     councilRegNo: '',
     university: '',
     passingYear: '2023',
@@ -56,6 +57,19 @@ export default function VacanciesModal({ isOpen, onClose, initialJob, vacanciesD
   });
 
   const [resumeFile, setResumeFile] = useState(null);
+
+  // Dynamic check: whether selected job requires medical/nursing council registration
+  const isCouncilRequired = selectedJob?.requiresCouncilReg !== undefined
+    ? !!selectedJob.requiresCouncilReg
+    : Boolean(
+        selectedJob?.category?.toLowerCase().includes('medic') ||
+        selectedJob?.category?.toLowerCase().includes('nurs') ||
+        selectedJob?.category?.toLowerCase().includes('doctor') ||
+        selectedJob?.department?.toLowerCase().includes('medic') ||
+        selectedJob?.department?.toLowerCase().includes('nurs') ||
+        selectedJob?.deptCategory?.toLowerCase().includes('medic') ||
+        selectedJob?.deptCategory?.toLowerCase().includes('nurs')
+      );
 
   if (!isOpen) return null;
 
@@ -366,8 +380,8 @@ export default function VacanciesModal({ isOpen, onClose, initialJob, vacanciesD
               <div>
                 <div class="section-heading">Qualifications & Experience</div>
                 <table class="info-table">
-                  <tr><td class="lbl">Highest Degree:</td><td class="val">${applicant.qualification}</td></tr>
-                  <tr><td class="lbl">Council Reg. No:</td><td class="val">${applicant.councilRegNo || 'Submitted / Under Verification'}</td></tr>
+                  <tr><td class="lbl">Highest Degree:</td><td class="val">${applicant.qualification}${applicant.specialization ? ' (' + applicant.specialization + ')' : ''}</td></tr>
+                  ${isCouncilRequired || applicant.councilRegNo ? `<tr><td class="lbl">Council Reg. No:</td><td class="val">${applicant.councilRegNo || 'Submitted / Under Verification'}</td></tr>` : ''}
                   <tr><td class="lbl">Total Experience:</td><td class="val">${applicant.experience}</td></tr>
                   <tr><td class="lbl">Last / Current Org:</td><td class="val">${applicant.lastOrg || 'N/A'}</td></tr>
                   <tr><td class="lbl">Notice Period:</td><td class="val">${applicant.noticePeriod}</td></tr>
@@ -826,61 +840,140 @@ export default function VacanciesModal({ isOpen, onClose, initialJob, vacanciesD
               {/* Step 2 Content */}
               {activeStep === 2 && (
                 <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  <div className="v-form-grid-2">
-                    <div>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
-                        Highest Academic / Clinical Degree *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. MBBS, MD, B.Sc Nursing, GNM, DMLT"
-                        value={applicant.qualification}
-                        onChange={e => setApplicant({ ...applicant, qualification: e.target.value })}
-                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
-                      />
+                  {!isCouncilRequired && (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      background: '#f8fafc',
+                      border: '1px solid #e2e8f0',
+                      padding: '0.5rem 0.85rem',
+                      borderRadius: '8px',
+                      fontSize: '0.8rem',
+                      color: '#475569'
+                    }}>
+                      <span style={{ fontSize: '0.9rem' }}>ℹ️</span>
+                      <span>Council Registration is not required for this role.</span>
                     </div>
-                    <div>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
-                        Medical / Nursing Council Reg. No.
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="e.g. RMC/NMC/RNC Registration No."
-                        value={applicant.councilRegNo}
-                        onChange={e => setApplicant({ ...applicant, councilRegNo: e.target.value })}
-                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
-                      />
-                    </div>
-                  </div>
+                  )}
 
-                  <div className="v-form-grid-2">
-                    <div>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
-                        College / University Name
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="e.g. RUHS Jaipur, AIIMS, SMS Medical College"
-                        value={applicant.university}
-                        onChange={e => setApplicant({ ...applicant, university: e.target.value })}
-                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
-                      />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
-                        Year of Passing
-                      </label>
-                      <input
-                        type="number"
-                        min="1980"
-                        max="2026"
-                        value={applicant.passingYear}
-                        onChange={e => setApplicant({ ...applicant, passingYear: e.target.value })}
-                        style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
-                      />
-                    </div>
-                  </div>
+                  {isCouncilRequired ? (
+                    <>
+                      <div className="v-form-grid-2">
+                        <div>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
+                            Highest Academic / Clinical Degree *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. MBBS, MD, B.Sc Nursing, GNM, DMLT"
+                            value={applicant.qualification}
+                            onChange={e => setApplicant({ ...applicant, qualification: e.target.value })}
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
+                            Medical / Nursing Council Reg. No.
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. RMC/NMC/RNC Registration No."
+                            value={applicant.councilRegNo}
+                            onChange={e => setApplicant({ ...applicant, councilRegNo: e.target.value })}
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="v-form-grid-2">
+                        <div>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
+                            College / University Name
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. RUHS Jaipur, AIIMS, SMS Medical College"
+                            value={applicant.university}
+                            onChange={e => setApplicant({ ...applicant, university: e.target.value })}
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
+                            Year of Passing
+                          </label>
+                          <input
+                            type="number"
+                            min="1980"
+                            max="2026"
+                            value={applicant.passingYear}
+                            onChange={e => setApplicant({ ...applicant, passingYear: e.target.value })}
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="v-form-grid-2">
+                        <div>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
+                            Highest Academic Degree *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. B.Tech, BCA, MCA, MBA, B.Sc, B.Com, BBA"
+                            value={applicant.qualification}
+                            onChange={e => setApplicant({ ...applicant, qualification: e.target.value })}
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
+                            Specialization / Major Stream
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Computer Science, Digital Marketing, HR, Finance"
+                            value={applicant.specialization}
+                            onChange={e => setApplicant({ ...applicant, specialization: e.target.value })}
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="v-form-grid-2">
+                        <div>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
+                            College / University Name
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. University of Rajasthan, RTU Kota, Delhi University"
+                            value={applicant.university}
+                            onChange={e => setApplicant({ ...applicant, university: e.target.value })}
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--nims-navy)', display: 'block', marginBottom: '4px' }}>
+                            Year of Passing
+                          </label>
+                          <input
+                            type="number"
+                            min="1980"
+                            max="2026"
+                            value={applicant.passingYear}
+                            onChange={e => setApplicant({ ...applicant, passingYear: e.target.value })}
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1.5px solid #cbd5e1', fontSize: '0.92rem', outline: 'none' }}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   <div className="v-step-action-row">
                     <button

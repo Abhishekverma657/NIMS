@@ -29,7 +29,10 @@ import {
   Award,
   Tag,
   CheckCircle2,
-  Smartphone
+  Smartphone,
+  Eye,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 function AppStoreMark() {
@@ -56,7 +59,7 @@ import { useDoctors } from '../context/DoctorContext';
 import { packagesData } from '../data/packagesData';
 import SpecialityCard from '../components/specialities/SpecialityCard';
 import DoctorCard from '../components/doctors/DoctorCard';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MotionFadeIn, MotionStagger, MotionItem, MotionCard } from '../components/motion/MotionWrapper';
 import AnimatedCounter from '../components/common/AnimatedCounter';
 import VideoCard from '../components/video/VideoCard';
@@ -71,6 +74,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [reviewFilter, setReviewFilter] = useState('all');
   const [activeVideoIndex, setActiveVideoIndex] = useState(null);
+  const [expandedHomePkg, setExpandedHomePkg] = useState({});
   
   // Doctor Filter State
   const [doctorDeptFilter, setDoctorDeptFilter] = useState('Cardiology');
@@ -170,7 +174,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
   ];
 
   // Video Reviews (exclude doctor-specific ones)
-  const videoReviews = videoReviewsData.filter(v => !v.doctorId).slice(0, 3);
+  const videoReviews = videoReviewsData.filter(v => !v.doctorId).slice(0, 4);
   // Featured Health Packages for homepage banner section
   const featuredPackages = packagesData.slice(0, 3);
 
@@ -263,23 +267,30 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                 </p>
               </div>
 
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => onOpenPackageBooking ? onOpenPackageBooking() : null}
+              <Link
+                to="/health-packages"
                 className="btn btn-secondary"
-                style={{ padding: '0.75rem 1.6rem', fontSize: '0.9rem', borderRadius: '50px' }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.75rem 1.6rem',
+                  fontSize: '0.9rem',
+                  borderRadius: '50px',
+                  textDecoration: 'none'
+                }}
               >
                 <span>View All Health Packages</span>
                 <ArrowRight size={16} />
-              </motion.button>
+              </Link>
             </div>
           </MotionFadeIn>
 
           <MotionStagger style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
-            gap: 'clamp(1.5rem, 2.2vw, 2.25rem)'
+            gap: 'clamp(1.5rem, 2.2vw, 2.25rem)',
+            alignItems: 'start'
           }} staggerDelay={0.08}>
             {featuredPackages.map((pkg) => (
               <MotionItem key={pkg.id}>
@@ -292,7 +303,6 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
-                  height: '100%',
                   transition: 'all 0.3s ease'
                 }}>
                   <div>
@@ -324,6 +334,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                       <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                         Key Included Parameters ({pkg.testsCount} Tests):
                       </div>
+
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
                         {pkg.tests.slice(0, 4).map((test, idx) => (
                           <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', fontSize: '0.94rem', color: '#334155' }}>
@@ -331,10 +342,59 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                             <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{test}</span>
                           </div>
                         ))}
+
+                        <AnimatePresence initial={false}>
+                          {expandedHomePkg[pkg.id] && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.28, ease: 'easeInOut' }}
+                              style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '0.55rem', paddingTop: '0.2rem' }}
+                            >
+                              {pkg.tests.slice(4).map((test, idx) => (
+                                <motion.div
+                                  key={idx}
+                                  initial={{ opacity: 0, y: -4 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: idx * 0.02, duration: 0.18 }}
+                                  style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', fontSize: '0.94rem', color: '#334155' }}
+                                >
+                                  <CheckCircle2 size={16} color="#10b981" style={{ flexShrink: 0 }} />
+                                  <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{test}</span>
+                                </motion.div>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
                         {pkg.tests.length > 4 && (
-                          <div style={{ fontSize: '0.88rem', color: 'var(--nims-orange)', fontWeight: 700, marginTop: '0.3rem' }}>
-                            + {pkg.tests.length - 4} more vital tests included
-                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setExpandedHomePkg(prev => ({ ...prev, [pkg.id]: !prev[pkg.id] }))}
+                            style={{
+                              background: '#ffffff',
+                              border: '1px dashed #cbd5e1',
+                              borderRadius: '8px',
+                              padding: '0.45rem 0.65rem',
+                              color: 'var(--nims-orange)',
+                              fontWeight: 700,
+                              fontSize: '0.82rem',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              marginTop: '0.35rem',
+                              transition: 'all 0.2s ease'
+                            }}
+                          >
+                            <span>
+                              {expandedHomePkg[pkg.id]
+                                ? '▲ Collapse extra tests'
+                                : `+ ${pkg.tests.length - 4} more vital tests (Click to View)`}
+                            </span>
+                            <ChevronDown size={14} style={{ transform: expandedHomePkg[pkg.id] ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }} />
+                          </button>
                         )}
                       </div>
                     </div>
@@ -353,6 +413,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                     </div>
 
                     <button
+                      type="button"
                       onClick={() => onOpenPackageBooking ? onOpenPackageBooking(pkg) : null}
                       style={{
                         width: '100%',
@@ -771,11 +832,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                 <span>Featured Video Testimonials</span>
               </div>
 
-              <MotionStagger style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
-                gap: '1.5rem'
-              }} staggerDelay={0.08}>
+              <MotionStagger className="nims-testimonials-grid" staggerDelay={0.08}>
                 {videoReviews.map((item, idx) => (
                   <VideoCard 
                     key={item.id} 
@@ -796,11 +853,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                 <span>Verified Google Written Testimonials</span>
               </div>
 
-              <MotionStagger style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
-                gap: '1.5rem'
-              }} staggerDelay={0.08}>
+              <MotionStagger className="nims-testimonials-grid" staggerDelay={0.08}>
                 {writtenTestimonialsData.map((testi, i) => (
                   <MotionItem key={i}>
                     <motion.div
@@ -991,8 +1044,10 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                   </div>
                 </Link>
 
-                <Link 
-                  to="/tatkaal-booking"
+                <a 
+                  href="https://play.google.com/store/apps/details?id=com.nimstatkalseva.android"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="nims-store-btn"
                 >
                   <GooglePlayMark />
@@ -1000,7 +1055,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                     <span style={{ display: 'block', fontSize: '0.62rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>GET IT ON</span>
                     <strong style={{ fontSize: '0.86rem', fontWeight: 800 }}>Google Play</strong>
                   </div>
-                </Link>
+                </a>
               </div>
             </div>
           </div>

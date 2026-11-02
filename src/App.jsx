@@ -18,6 +18,7 @@ import PhotoGallery from './pages/PhotoGallery';
 import LoyaltyCard from './pages/LoyaltyCard';
 import PatientPortal from './pages/PatientPortal';
 import Vacancies from './pages/Vacancies';
+import JobDetail from './pages/JobDetail';
 import Contact from './pages/Contact';
 import Reviews from './pages/Reviews';
 import DoctorProfile from './pages/DoctorProfile';
@@ -74,7 +75,9 @@ function AnimatedPageContent({ onOpenBooking, onOpenPackageBooking }) {
           <Route path="/loyalty-card" element={<LoyaltyCard onOpenBooking={onOpenBooking} />} />
           <Route path="/patient-portal" element={<PatientPortal />} />
           <Route path="/vacancies" element={<Vacancies />} />
+          <Route path="/vacancies/:slug" element={<JobDetail />} />
           <Route path="/careers" element={<Vacancies />} />
+          <Route path="/careers/:slug" element={<JobDetail />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/doctor/:id" element={<DoctorProfile onOpenBooking={onOpenBooking} />} />

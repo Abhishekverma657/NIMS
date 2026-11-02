@@ -19,5 +19,12 @@ export const writtenTestimonialsData = [
     role: 'Family Inpatient Care',
     rating: 5,
     comment: "We really appreciate this hospital with all good facilities and staff. Be it the ward, billing or TPA department — everyone is of a helping nature. NIMS Hospital has world-class infrastructure on NH-11C."
+  },
+  {
+    initials: 'RS',
+    name: 'Rajesh S.',
+    role: 'Neuro & Emergency Patient',
+    rating: 5,
+    comment: "Outstanding emergency response and clinical care at NIMS Hospital. The ICU team and nursing staff were extremely supportive round the clock. Truly world-class medical facilities in Rajasthan."
   }
 ];

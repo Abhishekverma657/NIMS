@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { Calendar, CheckCircle2, ChevronDown, ChevronUp, ShieldCheck, Tag, HeartPulse, Search } from 'lucide-react';
 import { packagesData } from '../data/packagesData';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,6 +9,26 @@ export default function HealthPackages({ onOpenBooking, onOpenPackageBooking }) 
   const [activeCategory, setActiveCategory] = useState('All');
   const [expandedPackage, setExpandedPackage] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+
+  // Auto-expand and scroll to package if targeted from Home page or URL param
+  useEffect(() => {
+    const pkgId = searchParams.get('package') || (location.hash ? location.hash.replace('#', '') : null);
+    if (pkgId) {
+      setExpandedPackage(pkgId);
+      const targetPkg = packagesData.find(p => p.id === pkgId);
+      if (targetPkg && activeCategory !== 'All' && targetPkg.category !== activeCategory) {
+        setActiveCategory('All');
+      }
+      setTimeout(() => {
+        const el = document.getElementById(pkgId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 250);
+    }
+  }, [searchParams, location.hash]);
 
   const categories = ['All', 'General Wellness', 'Full Body Checkup', 'Diabetes Care', 'Heart Health', 'Liver Care', 'Kidney Care', 'Thyroid Care', 'Men\'s Health'];
 
@@ -128,10 +149,15 @@ export default function HealthPackages({ onOpenBooking, onOpenPackageBooking }) 
               return (
                 <MotionItem key={pkg.id}>
                   <motion.div
+                    id={pkg.id}
                     className="health-package-card"
                     layout
                     whileHover={{ y: -5, boxShadow: '0 20px 45px rgba(35, 32, 33, 0.11)' }}
                     transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                    style={{
+                      border: expandedPackage === pkg.id ? '2px solid var(--nims-orange)' : undefined,
+                      scrollMarginTop: '120px'
+                    }}
                   >
                     <div>
                       {/* Top Badge Strip */}

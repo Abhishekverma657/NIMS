@@ -18,6 +18,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { healthcareSchemes } from '../../data/healthcareSchemesData';
 import './ModernHeroSlider.css';
 
 function AppStoreMark() {
@@ -39,120 +40,14 @@ function GooglePlayMark() {
   );
 }
 
-const insurancePartners = [
-  // 1. Central & State Government Healthcare Schemes (Empaneled Tie-Ups)
-  {
-    id: 'ayushman-bharat',
-    name: 'Ayushman Bharat (PM-JAY)',
-    logo: '/assets/images/clients/Ayushman-Bharat-Logo.webp',
-    alt: 'Ayushman Bharat PM-JAY'
-  },
-  {
-    id: 'rghs',
-    name: 'RGHS — Rajasthan Govt Health Scheme',
-    logo: '/assets/images/clients/rghs.webp',
-    alt: 'Rajasthan Government Health Scheme'
-  },
-  {
-    id: 'maa-yojana',
-    name: 'Mukhyamantri Ayushman Arogya (MAA Yojana)',
-    logo: '/assets/images/insurance/maa-yojana-logo.jpg',
-    alt: 'Mukhyamantri Ayushman Arogya Yojana Rajasthan'
-  },
-  {
-    id: 'cghs',
-    name: 'CGHS — Central Government Health Scheme',
-    logo: '/assets/images/clients/5-1-1_11zon.webp',
-    alt: 'Central Government Health Scheme (CGHS)'
-  },
-  {
-    id: 'echs',
-    name: 'ECHS — Ex-Servicemen Contributory Health Scheme',
-    logo: '/assets/images/clients/logo1-1_11zon.webp',
-    alt: 'Ex-Servicemen Contributory Health Scheme (ECHS)'
-  },
-  {
-    id: 'capf',
-    name: 'CAPF — Central Armed Police Forces',
-    logo: '/assets/images/clients/capf-1_11zon-150x150.webp',
-    alt: 'Central Armed Police Forces Healthcare (CAPF)'
-  },
-  {
-    id: 'indian-railways',
-    name: 'Indian Railways Medical Care',
-    logo: '/assets/images/clients/indian-railways-logo.webp',
-    alt: 'Indian Railways North Western Railway'
-  },
-  {
-    id: 'esic',
-    name: 'ESIC — Employees State Insurance Corporation',
-    logo: '/assets/images/clients/esic-logo.webp',
-    alt: 'Employees State Insurance Corporation (ESIC)'
-  },
-  {
-    id: 'pm-rahat-yojana',
-    name: 'PM Rahat Yojana',
-    displayText: 'PM Rahat Yojana',
-    logo: '/assets/images/insurance/pm-rahat-yojana-card.png',
-    alt: 'Prime Minister National Relief Fund / PM Rahat Yojana'
-  },
-
-  // 2. Leading Cashless Private & PSU Health Insurers
-  {
-    id: 'star-health',
-    name: 'Star Health Insurance',
-    logo: '/assets/images/insurance/star-health-logo.svg',
-    alt: 'Star Health and Allied Insurance'
-  },
-  {
-    id: 'hdfc-ergo',
-    name: 'HDFC ERGO General Insurance',
-    logo: '/assets/images/insurance/hdfc-ergo-logo.svg',
-    alt: 'HDFC ERGO General Insurance'
-  },
-  {
-    id: 'iffco-tokio',
-    name: 'IFFCO TOKIO General Insurance',
-    logo: '/assets/images/insurance/iffco-tokio-logo.svg',
-    alt: 'IFFCO TOKIO General Insurance'
-  },
-  {
-    id: 'aditya-birla',
-    name: 'Aditya Birla Health Insurance',
-    logo: '/assets/images/insurance/aditya-birla-health-insurance.png',
-    alt: 'Aditya Birla Health Insurance'
-  },
-  {
-    id: 'fhpl',
-    name: 'Family Health Plan TPA (FHPL)',
-    logo: '/assets/images/insurance/fhpl-logo.png',
-    alt: 'Family Health Plan Insurance TPA Limited'
-  },
-  {
-    id: 'gipsa',
-    name: 'GIPSA (New India • National • Oriental • United India)',
-    logo: '/assets/images/insurance/gipsa-insurance.png',
-    alt: 'General Insurance Public Sector Association'
-  },
-  {
-    id: 'gic-re',
-    name: 'GIC Re (आपत्काले रक्षिष्यामि)',
-    logo: '/assets/images/insurance/gic-re-logo.png',
-    alt: 'General Insurance Corporation of India'
-  },
-  {
-    id: 'saras-dairy',
-    name: 'Saras Dairy Scheme (सरस)',
-    logo: '/assets/images/insurance/saras-dairy-logo.jpg',
-    alt: 'Saras Dairy Health Benefit Scheme'
-  },
-  {
-    id: 'gic-council',
-    name: 'General Insurance Council',
-    logo: '/assets/images/insurance/gic-council-logo.png',
-    alt: 'General Insurance Council'
-  }
-];
+const insurancePartners = healthcareSchemes.map((s) => ({
+  id: s.id,
+  name: s.fullName,
+  displayText: s.name,
+  logo: s.logo,
+  fallbackLogo: s.fallbackLogo,
+  alt: s.alt || s.name
+}));
 
 export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageBooking }) {
   const [current, setCurrent] = useState(0);
@@ -388,10 +283,15 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
                 <AppStoreMark />
                 <span><small>Download on the</small><strong>App Store</strong></span>
               </Link>
-              <Link to="/tatkaal-booking" className="hero-store-badge">
+              <a 
+                href="https://play.google.com/store/apps/details?id=com.nimstatkalseva.android" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hero-store-badge"
+              >
                 <GooglePlayMark />
                 <span><small>Get it on</small><strong>Google Play</strong></span>
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -470,7 +370,7 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
               {insurancePartners.map((item) => (
                 <Link
                   key={`partner-set1-${item.id}`}
-                  to="/loyalty-card"
+                  to={`/loyalty-card#${item.id}`}
                   className="insurance-logo-card"
                   title={`${item.name} — Cashless Care at NIMS Hospital`}
                 >
@@ -481,6 +381,10 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
                       className="insurance-logo-img"
                       loading="lazy"
                       onError={(e) => {
+                        if (item.fallbackLogo && e.currentTarget.src !== item.fallbackLogo) {
+                          e.currentTarget.src = item.fallbackLogo;
+                          return;
+                        }
                         e.currentTarget.style.display = 'none';
                         const parent = e.currentTarget.parentElement;
                         const textSpan = parent.querySelector('.insurance-card-text-fallback');
@@ -501,7 +405,7 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
               {insurancePartners.map((item) => (
                 <Link
                   key={`partner-set2-${item.id}`}
-                  to="/loyalty-card"
+                  to={`/loyalty-card#${item.id}`}
                   className="insurance-logo-card"
                   title={`${item.name} — Cashless Care at NIMS Hospital`}
                   aria-hidden="true"
@@ -514,6 +418,10 @@ export default function ModernHeroSlider({ slides, onOpenBooking, onOpenPackageB
                       className="insurance-logo-img"
                       loading="lazy"
                       onError={(e) => {
+                        if (item.fallbackLogo && e.currentTarget.src !== item.fallbackLogo) {
+                          e.currentTarget.src = item.fallbackLogo;
+                          return;
+                        }
                         e.currentTarget.style.display = 'none';
                         const parent = e.currentTarget.parentElement;
                         const textSpan = parent.querySelector('.insurance-card-text-fallback');
