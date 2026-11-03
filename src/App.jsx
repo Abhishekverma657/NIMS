@@ -95,6 +95,63 @@ function AnimatedPageContent({ onOpenBooking, onOpenPackageBooking }) {
   );
 }
 
+function FloatingHelpline() {
+  const location = useLocation();
+  const isCareersPage =
+    location.pathname.startsWith('/careers') ||
+    location.pathname.startsWith('/career') ||
+    location.pathname.startsWith('/vacancies') ||
+    location.pathname.startsWith('/vacancy');
+
+  if (isCareersPage) return null;
+
+  return (
+    <motion.a
+      href="tel:0141-2388999"
+      className="floating-helpline-hub"
+      title="24x7 Emergency & OPD Helpline"
+      initial={{ scale: 0.85, opacity: 0, y: 20 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.05, y: -3, boxShadow: '0 16px 36px rgba(189, 23, 28, 0.35)' }}
+      whileTap={{ scale: 0.96 }}
+      transition={{ type: 'spring', stiffness: 380, damping: 22 }}
+    >
+      <div
+        className="hub-icon-circle"
+        style={{
+          width: '38px',
+          height: '38px',
+          borderRadius: '50%',
+          background: '#ffffff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'var(--color-surface-strong)',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.25)',
+          flexShrink: 0
+        }}
+      >
+        <PhoneCall size={19} />
+      </div>
+      <div className="hub-text-wrap" style={{ textAlign: 'left', lineHeight: 1.15 }}>
+        <div
+          className="hub-sub-label"
+          style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--nims-gold)', letterSpacing: '0.06em', textTransform: 'uppercase' }}
+        >
+          <span className="pulse-dot pulse-dot-orange" style={{ marginRight: '5px', verticalAlign: 'middle' }} />
+          24×7 EMERGENCY &amp; OPD
+        </div>
+        <div
+          className="hub-num"
+          style={{ fontSize: '1.02rem', fontWeight: 900, color: '#ffffff', letterSpacing: '0.02em' }}
+        >
+          0141-23 88 999
+        </div>
+      </div>
+    </motion.a>
+  );
+}
+
 export default function App() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingPrefill, setBookingPrefill] = useState(null);
@@ -180,50 +237,8 @@ export default function App() {
           onClose={() => setVacanciesOpen(false)}
         />
 
-        {/* Floating 24x7 Helpline Hub with Modern Motion */}
-        <motion.a
-          href="tel:0141-2388999"
-          className="floating-helpline-hub"
-          title="24x7 Emergency & OPD Helpline"
-          initial={{ scale: 0.85, opacity: 0, y: 20 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          whileHover={{ scale: 1.05, y: -3, boxShadow: '0 16px 36px rgba(189, 23, 28, 0.35)' }}
-          whileTap={{ scale: 0.96 }}
-          transition={{ type: 'spring', stiffness: 380, damping: 22 }}
-        >
-          <div
-            className="hub-icon-circle"
-            style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '50%',
-              background: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--color-surface-strong)',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.25)',
-              flexShrink: 0
-            }}
-          >
-            <PhoneCall size={19} />
-          </div>
-          <div className="hub-text-wrap" style={{ textAlign: 'left', lineHeight: 1.15 }}>
-            <div
-              className="hub-sub-label"
-              style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--nims-gold)', letterSpacing: '0.06em', textTransform: 'uppercase' }}
-            >
-              <span className="pulse-dot pulse-dot-orange" style={{ marginRight: '5px', verticalAlign: 'middle' }} />
-              24×7 EMERGENCY &amp; OPD
-            </div>
-            <div
-              className="hub-num"
-              style={{ fontSize: '1.02rem', fontWeight: 900, color: '#ffffff', letterSpacing: '0.02em' }}
-            >
-              0141-23 88 999
-            </div>
-          </div>
-        </motion.a>
+        {/* Floating 24x7 Helpline Hub (Hidden on Career / Vacancies pages) */}
+        <FloatingHelpline />
       </div>
       </DoctorProvider>
     </Router>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   PhoneCall,
   Mail,
@@ -18,6 +18,13 @@ import {
 import { motion } from 'framer-motion';
 
 export default function Footer({ onOpenBooking, onOpenVacancies }) {
+  const location = useLocation();
+  const isCareersPage =
+    location.pathname.startsWith('/careers') ||
+    location.pathname.startsWith('/career') ||
+    location.pathname.startsWith('/vacancies') ||
+    location.pathname.startsWith('/vacancy');
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -30,66 +37,67 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
       position: 'relative',
       overflow: 'hidden'
     }}>
-      {/* Upper CTA Banner: 24x7 Emergency Contact Strip */}
-      <div style={{
-        background: 'rgba(17, 17, 17, 0.75)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        padding: '2.25rem 0'
-      }}>
-        <div className="container" style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1.5rem'
+      {/* Upper CTA Banner: 24x7 Emergency Contact Strip (Hidden on Career / Vacancies pages) */}
+      {!isCareersPage && (
+        <div style={{
+          background: 'rgba(17, 17, 17, 0.75)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          padding: '2.25rem 0'
         }}>
-          <div>
+          <div className="container" style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '1.5rem'
+          }}>
+            <div>
+              <h3 style={{ color: '#ffffff', fontSize: 'clamp(1.25rem, 2.2vw, 1.6rem)', margin: 0, fontWeight: 800 }}>
+                Every emergency answered. Every hour of every day.
+              </h3>
+              <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0.3rem 0 0 0' }}>
+                Direct ambulance dispatch &amp; 24×7 casualty admissions on Jaipur-Delhi Highway (NH-11C).
+              </p>
+            </div>
 
-            <h3 style={{ color: '#ffffff', fontSize: 'clamp(1.25rem, 2.2vw, 1.6rem)', margin: 0, fontWeight: 800 }}>
-              Every emergency answered. Every hour of every day.
-            </h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0.3rem 0 0 0' }}>
-              Direct ambulance dispatch &amp; 24×7 casualty admissions on Jaipur-Delhi Highway (NH-11C).
-            </p>
-          </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+              <motion.a
+                href="tel:0141-2388999"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.65rem',
+                  background: 'var(--nims-navy)',
+                  border: '1.5px solid var(--nims-orange)',
+                  color: '#ffffff',
+                  padding: '0.8rem 1.45rem',
+                  borderRadius: 'var(--radius-full)',
+                  fontWeight: 800,
+                  fontSize: '1rem',
+                  boxShadow: '0 4px 18px rgba(35, 32, 33, 0.4)',
+                  textDecoration: 'none'
+                }}
+              >
+                <PhoneCall size={18} color="var(--nims-orange)" />
+                <span>0141-23 88 999</span>
+              </motion.a>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <motion.a
-              href="tel:0141-2388999"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.65rem',
-                background: 'var(--nims-navy)',
-                border: '1.5px solid var(--nims-orange)',
-                color: '#ffffff',
-                padding: '0.8rem 1.45rem',
-                borderRadius: 'var(--radius-full)',
-                fontWeight: 800,
-                fontSize: '1rem',
-                boxShadow: '0 4px 18px rgba(35, 32, 33, 0.4)',
-                textDecoration: 'none'
-              }}
-            >
-              <PhoneCall size={18} color="var(--nims-orange)" />
-              <span>0141-23 88 999</span>
-            </motion.a>
-
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={onOpenBooking}
-              className="btn btn-orange"
-              style={{ padding: '0.8rem 1.5rem', fontSize: '0.95rem' }}
-            >
-              <Calendar size={16} />
-              <span>Book OPD Consultation</span>
-            </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={onOpenBooking}
+                className="btn btn-orange"
+                style={{ padding: '0.8rem 1.5rem', fontSize: '0.95rem' }}
+              >
+                <Calendar size={16} />
+                <span>Book OPD Consultation</span>
+              </motion.button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
 
 

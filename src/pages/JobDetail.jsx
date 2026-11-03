@@ -70,6 +70,12 @@ export default function JobDetail() {
       return jSlug === cleanSlug || String(j.id).toLowerCase() === cleanSlug || String(j._id || '').toLowerCase() === cleanSlug;
     });
     setCurrentJob(found || null);
+    if (found) {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('apply') === 'true') {
+        setIsApplyModalOpen(true);
+      }
+    }
   };
 
   const handleShare = async () => {
@@ -155,7 +161,7 @@ export default function JobDetail() {
       ];
 
   return (
-    <div style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '5rem' }}>
+    <div className="job-detail-page-wrapper" style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '5rem' }}>
       {/* Dynamic Top Banner */}
       <section
         style={{
@@ -267,8 +273,32 @@ export default function JobDetail() {
               </div>
             </div>
 
-            {/* Share & Back buttons */}
-            <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
+            {/* Action buttons: Apply, Share & Back */}
+            <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <button
+                type="button"
+                onClick={() => setIsApplyModalOpen(true)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '7px',
+                  background: 'linear-gradient(135deg, var(--nims-orange) 0%, #ea580c 100%)',
+                  color: '#ffffff',
+                  border: 'none',
+                  padding: '0.6rem 1.45rem',
+                  borderRadius: '999px',
+                  fontSize: '0.88rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 16px rgba(255, 107, 53, 0.45)',
+                  transition: 'all 0.2s',
+                  letterSpacing: '0.02em'
+                }}
+              >
+                <Send size={15} />
+                <span>Apply for this Role</span>
+              </button>
+
               <button
                 type="button"
                 onClick={handleShare}
@@ -279,7 +309,7 @@ export default function JobDetail() {
                   background: copied ? '#15803d' : 'rgba(255,255,255,0.12)',
                   color: '#ffffff',
                   border: '1px solid rgba(255,255,255,0.25)',
-                  padding: '0.55rem 1.15rem',
+                  padding: '0.6rem 1.15rem',
                   borderRadius: '999px',
                   fontSize: '0.84rem',
                   fontWeight: 700,
@@ -301,7 +331,7 @@ export default function JobDetail() {
                   background: 'rgba(255,255,255,0.08)',
                   color: '#cbd5e1',
                   border: '1px solid rgba(255,255,255,0.18)',
-                  padding: '0.55rem 1.15rem',
+                  padding: '0.6rem 1.15rem',
                   borderRadius: '999px',
                   fontSize: '0.84rem',
                   fontWeight: 600,
@@ -675,6 +705,29 @@ export default function JobDetail() {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Mobile Sticky Floating Apply Bar (Always pinned at bottom on mobile screens <= 992px) */}
+      <div className="mobile-job-floating-bar">
+        <div className="mobile-job-floating-info">
+          <div className="mobile-job-floating-title">{currentJob.title}</div>
+          <div className="mobile-job-floating-meta">
+            <span>{currentJob.department}</span>
+            <span className="dot-sep">&bull;</span>
+            <span className="openings-tag">
+              {currentJob.openings || currentJob.vacanciesCount || 1} Openings
+            </span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsApplyModalOpen(true)}
+          className="mobile-job-floating-btn"
+        >
+          <Send size={15} />
+          <span>Apply Now</span>
+        </button>
       </div>
 
       {/* 3-Step Guided Vacancy Application Modal (Triggered by Apply Button) */}

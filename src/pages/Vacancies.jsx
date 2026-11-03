@@ -13,7 +13,8 @@ import {
   HeartPulse,
   Users,
   Sparkles,
-  X
+  X,
+  Send
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MotionFadeIn, MotionStagger, MotionItem } from '../components/motion/MotionWrapper';
@@ -225,25 +226,50 @@ export default function Vacancies() {
                       </div>
                     )}
 
-                    {/* Card Footer: View Details CTA (Apply button only appears on the dedicated detail page!) */}
-                    <div className="v-card-footer">
+                    {/* Card Footer: View Details & Quick Apply CTA */}
+                    <div className="v-card-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
                       <span className="v-openings-count">
                         <Users size={13} color="#10b981" />
                         <span>{job.openings || job.vacanciesCount || 1} Openings</span>
                       </span>
 
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleNavigateToJob(job);
-                        }}
-                        className="v-card-detail-btn"
-                        title={`View detailed page for ${job.title}`}
-                      >
-                        <span>View Details</span>
-                        <ArrowRight size={14} />
-                      </button>
+                      <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center' }}>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleNavigateToJob(job);
+                          }}
+                          className="v-card-detail-btn"
+                          title={`View detailed page for ${job.title}`}
+                        >
+                          <span>Details</span>
+                          <ArrowRight size={13} />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/careers/${job.slug || generateJobSlug(job.title)}?apply=true`);
+                          }}
+                          className="btn btn-orange"
+                          style={{
+                            padding: '0.42rem 0.95rem',
+                            fontSize: '0.78rem',
+                            fontWeight: 800,
+                            borderRadius: '999px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '5px',
+                            boxShadow: '0 2px 8px rgba(255, 107, 53, 0.35)'
+                          }}
+                          title={`Apply directly for ${job.title}`}
+                        >
+                          <Send size={12} />
+                          <span>Apply</span>
+                        </button>
+                      </div>
                     </div>
                   </motion.div>
                 </MotionItem>
