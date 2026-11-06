@@ -295,19 +295,6 @@ export const doctorsData = [
     ]
   },
   {
-    "id": "doc-budhhi-prakash",
-    "name": "Dr. Budhhi Prakash",
-    "title": "HOD - GASTRO MED",
-    "department": "Gastro-MED",
-    "specialityId": "gastro-med",
-    "qualification": "MBBS, MS (GASTRO MED)",
-    "experience": "10+ Years Experience",
-    "opdSchedule": "Contact Hospital for Schedule",
-    "roomNo": "NIMS Hospital",
-    "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600",
-    "featured": false
-  },
-  {
     "id": "doc-tushar-jagawat",
     "name": "Dr. Tushar Jagawat",
     "title": "HOD - PSYCHIATRY",
@@ -573,28 +560,6 @@ export const doctorsData = [
     "roomNo": "NIMS Hospital",
     "image": "https://nimshospitals.in/assets/images/team/dr-vinay-singh.png",
     "featured": false
-  },
-  {
-    "id": "doc-sitaram",
-    "name": "Dr. Sitaram",
-    "title": "HOD - GASTRO SURGERY",
-    "department": "Gastro-Surgery",
-    "specialityId": "gastro-surgery",
-    "qualification": "MBBS, MS (GASTRO SURGERY)",
-    "experience": "10+ Years Experience",
-    "opdSchedule": "Contact Hospital for Schedule",
-    "roomNo": "NIMS Hospital",
-    "image": "https://nimshospitals.in/assets/images/team/dr-sitaram.png",
-    "featured": false,
-    "detailedQualifications": [],
-    "detailedExperience": [],
-    "heroQualification": "Surgical Gastroenterology",
-    "heroDesignation": "Assistant Professor",
-    "heroDepartment": "Assistant Professor, NIMS Medical College & Hospital, Jaipur, Rajasthan",
-    "languages": [
-      "Hindi",
-      "English"
-    ]
   },
   {
     "id": "doc-samanvaya-soni",

@@ -218,19 +218,9 @@ export async function getDoctorsList() {
       return doctorsData;
     }
 
-    // Map each API doctor
+    // Map each API doctor - Backend Database is the single source of truth for active doctors
     const normalized = rawList.map(normalizeApiDoctor).filter(Boolean);
-
-    // Merge static doctors that might not yet be in the backend DB (to ensure complete catalogue)
-    const normalizedIds = new Set(normalized.map(d => d.id));
-    const normalizedNames = new Set(normalized.map(d => d.name.toLowerCase().replace(/^(dr\.|dr|prof\.|prof|\(dr\.\))\s*/i, '').trim()));
-
-    const missingStatic = doctorsData.filter(d => {
-      const clean = d.name.toLowerCase().replace(/^(dr\.|dr|prof\.|prof|\(dr\.\))\s*/i, '').trim();
-      return !normalizedIds.has(d.id) && !normalizedNames.has(clean);
-    });
-
-    return [...normalized, ...missingStatic];
+    return normalized;
   } catch (err) {
     console.warn('Backend Doctor API offline or unreachable, using static catalogue fallback:', err.message);
     return doctorsData;
