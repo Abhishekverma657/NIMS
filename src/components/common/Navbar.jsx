@@ -25,7 +25,7 @@ export default function Navbar({ onOpenBooking }) {
     { name: 'Specialities', path: '/specialities' },
     { name: 'Health Packages', path: '/health-packages' },
     { name: 'Photo Gallery', path: '/photo-gallery' },
-    { name: 'Careers', path: '/careers' },
+    { name: 'Health Schemes', path: '/loyalty-card' },
     { name: 'Contact', path: '/contact-us' }
   ];
 
@@ -83,7 +83,7 @@ export default function Navbar({ onOpenBooking }) {
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '1.4rem',
+          gap: 'clamp(0.65rem, 1.1vw, 1.25rem)',
           flexWrap: 'nowrap'
         }} className="d-desktop-only">
           {navLinks.map((link) => {

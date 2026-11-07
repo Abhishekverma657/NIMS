@@ -112,11 +112,11 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
         }}>
           {/* Col 1: About Hospital & Accreditation */}
           <div>
-            <div style={{ marginBottom: '1.25rem' }}>
-              <Link to="/" style={{ display: 'inline-block' }}>
+            <div style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <Link to="/" style={{ display: 'inline-block', textDecoration: 'none' }} title="NIMS Hospital Home">
                 <div style={{
                   background: '#ffffff',
-                  padding: '0.5rem 0.95rem',
+                  padding: '0.45rem 0.85rem',
                   borderRadius: 'var(--radius-sm)',
                   display: 'inline-block',
                   boxShadow: '0 4px 14px rgba(0,0,0,0.25)'
@@ -124,13 +124,45 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                   <img
                     src="/assets/NIMS_Hospital_Logo_Website_Horizontal.svg"
                     alt="NIMS Hospital Logo"
-                    style={{ height: '42px', width: 'auto', display: 'block' }}
+                    style={{ height: '40px', width: 'auto', display: 'block' }}
                     onError={(e) => {
                       e.currentTarget.src = "/assets/NIMS_Hospital_Logo_Website_Horizontal.svg";
                     }}
                   />
                 </div>
               </Link>
+
+              <a
+                href="https://www.nimstatkalseva.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'inline-block', textDecoration: 'none' }}
+                title="NIMS Tatkal Seva - 24x7 Emergency ICU Bed Booking (nimstatkalseva.com)"
+              >
+                <div style={{
+                  background: '#ffffff',
+                  padding: '0.35rem 0.75rem',
+                  borderRadius: 'var(--radius-sm)',
+                  display: 'inline-block',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 6px 18px rgba(0,0,0,0.35)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(0,0,0,0.25)';
+                }}
+                >
+                  <img
+                    src="/assets/nims-tatkal-seva-logo.png"
+                    alt="NIMS Tatkal Seva Logo"
+                    style={{ height: '42px', width: 'auto', display: 'block', objectFit: 'contain' }}
+                  />
+                </div>
+              </a>
             </div>
             <div style={{
               color: 'var(--nims-orange)',
@@ -160,8 +192,27 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
 
             {/* Government Schemes Supported */}
             <div style={{ fontSize: '0.78rem', color: '#64748b', lineHeight: 1.5 }}>
-              <b style={{ color: '#cbd5e1' }}>Government Empathies:</b><br />
-              Ayushman Bharat (PM-JAY) • RGHS • Chiranjeevi • ECHS • CGHS Approved Cashless Care
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                <b style={{ color: '#cbd5e1' }}>Government Empanelments:</b>
+                <Link
+                  to="/loyalty-card"
+                  style={{
+                    color: 'var(--nims-gold, #facc15)',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.2rem'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                  onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                >
+                  <span>View More</span>
+                  <span>&rarr;</span>
+                </Link>
+              </div>
+              <span>Ayushman Bharat (PM-JAY) • RGHS • Chiranjeevi • ECHS • CGHS Approved Cashless Care</span>
             </div>
           </div>
 
@@ -210,12 +261,6 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 </Link>
               </li>
               <li>
-                <Link to="/patient-portal" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
-                  <ChevronRight size={14} color="var(--nims-orange)" />
-                  <span>Patient Portal (UHID &amp; Reports)</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/vacancies" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
                   <ChevronRight size={14} color="var(--nims-orange)" />
                   <span>Hospital Careers &amp; Vacancies</span>
@@ -231,12 +276,6 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 <Link to="/loyalty-card" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
                   <ChevronRight size={14} color="var(--nims-orange)" />
                   <span>Government Healthcare Schemes</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact-us" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
-                  <ChevronRight size={14} color="var(--nims-orange)" />
-                  <span>Contact Us &amp; Directions</span>
                 </Link>
               </li>
               <li>
@@ -367,8 +406,8 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
               </div>
               <div style={{ display: 'flex', gap: '0.65rem' }}>
                 <Mail size={16} color="var(--nims-orange)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <a href="mailto:info@nimsuniversity.org" style={{ color: '#cbd5e1', textDecoration: 'none' }}>
-                  info@nimsuniversity.org
+                <a href="mailto:info@nimshospitals.in" style={{ color: '#cbd5e1', textDecoration: 'none' }}>
+                  info@nimshospitals.in
                 </a>
               </div>
               <div style={{ display: 'flex', gap: '0.65rem' }}>
@@ -470,10 +509,6 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
             <span>•</span>
             <Link to="/disclaimer" style={{ color: '#94a3b8', textDecoration: 'none' }}>
               Disclaimer
-            </Link>
-            <span>•</span>
-            <Link to="/patient-portal" style={{ color: '#94a3b8', textDecoration: 'none' }}>
-              Patient Portal
             </Link>
             <span>•</span>
             <Link to="/vacancies" style={{ color: '#94a3b8', textDecoration: 'none' }}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import {
@@ -35,21 +35,54 @@ import {
   ChevronUp
 } from 'lucide-react';
 
-function AppStoreMark() {
+function AppStoreBadge({ style = {} }) {
   return (
-    <svg viewBox="0 0 384 512" width="18" height="18" aria-hidden="true" focusable="false">
-      <path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.3 4 270.5c0 39.1 14.2 80.1 42.6 123.3 23.5 35.2 54.3 74.8 94.6 73.3 21 .5 35.8-14.9 63.2-14.9 26.6 0 40.3 14.9 62.7 14.9 40.7-.6 69.8-36.6 92.3-72.1 15.9-24.7 26.2-49.7 29.3-75-48.4-20.5-45.7-50.1-45.7-51.3zM252.6 96c18.1-21.5 16.5-41.1 16-48-16 1-34.5 10.9-45.1 23.1-11.7 13.1-18.6 29.3-17.1 48.2 17.3 1.3 33.8-7.6 46.2-23.3z" />
+    <svg
+      viewBox="0 0 135 40"
+      width="148"
+      height="44"
+      style={{ display: 'block', height: '44px', width: 'auto', borderRadius: '8px', ...style }}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="135" height="40" rx="7" fill="#000000" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.8" />
+      <g transform="translate(11, 7.5)">
+        <path
+          fill="#ffffff"
+          d="M15.5 13.5c-.01-3.1 2.5-4.6 2.6-4.7-1.4-2.1-3.7-2.4-4.5-2.4-1.9-.2-3.7 1.1-4.7 1.1-1 0-2.5-1.1-4-1-2.1.03-4 1.2-5.1 3.1-2.2 3.8-.6 9.3 1.6 12.4 1 1.5 2.3 3.2 3.9 3.1 1.6-.06 2.2-1 4-1 1.9 0 2.4 1 4.1 1 1.7-.03 2.7-1.5 3.8-3 1.2-1.7 1.7-3.4 1.7-3.5-.03-.02-3.3-1.3-3.4-5zM12.5 4.8c.9-1 1.4-2.5 1.3-3.9-1.2.05-2.7.8-3.6 1.8-.8.9-1.4 2.3-1.3 3.8 1.4.1 2.8-.7 3.6-1.7z"
+        />
+      </g>
+      <text x="39" y="14" fill="#ffffff" fontSize="7" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fontWeight="400" letterSpacing="0.2">
+        Download on the
+      </text>
+      <text x="39" y="28" fill="#ffffff" fontSize="13" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fontWeight="700" letterSpacing="0.2">
+        App Store
+      </text>
     </svg>
   );
 }
 
-function GooglePlayMark() {
+function GooglePlayBadge({ style = {} }) {
   return (
-    <svg viewBox="0 0 512 512" width="18" height="18" aria-hidden="true" focusable="false">
-      <path fill="#00A0FF" d="M50 32 286 256 50 480Z" />
-      <path fill="#00D084" d="m50 32 280 162-44 62Z" />
-      <path fill="#FFE14D" d="m286 256 44 62L50 480Z" />
-      <path fill="#FF3D59" d="m330 194 132 62-132 62-44-62Z" />
+    <svg
+      viewBox="0 0 135 40"
+      width="148"
+      height="44"
+      style={{ display: 'block', height: '44px', width: 'auto', borderRadius: '8px', ...style }}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="135" height="40" rx="7" fill="#000000" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="0.8" />
+      <g transform="translate(10, 8)">
+        <path d="M1.2 1.3C1.07 1.45 1 1.7 1 2.05v19.9c0 .35.07.6.2.75l.08.08 11.14-11.15v-.26L1.28 1.22l-.08.08z" fill="#00d6ff" />
+        <path d="M16.14 15.25l-3.72-3.72v-.26l3.72-3.72.08.05 4.41 2.51c1.26.71 1.26 1.88 0 2.6l-4.41 2.49-.08.05z" fill="#ffce00" />
+        <path d="M12.42 11.53L1.2 22.75c.41.44 1.1.49 1.88.05l13.06-7.44-3.72-3.83z" fill="#ff334b" />
+        <path d="M12.42 11.53L16.14 7.8 3.08.36C2.3-.08 1.61-.03 1.2.41l11.22 11.12z" fill="#00e676" />
+      </g>
+      <text x="41" y="14" fill="#ffffff" fontSize="7" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fontWeight="500" letterSpacing="0.8">
+        GET IT ON
+      </text>
+      <text x="41" y="28" fill="#ffffff" fontSize="13" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fontWeight="700" letterSpacing="0.2">
+        Google Play
+      </text>
     </svg>
   );
 }
@@ -80,19 +113,180 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
   const [doctorDeptFilter, setDoctorDeptFilter] = useState('Cardiology');
   const doctorTabsRef = useRef(null);
 
-  const doctorCategories = [
-    'Cardiology',
-    'CTVS',
-    'Neurosurgery',
-    'Orthopaedics',
-    'Obstetrics & Gynaecology',
-    'Paediatrics',
-    'Urology',
-    'Surgical Gastroenterology',
-    'General Surgery',
-    'Respiratory Medicine',
-    'General Medicine'
-  ];
+  const doctorCategories = useMemo(() => {
+    const list = [
+      'All Doctors',
+      'Cardiology',
+      'CTVS',
+      'Neurosurgery',
+      'Neurology',
+      'Orthopaedics',
+      'Obstetrics & Gynaecology',
+      'Paediatrics',
+      'Neonatology',
+      'Urology',
+      'Nephrology',
+      'Gastroenterology',
+      'Surgical Gastroenterology',
+      'General Surgery',
+      'General Medicine',
+      'Respiratory Medicine',
+      'Medical Oncology',
+      'Surgical Oncology',
+      'Radiation Oncology',
+      'Endocrinology',
+      'ENT',
+      'Ophthalmology',
+      'Dermatology',
+      'Psychiatry',
+      'Interventional Radiology',
+      'Emergency Medicine',
+      'Plastic Surgery',
+      'Dental',
+      'IVF & Fertility',
+      'Liver Transplant, HPB & GI Surgery',
+      'Spine Surgery',
+      'Physiotherapy',
+      'Bone Marrow Transplant (BMT)',
+      'Clinical Hematology',
+      'Nuclear Medicine',
+      'Clinical Psychology'
+    ];
+
+    // Also include any dynamically loaded doctor department not in the base list
+    if (Array.isArray(doctors)) {
+      doctors.forEach(d => {
+        if (d.department) {
+          const clean = d.department.trim();
+          const exists = list.some(c => 
+            c.toLowerCase() === clean.toLowerCase() ||
+            (clean.length > 5 && c.toLowerCase().includes(clean.toLowerCase()))
+          );
+          if (!exists && clean.length > 1) {
+            list.push(clean);
+          }
+        }
+      });
+    }
+
+    return list;
+  }, [doctors]);
+
+  const matchDoctorToDept = (d, filterDept) => {
+    if (!filterDept || filterDept === 'All' || filterDept === 'All Doctors') return true;
+    const f = filterDept.toLowerCase().trim();
+    const dept = (d.department || '').toLowerCase().trim();
+    const spec = (d.specialityId || '').toLowerCase().trim();
+    const title = (d.title || '').toLowerCase().trim();
+
+    if (f === 'cardiology') {
+      return (dept.includes('cardio') && !dept.includes('thoracic') && !dept.includes('ctvs')) || spec === 'cardiology';
+    }
+    if (f === 'ctvs') {
+      return dept.includes('ctvs') || dept.includes('cardiothoracic') || spec === 'ctvs' || title.includes('ctvs');
+    }
+    if (f === 'neurosurgery') {
+      return dept.includes('neurosurg') || spec.includes('neurosurg') || title.includes('neurosurg');
+    }
+    if (f === 'neurology') {
+      return (dept.includes('neurolog') && !dept.includes('surg')) || (spec.includes('neurolog') && !spec.includes('surg'));
+    }
+    if (f.includes('ortho')) {
+      return dept.includes('ortho') || spec.includes('ortho') || title.includes('ortho');
+    }
+    if (f.includes('gynae') || f.includes('obstetric')) {
+      return dept.includes('gynae') || dept.includes('obstetric') || spec.includes('gynae') || spec.includes('obstetric');
+    }
+    if (f === 'paediatrics' || f === 'pediatrics') {
+      return dept.includes('paediatr') || dept.includes('pediatr') || spec.includes('paediatr') || spec.includes('pediatr');
+    }
+    if (f.includes('neonat')) {
+      return dept.includes('neonat') || dept.includes('neonant') || spec.includes('neonat') || spec.includes('neonant');
+    }
+    if (f === 'urology') {
+      return (!dept.includes('neuro') && dept.includes('urolog')) || spec === 'urology' || (!title.includes('neuro') && title.includes('urolog'));
+    }
+    if (f === 'nephrology') {
+      return dept.includes('nephrolog') || spec.includes('nephrolog') || title.includes('nephrolog');
+    }
+    if (f === 'gastroenterology') {
+      return dept.includes('gastro') || spec.includes('gastro');
+    }
+    if (f.includes('surgical gastro')) {
+      return (dept.includes('gastro') && dept.includes('surg')) || spec.includes('surgical-gastro') || dept.includes('gastro');
+    }
+    if (f === 'general surgery') {
+      return (dept.includes('general') && dept.includes('surg')) || spec === 'general-surgery';
+    }
+    if (f === 'general medicine') {
+      return (dept.includes('general') && dept.includes('med')) || dept.includes('internal medicine') || spec === 'general-medicine' || spec === 'internal-medicine';
+    }
+    if (f.includes('respiratory') || f.includes('tb & resp') || f.includes('pulmon')) {
+      return dept.includes('respirat') || dept.includes('pulmon') || spec.includes('respirat') || dept.includes('chest');
+    }
+    if (f.includes('medical oncology')) {
+      return (dept.includes('onco') && dept.includes('med')) || spec === 'medical-oncology';
+    }
+    if (f.includes('surgical oncology')) {
+      return (dept.includes('onco') && dept.includes('surg')) || spec === 'surgical-oncology';
+    }
+    if (f.includes('radiation oncology')) {
+      return (dept.includes('onco') && dept.includes('rad')) || spec === 'radiation-oncology';
+    }
+    if (f.includes('endocrin')) {
+      return dept.includes('endocrin') || spec.includes('endocrin');
+    }
+    if (f === 'ent') {
+      return /\bent\b/i.test(dept) || spec === 'ent' || title.includes('otorhinolaryngology') || /\bent\b/i.test(title);
+    }
+    if (f.includes('ophthalm')) {
+      return dept.includes('ophthalm') || dept.includes('opthalm') || spec.includes('ophthalm') || spec.includes('opthalm');
+    }
+    if (f.includes('derma') || f.includes('skin')) {
+      return dept.includes('derma') || dept.includes('skin') || spec.includes('derma') || spec.includes('skin');
+    }
+    if (f.includes('psychiat')) {
+      return dept.includes('psychiat') || spec.includes('psychiat');
+    }
+    if (f.includes('interventional radiology') || f === 'i-r') {
+      return dept.includes('i-r') || dept.includes('interventional radiol') || spec.includes('i-r') || spec.includes('interventional-radiology');
+    }
+    if (f.includes('emergency')) {
+      return dept.includes('emergency') || spec.includes('emergency');
+    }
+    if (f.includes('plastic')) {
+      return dept.includes('plastic') || spec.includes('plastic');
+    }
+    if (f.includes('dental')) {
+      return dept.includes('dental') || spec.includes('dental');
+    }
+    if (f.includes('ivf')) {
+      return dept.includes('ivf') || spec.includes('ivf');
+    }
+    if (f.includes('liver') || f.includes('hpb')) {
+      return dept.includes('liver') || dept.includes('hpb') || spec.includes('liver') || spec.includes('hpb');
+    }
+    if (f.includes('spine')) {
+      return dept.includes('spine') || spec.includes('spine');
+    }
+    if (f.includes('physio')) {
+      return dept.includes('physio') || spec.includes('physio');
+    }
+    if (f.includes('bmt') || f.includes('bone marrow')) {
+      return dept.includes('bmt') || dept.includes('bone marrow') || spec.includes('bmt');
+    }
+    if (f.includes('hematol')) {
+      return dept.includes('hematol') || spec.includes('hematol');
+    }
+    if (f.includes('nuclear')) {
+      return dept.includes('nuclear') || spec.includes('nuclear');
+    }
+    if (f.includes('psycholog')) {
+      return dept.includes('psycholog') || spec.includes('psycholog');
+    }
+
+    return dept.includes(f) || spec.includes(f) || title.includes(f);
+  };
 
   const handleDoctorTabClick = (dept, e) => {
     setDoctorDeptFilter(dept);
@@ -720,40 +914,56 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
           {(() => {
             const list = doctors.filter(d => {
               if (d.isOpdAvailable === false) return false;
-              if (doctorDeptFilter === 'All' || doctorDeptFilter === 'All Doctors') return true;
-              const filter = doctorDeptFilter.toLowerCase();
-              const dept = d.department.toLowerCase();
-              const spec = (d.specialityId || '').toLowerCase();
-              const title = (d.title || '').toLowerCase();
-
-              if (filter === 'ctvs') return dept.includes('cardiothoracic') || spec.includes('ctvs') || title.includes('ctvs');
-              if (filter.includes('paediatric') || filter.includes('pediatric')) return dept.includes('paediatric') || dept.includes('pediatric');
-              if (filter.includes('gastro')) return dept.includes('gastro');
-              if (filter.includes('cardio')) return dept.includes('cardio');
-              if (filter.includes('ortho')) return dept.includes('ortho');
-              if (filter.includes('neuro')) return dept.includes('neuro');
-              if (filter.includes('uro')) return dept.includes('uro');
-              if (filter.includes('gynae')) return dept.includes('gynae') || dept.includes('obstetric');
-              if (filter.includes('respiratory')) return dept.includes('respiratory') || dept.includes('pulmon');
-              if (filter.includes('medicine')) return dept.includes('medicine');
-              if (filter.includes('surgery')) return dept.includes('surgery');
-              return dept.includes(filter) || spec.includes(filter) || title.includes(filter);
+              return matchDoctorToDept(d, doctorDeptFilter);
             });
 
             if (list.length === 0) {
               return (
-                <div style={{ textAlign: 'center', padding: '3.5rem 1rem', color: '#64748b' }}>
-                  <p style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--nims-navy)' }}>
-                    Is speciality mein abhi koi doctor listed nahi hai.
+                <div style={{
+                  textAlign: 'center',
+                  padding: '3rem 1.5rem',
+                  background: '#f8fafc',
+                  borderRadius: '16px',
+                  border: '1px dashed #cbd5e1',
+                  margin: '1.5rem 0'
+                }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    background: 'rgba(189, 23, 28, 0.1)',
+                    color: 'var(--nims-crimson)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 1rem'
+                  }}>
+                    <Stethoscope size={24} />
+                  </div>
+                  <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--nims-navy)', marginBottom: '0.35rem' }}>
+                    Specialist Consultants Available at OPD
+                  </h4>
+                  <p style={{ fontSize: '0.9rem', color: '#64748b', maxWidth: '520px', margin: '0 auto 1.25rem' }}>
+                    {doctorDeptFilter} department faculty and attending consultants are on duty at NIMS Hospital OPD. Connect with our helpdesk to consult or book a visit.
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => setDoctorDeptFilter('All')}
-                    className="btn btn-outline"
-                    style={{ marginTop: '0.85rem', fontSize: '0.88rem' }}
-                  >
-                    View All Doctors
-                  </button>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => setDoctorDeptFilter('All Doctors')}
+                      className="btn btn-outline"
+                      style={{ fontSize: '0.85rem', padding: '0.6rem 1.2rem' }}
+                    >
+                      View All Doctors
+                    </button>
+                    <button
+                      type="button"
+                      onClick={onOpenBooking}
+                      className="btn btn-primary"
+                      style={{ fontSize: '0.85rem', padding: '0.6rem 1.2rem' }}
+                    >
+                      Book OPD Consultation
+                    </button>
+                  </div>
                 </div>
               );
             }
@@ -1019,6 +1229,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                 />
                 <div className="nims-app-brand-text">
                   <span className="nims-app-badge">
+                    <span className="nims-pulse-dot" />
                     OFFICIAL MOBILE APP
                   </span>
                   <h3 className="nims-app-title">
@@ -1031,30 +1242,26 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
                 Download the mobile app for 1-tap ICU bed booking, emergency tracking &amp; lab reports.
               </p>
 
-              {/* APP STORE & GOOGLE PLAY DOWNLOAD BUTTONS */}
+              {/* REAL OFFICIAL APP STORE & GOOGLE PLAY DOWNLOAD BADGES */}
               <div className="nims-app-store-grid">
-                <Link 
-                  to="/tatkaal-booking"
-                  className="nims-store-btn"
+                <a 
+                  href="https://www.nimstatkalseva.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nims-store-badge-link"
+                  title="Download NIMS Tatkal Seva on Apple App Store"
                 >
-                  <AppStoreMark />
-                  <div style={{ textAlign: 'left', lineHeight: 1.15 }}>
-                    <span style={{ display: 'block', fontSize: '0.62rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Download on</span>
-                    <strong style={{ fontSize: '0.86rem', fontWeight: 800 }}>App Store</strong>
-                  </div>
-                </Link>
+                  <AppStoreBadge />
+                </a>
 
                 <a 
                   href="https://play.google.com/store/apps/details?id=com.nimstatkalseva.android"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="nims-store-btn"
+                  className="nims-store-badge-link"
+                  title="Get NIMS Tatkal Seva on Google Play"
                 >
-                  <GooglePlayMark />
-                  <div style={{ textAlign: 'left', lineHeight: 1.15 }}>
-                    <span style={{ display: 'block', fontSize: '0.62rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>GET IT ON</span>
-                    <strong style={{ fontSize: '0.86rem', fontWeight: 800 }}>Google Play</strong>
-                  </div>
+                  <GooglePlayBadge />
                 </a>
               </div>
             </div>

@@ -18,23 +18,23 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MotionFadeIn, MotionStagger, MotionItem } from '../components/motion/MotionWrapper';
-import { vacanciesData as fallbackVacancies, generateJobSlug } from '../data/vacanciesData';
+import { generateJobSlug } from '../data/vacanciesData';
 
 export default function Vacancies() {
   const navigate = useNavigate();
 
   const [selectedDept, setSelectedDept] = useState('All');
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [vacanciesData, setVacanciesData] = useState(fallbackVacancies);
+  const [vacanciesData, setVacanciesData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch live active positions from backend, fallback seamlessly to curated jobs
+  // Fetch live active positions directly from backend API
   useEffect(() => {
     const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
     fetch(`${baseUrl}/hr/jobs?activeOnly=true`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && Array.isArray(data.jobs) && data.jobs.length > 0) {
+        if (data.success && Array.isArray(data.jobs)) {
           setVacanciesData(
             data.jobs.map((job) => ({
               ...job,
@@ -43,10 +43,13 @@ export default function Vacancies() {
               openings: job.vacanciesCount || job.openings || 1
             }))
           );
+        } else {
+          setVacanciesData([]);
         }
       })
       .catch((err) => {
-        console.warn('Backend jobs fetch note: using active clinical vacancies catalog', err);
+        console.error('Failed to load vacancies from API:', err);
+        setVacanciesData([]);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -163,7 +166,12 @@ export default function Vacancies() {
             </div>
           </MotionFadeIn>
 
-          {filteredJobs.length === 0 ? (
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '4rem 1rem', color: '#64748b' }}>
+              <div className="animate-spin" style={{ width: '38px', height: '38px', border: '3px solid #cbd5e1', borderTopColor: 'var(--nims-navy)', borderRadius: '50%', margin: '0 auto 1rem' }} />
+              <p style={{ fontSize: '0.92rem', fontWeight: 600 }}>Loading verified job openings...</p>
+            </div>
+          ) : filteredJobs.length === 0 ? (
             <div className="no-vacancies-box">
               <Briefcase size={38} color="#94a3b8" />
               <h4>No matching positions found</h4>
@@ -203,26 +211,33 @@ export default function Vacancies() {
                     <p className="v-job-desc">{job.description}</p>
 
                     <div className="v-details-box">
-                      <div className="v-detail-row">
-                        <GraduationCap size={14} color="var(--nims-navy)" />
-                        <span><b>Eligibility:</b> {job.qualification}</span>
+                      <div className="v-detail-row" title={`Eligibility: ${job.qualification}`}>
+                        <GraduationCap size={14} color="var(--nims-navy)" style={{ flexShrink: 0 }} />
+                        <span className="v-detail-text"><b>Eligibility:</b> {job.qualification}</span>
                       </div>
-                      <div className="v-detail-row">
-                        <Clock size={14} color="var(--nims-orange)" />
-                        <span><b>Experience:</b> {job.experience}</span>
+                      <div className="v-detail-row" title={`Experience: ${job.experience}`}>
+                        <Clock size={14} color="var(--nims-orange)" style={{ flexShrink: 0 }} />
+                        <span className="v-detail-text"><b>Experience:</b> {job.experience}</span>
                       </div>
-                      <div className="v-detail-row">
-                        <MapPin size={14} color="var(--nims-navy)" />
-                        <span>{job.location || 'Jaipur Campus'}</span>
+                      <div className="v-detail-row" title={job.location || 'Jaipur Campus'}>
+                        <MapPin size={14} color="var(--nims-navy)" style={{ flexShrink: 0 }} />
+                        <span className="v-detail-text">{job.location || 'Jaipur Campus'}</span>
                       </div>
                     </div>
 
-                    {/* Skills Pills */}
+                    {/* Skills / Key Scope Pills (Fixed to max 2 preview items with single-line ellipsis for clean uniform card height) */}
                     {job.skills && job.skills.length > 0 && (
                       <div className="v-skills-wrap">
-                        {job.skills.map((skill, idx) => (
-                          <span key={idx} className="v-skill-chip">{skill}</span>
+                        {job.skills.slice(0, 2).map((skill, idx) => (
+                          <span key={idx} className="v-skill-chip" title={skill}>
+                            {skill}
+                          </span>
                         ))}
+                        {job.skills.length > 2 && (
+                          <span className="v-skill-chip-more">
+                            +{job.skills.length - 2} more in Details &rarr;
+                          </span>
+                        )}
                       </div>
                     )}
 

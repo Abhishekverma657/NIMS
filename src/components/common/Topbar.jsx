@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ShieldCheck
+  Briefcase
 } from 'lucide-react';
 
 export default function Topbar({ onOpenVacancies }) {
@@ -94,28 +94,16 @@ export default function Topbar({ onOpenVacancies }) {
           </div>
         </div>
 
-        {/* Right Side: Fixed Action Link (Health Schemes) */}
+        {/* Right Side: Fixed Action Link (Careers) */}
         <div className="topbar-right">
           <Link
-            to="/loyalty-card"
+            to="/careers"
             className="topbar-action"
-            title="NIMS Empaneled Government Healthcare Benefit Schemes & TPA"
+            title="Hospital Careers & Job Openings at NIMS"
           >
-            <ShieldCheck size={12} />
-            <span>Health Schemes</span>
+            <Briefcase size={13} />
+            <span>Careers</span>
           </Link>
-        </div>
-      </div>
-
-      {/* Mobile-Only Quickbar */}
-      <div className="topbar-mobile-quickbar">
-        <div className="mobile-quickbar-inner">
-          <div className="mobile-actions-group" style={{ gridTemplateColumns: '1fr', width: 'auto', minWidth: '180px' }}>
-            <Link to="/loyalty-card" className="mobile-quick-link">
-              <ShieldCheck size={11} color="var(--nims-orange)" />
-              <span>Health Schemes</span>
-            </Link>
-          </div>
         </div>
       </div>
     </div>

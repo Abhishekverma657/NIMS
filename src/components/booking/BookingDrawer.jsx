@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { X, Calendar, Clock, User, Phone, CheckCircle2, ChevronRight, ArrowLeft, ShieldCheck, HeartPulse, Loader2 } from 'lucide-react';
+import { X, Calendar, Clock, User, Phone, CheckCircle2, ChevronRight, ArrowLeft, ShieldCheck, HeartPulse, Loader2, CreditCard, Building2, Wallet, Check } from 'lucide-react';
 import { specialitiesData } from '../../data/specialitiesData';
 import { useDoctors } from '../../context/DoctorContext';
 
@@ -25,10 +25,39 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [tokenNumber, setTokenNumber] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentMode, setPaymentMode] = useState('ONLINE'); // 'ONLINE' or 'COUNTER'
+  const [paymentStatusText, setPaymentStatusText] = useState('PAID (ONLINE)');
+  const [bookedFee, setBookedFee] = useState(null);
+  const [returnedDocName, setReturnedDocName] = useState('');
+
+  // Check URL parameters for returning payment callback
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pStatus = params.get('opdPayment');
+    const token = params.get('token') || params.get('bookingId');
+    const docName = params.get('doc');
+    const feeAmount = params.get('fee');
+    const pName = params.get('patientName');
+
+    if (pStatus === 'success' && token) {
+      setTokenNumber(token);
+      if (docName) setReturnedDocName(decodeURIComponent(docName));
+      if (feeAmount) setBookedFee(feeAmount);
+      if (pName) setPatientData(prev => ({ ...prev, fullName: decodeURIComponent(pName) }));
+      setPaymentMode('ONLINE');
+      setPaymentStatusText('PAID (ONLINE)');
+      setBookingConfirmed(true);
+    }
+  }, []);
 
   // Synchronize prefill and ALWAYS reset step to 1 when drawer opens or closes
   useEffect(() => {
     if (isOpen) {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('opdPayment') === 'success') {
+        // keep confirmation state
+        return;
+      }
       setStep(1);
       setBookingConfirmed(false);
       if (prefill) {
@@ -157,8 +186,10 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
     displayedDoctors[0] ||
     doctors[0];
 
+  const doctorFee = currentDoctorObj?.fee || 500;
+
   const handleConfirm = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     if (!patientData.fullName || !patientData.phone) {
       alert('Please enter patient name and mobile number');
       return;
@@ -166,33 +197,83 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
 
     setIsSubmitting(true);
     try {
-      const res = await bookAppointment({
+      const isOnline = paymentMode === 'ONLINE';
+      const cleanPhone = patientData.phone.replace(/\D/g, '').slice(-10) || '9999999999';
+
+      const bookingPayload = {
         doctorId: currentDoctorObj?._id || currentDoctorObj?.doctorId || currentDoctorObj?.id,
         appointmentDate: selectedDate,
         timeSlot: selectedSlot,
         consultationType: 'In-Person',
+        paymentMethod: isOnline ? 'ONLINE' : 'COUNTER',
+        paymentStatus: isOnline ? 'PENDING' : 'PAID_COUNTER',
+        fee: doctorFee,
+        phone: cleanPhone,
+        patientPhone: cleanPhone,
+        name: patientData.fullName.trim(),
         bookedFor: {
-          name: patientData.fullName,
-          phone: patientData.phone,
+          name: patientData.fullName.trim(),
+          phone: cleanPhone,
           age: Number(patientData.age) || 30,
           gender: patientData.gender || 'Female'
         },
         complaint: patientData.reason || 'General OPD Consultation'
-      });
+      };
 
-      if (res?.success && (res?.data?.tokenNumber || res?.tokenNumber)) {
-        setTokenNumber(res.data?.tokenNumber || res.tokenNumber);
+      const res = await bookAppointment(bookingPayload);
+      const bookingData = res?.data || res?.booking || res;
+      const finalToken = bookingData?.tokenNumber || res?.tokenNumber || ('NIMS-OPD-' + Math.floor(100000 + Math.random() * 900000));
+      const bookingId = bookingData?._id || bookingData?.bookingReference || finalToken;
+
+      setTokenNumber(finalToken);
+      setBookedFee(doctorFee);
+
+      // If Online: Call Centralized Payment Gateway
+      if (isOnline) {
+        const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+        const currentOrigin = window.location.origin;
+        const returnUrl = `${currentOrigin}/?opdPayment=success&bookingId=${encodeURIComponent(bookingId)}&token=${encodeURIComponent(finalToken)}&doc=${encodeURIComponent(currentDoctorObj?.name || '')}&fee=${encodeURIComponent(doctorFee)}&patientName=${encodeURIComponent(patientData.fullName)}`;
+
+        const payRes = await fetch(`${baseUrl}/payments/initiate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: String(doctorFee),
+            customerName: patientData.fullName.trim() || 'NIMS Patient',
+            customerMobileNo: cleanPhone,
+            orderId: bookingId,
+            customerEmailID: patientData.email || 'patient@nimshospitals.in',
+            description: `OPD Consultation - ${currentDoctorObj?.name || 'Doctor'}`,
+            returnUrl,
+            clientUrl: returnUrl
+          })
+        });
+
+        const payData = await payRes.json();
+        if (payData.success && payData.paymentUrl) {
+          // Redirect immediately to payment gateway
+          window.location.href = payData.paymentUrl;
+          return;
+        } else {
+          // If gateway is down or unconfigured, notify and allow counter payment
+          alert(payData.message || 'Payment gateway connection issue. Your OPD slot is booked; you can pay at the hospital counter.');
+          setPaymentMode('COUNTER');
+          setPaymentStatusText('Pay at Hospital Counter');
+          setBookingConfirmed(true);
+        }
       } else {
-        const token = 'NIMS-OPD-' + Math.floor(100000 + Math.random() * 900000);
-        setTokenNumber(token);
+        // Offline / Pay at Counter: NO GATEWAY CALLED! Instant confirmation
+        setPaymentStatusText('Pay at Hospital Counter');
+        setBookingConfirmed(true);
       }
     } catch (err) {
       console.warn('Booking API error, generated fallback token:', err);
       const token = 'NIMS-OPD-' + Math.floor(100000 + Math.random() * 900000);
       setTokenNumber(token);
+      setPaymentStatusText(paymentMode === 'ONLINE' ? 'Pending Online' : 'Pay at Hospital Counter');
+      setBookingConfirmed(true);
     } finally {
       setIsSubmitting(false);
-      setBookingConfirmed(true);
     }
   };
 
@@ -200,6 +281,10 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
     setStep(1);
     setBookingConfirmed(false);
     setTokenNumber('');
+    // Clear URL payment query params if present
+    if (window.location.search.includes('opdPayment')) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
     onClose();
   };
 
@@ -207,6 +292,9 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
     setStep(1);
     setBookingConfirmed(false);
     setTokenNumber('');
+    if (window.location.search.includes('opdPayment')) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
     onClose();
   };
 
@@ -375,19 +463,19 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
               {/* Receipt Box */}
               <div style={{
                 background: '#f8fafc',
-                border: '1px dashed #cbd5e1',
+                border: '1.5px dashed #cbd5e1',
                 borderRadius: 'var(--radius-md)',
                 padding: '1.25rem',
                 textAlign: 'left',
-                marginBottom: '2rem'
+                marginBottom: '1.5rem'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
                   <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Booking Token:</span>
-                  <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--nims-crimson)' }}>{tokenNumber}</span>
+                  <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--nims-crimson)' }}>{tokenNumber}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
                   <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Doctor:</span>
-                  <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--nims-navy)' }}>{currentDoctorObj.name}</span>
+                  <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--nims-navy)' }}>{returnedDocName || currentDoctorObj.name}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
                   <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Department:</span>
@@ -396,6 +484,24 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
                   <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Date & Slot:</span>
                   <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--nims-navy)' }}>{selectedDate} at {selectedSlot}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                  <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Consultation Fee:</span>
+                  <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#16a34a' }}>₹{bookedFee || doctorFee}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                  <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Payment Status:</span>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
+                    color: paymentMode === 'ONLINE' ? '#15803d' : '#92400e',
+                    background: paymentMode === 'ONLINE' ? '#dcfce7' : '#fef3c7',
+                    border: paymentMode === 'ONLINE' ? '1px solid #bbf7d0' : '1px solid #fde68a',
+                    padding: '0.2rem 0.6rem',
+                    borderRadius: '999px'
+                  }}>
+                    {paymentMode === 'ONLINE' ? '✓ PAID ONLINE (GATEWAY)' : '🏥 PAY AT HOSPITAL COUNTER'}
+                  </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Campus:</span>
@@ -528,8 +634,20 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
                         <div style={{ fontSize: '0.78rem', color: 'var(--nims-crimson)', fontWeight: 600, marginTop: '0.1rem' }}>
                           {doc.title}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.2rem' }}>
-                          {doc.opdSchedule}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
+                          <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                            {doc.opdSchedule}
+                          </span>
+                          <span style={{
+                            fontSize: '0.76rem',
+                            fontWeight: 800,
+                            color: '#15803d',
+                            background: '#dcfce7',
+                            padding: '0.12rem 0.5rem',
+                            borderRadius: '6px'
+                          }}>
+                            Fee: ₹{doc.fee || 500}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -593,20 +711,34 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
                 })}
               </div>
 
+              {/* Consultation Fee Summary (Zero pre-payment box removed; Doctor fee shown from DB) */}
               <div style={{
                 marginTop: '1.5rem',
-                padding: '0.85rem',
+                padding: '0.95rem 1.15rem',
                 borderRadius: 'var(--radius-sm)',
-                background: 'rgba(189, 23, 28, 0.08)',
-                border: '1px solid rgba(189, 23, 28, 0.25)',
-                fontSize: '0.82rem',
-                color: '#9a3412',
+                background: '#f8fafc',
+                border: '1.5px solid #e2e8f0',
                 display: 'flex',
-                alignItems: 'flex-start',
-                gap: '0.5rem'
+                alignItems: 'center',
+                justifyContent: 'space-between'
               }}>
-                <ShieldCheck size={18} style={{ flexShrink: 0, marginTop: '2px' }} />
-                <span>Zero pre-payment required. Consultation fee can be paid directly at hospital cash counter or via Ayushman/RGHS card.</span>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Doctor Consultation Fee
+                  </div>
+                  <div style={{ fontSize: '0.94rem', fontWeight: 800, color: 'var(--nims-navy)', marginTop: '2px' }}>
+                    {currentDoctorObj?.name}
+                  </div>
+                  <div style={{ fontSize: '0.74rem', color: 'var(--nims-crimson)', fontWeight: 600 }}>
+                    {currentSpecialityObj?.name}
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#16a34a' }}>
+                    ₹{doctorFee}
+                  </div>
+                  <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 500 }}>Hospital Approved Fee</div>
+                </div>
               </div>
             </div>
           ) : (
@@ -712,6 +844,80 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
                     }}
                   />
                 </div>
+
+                {/* Payment Option Selection */}
+                <div style={{ marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', color: 'var(--nims-navy)', marginBottom: '0.65rem' }}>
+                    Select Payment Option *
+                  </label>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+                    {/* Pay Online with Payment Gateway */}
+                    <div
+                      onClick={() => setPaymentMode('ONLINE')}
+                      style={{
+                        padding: '0.9rem',
+                        borderRadius: 'var(--radius-sm)',
+                        border: paymentMode === 'ONLINE' ? '2px solid #16a34a' : '1.5px solid var(--nims-border)',
+                        background: paymentMode === 'ONLINE' ? '#f0fdf4' : '#ffffff',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <CreditCard size={16} color={paymentMode === 'ONLINE' ? '#16a34a' : 'var(--nims-navy)'} />
+                          <span style={{ fontSize: '0.84rem', fontWeight: 700, color: paymentMode === 'ONLINE' ? '#166534' : 'var(--nims-navy)' }}>
+                            Pay Online
+                          </span>
+                        </div>
+                        {paymentMode === 'ONLINE' && (
+                          <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#16a34a', background: '#dcfce7', padding: '0.15rem 0.4rem', borderRadius: '4px' }}>
+                            ✓ Selected
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#16a34a', marginBottom: '0.15rem' }}>
+                        ₹{doctorFee}
+                      </div>
+                      <div style={{ fontSize: '0.72rem', color: '#64748b', lineHeight: 1.3 }}>
+                        Instant UPI, Cards & NetBanking Gateway
+                      </div>
+                    </div>
+
+                    {/* Pay at Counter (Offline - No Gateway) */}
+                    <div
+                      onClick={() => setPaymentMode('COUNTER')}
+                      style={{
+                        padding: '0.9rem',
+                        borderRadius: 'var(--radius-sm)',
+                        border: paymentMode === 'COUNTER' ? '2px solid var(--nims-navy)' : '1.5px solid var(--nims-border)',
+                        background: paymentMode === 'COUNTER' ? 'rgba(35, 32, 33, 0.04)' : '#ffffff',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <Building2 size={16} color={paymentMode === 'COUNTER' ? 'var(--nims-navy)' : '#64748b'} />
+                          <span style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--nims-navy)' }}>
+                            Pay at Counter
+                          </span>
+                        </div>
+                        {paymentMode === 'COUNTER' && (
+                          <span style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--nims-navy)', background: '#e2e8f0', padding: '0.15rem 0.4rem', borderRadius: '4px' }}>
+                            ✓ Selected
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.15rem' }}>
+                        ₹{doctorFee}
+                      </div>
+                      <div style={{ fontSize: '0.72rem', color: '#64748b', lineHeight: 1.3 }}>
+                        No gateway. Pay at hospital counter or Ayushman / RGHS.
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </form>
           )}
@@ -753,15 +959,31 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
                 onClick={handleConfirm}
                 disabled={isSubmitting}
                 className="btn btn-primary"
-                style={{ minWidth: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                style={{
+                  minWidth: '200px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  background: paymentMode === 'ONLINE' ? '#16a34a' : 'var(--nims-crimson)',
+                  borderColor: paymentMode === 'ONLINE' ? '#16a34a' : 'var(--nims-crimson)'
+                }}
               >
                 {isSubmitting ? (
                   <>
                     <Loader2 size={16} className="spinner" style={{ animation: 'spin 0.8s linear infinite' }} />
-                    <span>Booking...</span>
+                    <span>{paymentMode === 'ONLINE' ? 'Connecting to Gateway...' : 'Booking...'}</span>
+                  </>
+                ) : paymentMode === 'ONLINE' ? (
+                  <>
+                    <CreditCard size={16} />
+                    <span>Pay ₹{doctorFee} & Confirm</span>
                   </>
                 ) : (
-                  <span>Confirm OPD Booking</span>
+                  <>
+                    <Building2 size={16} />
+                    <span>Confirm (Pay at Counter)</span>
+                  </>
                 )}
               </button>
             )}

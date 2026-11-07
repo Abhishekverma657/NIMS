@@ -56,6 +56,12 @@ export default function TatkaalBooking() {
     const bId = params.get('bookingId') || params.get('orderId');
 
     if (bId) {
+      // If an OPD booking was routed to tatkaal-booking, seamlessly route to OPD confirmation
+      if (bId.startsWith('NIMS-OPD-') || bId.startsWith('BK-') || bId.startsWith('OPD-')) {
+        navigate(`/?opdPayment=${pStatus || 'success'}&bookingId=${encodeURIComponent(bId)}&token=${encodeURIComponent(bId)}`, { replace: true });
+        return;
+      }
+
       if (pStatus === 'success') {
         setPaymentSuccessNotice(true);
       }

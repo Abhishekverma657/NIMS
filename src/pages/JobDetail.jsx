@@ -23,41 +23,43 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { vacanciesData as staticJobs, generateJobSlug } from '../data/vacanciesData';
+import { generateJobSlug } from '../data/vacanciesData';
 import VacanciesModal from '../components/vacancies/VacanciesModal';
 
 export default function JobDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const [allJobs, setAllJobs] = useState(staticJobs);
+  const [allJobs, setAllJobs] = useState([]);
   const [currentJob, setCurrentJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Fetch backend jobs and find job matching the slug
+  // Fetch live active positions directly from backend API
   useEffect(() => {
     const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
     fetch(`${baseUrl}/hr/jobs?activeOnly=true`)
       .then((res) => res.json())
       .then((data) => {
-        let combined = [...staticJobs];
-        if (data.success && Array.isArray(data.jobs) && data.jobs.length > 0) {
+        if (data.success && Array.isArray(data.jobs)) {
           const apiJobs = data.jobs.map((j) => ({
             ...j,
             id: j._id || j.id,
             slug: generateJobSlug(j.title),
             openings: j.vacanciesCount || j.openings || 1
           }));
-          // Merge api jobs prioritizing them
-          combined = [...apiJobs, ...staticJobs.filter((sj) => !apiJobs.some((aj) => aj.id === sj.id))];
+          setAllJobs(apiJobs);
+          resolveJob(apiJobs);
+        } else {
+          setAllJobs([]);
+          setCurrentJob(null);
         }
-        setAllJobs(combined);
-        resolveJob(combined);
       })
-      .catch(() => {
-        resolveJob(staticJobs);
+      .catch((err) => {
+        console.error('Failed to load live vacancies:', err);
+        setAllJobs([]);
+        setCurrentJob(null);
       })
       .finally(() => setLoading(false));
   }, [slug]);
@@ -137,17 +139,8 @@ export default function JobDetail() {
   // Related jobs for sidebar recommendation
   const otherJobs = allJobs.filter((j) => j.id !== currentJob.id).slice(0, 4);
 
-  // Responsibilities
-  const responsibilities =
-    currentJob.responsibilities && currentJob.responsibilities.length > 0
-      ? currentJob.responsibilities
-      : [
-        'Deliver high-quality clinical care, patient evaluations, and multi-departmental coordination.',
-        'Comply strictly with NABH, NABL, infection control, and hospital patient safety protocols.',
-        'Maintain precise clinical charting, digital electronic health records, and shift handovers.',
-        'Collaborate effectively with attending consultants, nursing leads, and clinical diagnostic teams.',
-        'Participate actively in departmental academic rounds, emergency alerts, and quality reviews.'
-      ];
+  // Responsibilities: Only use if explicitly provided by the job (no static medical fallback for non-clinical jobs)
+  const hasResponsibilities = Array.isArray(currentJob.responsibilities) && currentJob.responsibilities.length > 0;
 
   // Benefits
   const benefits =
@@ -346,17 +339,18 @@ export default function JobDetail() {
         </div>
       </section>
 
-      {/* Main Content Layout (2-Column Grid) */}
-      <div className="container" style={{ marginTop: '2.5rem' }}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1fr) 340px',
-            gap: '2.5rem',
-            alignItems: 'start'
-          }}
-          className="job-detail-grid-layout"
-        >
+      {/* Main Content Layout (2-Column Grid with Dedicated Top Spacing) */}
+      <section className="job-detail-main-section" style={{ padding: '2.5rem 0 4.5rem', background: '#f8fafc' }}>
+        <div className="container">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'minmax(0, 1fr) 340px',
+              gap: '2.5rem',
+              alignItems: 'start'
+            }}
+            className="job-detail-grid-layout"
+          >
           {/* Left Column: Comprehensive Role Details */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {/* 4 Metric Cards */}
@@ -418,40 +412,48 @@ export default function JobDetail() {
               </p>
             </div>
 
-            {/* Minimum Qualifications Box */}
-            <div style={{ background: '#eff6ff', padding: '1.5rem 1.75rem', borderRadius: '20px', border: '1.5px solid #bfdbfe' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1d4ed8', fontWeight: 800, fontSize: '0.86rem', marginBottom: '0.5rem' }}>
-                <GraduationCap size={18} />
-                <span>MINIMUM ELIGIBILITY & COUNCIL REGISTRATION</span>
+            {/* Minimum Qualifications Box (Only shown when qualification exists; council note only if requiresCouncilReg is true) */}
+            {currentJob.qualification && (
+              <div style={{ background: '#eff6ff', padding: '1.5rem 1.75rem', borderRadius: '20px', border: '1.5px solid #bfdbfe' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1d4ed8', fontWeight: 800, fontSize: '0.86rem', marginBottom: '0.5rem' }}>
+                  <GraduationCap size={18} />
+                  <span>
+                    MINIMUM ELIGIBILITY{currentJob.requiresCouncilReg ? ' & COUNCIL REGISTRATION' : ''}
+                  </span>
+                </div>
+                <p style={{ fontSize: '1.02rem', fontWeight: 700, color: '#1e3a8a', margin: 0, lineHeight: 1.5 }}>
+                  {currentJob.qualification}
+                </p>
+                {currentJob.requiresCouncilReg && (
+                  <p style={{ fontSize: '0.82rem', color: '#3b82f6', margin: '6px 0 0' }}>
+                    * Candidates with verified State / National medical council registration will be given priority consideration.
+                  </p>
+                )}
               </div>
-              <p style={{ fontSize: '1.02rem', fontWeight: 700, color: '#1e3a8a', margin: 0, lineHeight: 1.5 }}>
-                {currentJob.qualification}
-              </p>
-              <p style={{ fontSize: '0.82rem', color: '#3b82f6', margin: '6px 0 0' }}>
-                * Candidates with verified State / National medical council registration will be given priority consideration.
-              </p>
-            </div>
+            )}
 
-            {/* Key Clinical & Operational Responsibilities */}
-            <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '20px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '1rem' }}>
-                Key Responsibilities & Operational Scope
-              </h3>
-              <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {responsibilities.map((resp, idx) => (
-                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.6 }}>
-                    <CheckCircle2 size={17} color="var(--nims-orange)" style={{ flexShrink: 0, marginTop: '3px' }} />
-                    <span>{resp}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Key Clinical & Operational Responsibilities (Only rendered if explicitly provided in job data) */}
+            {hasResponsibilities && (
+              <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '20px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '1rem' }}>
+                  Key Responsibilities & Operational Scope
+                </h3>
+                <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {currentJob.responsibilities.map((resp, idx) => (
+                    <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.92rem', color: '#334155', lineHeight: 1.6 }}>
+                      <CheckCircle2 size={17} color="var(--nims-orange)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                      <span>{resp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Required Skills & Competencies */}
             {currentJob.skills && currentJob.skills.length > 0 && (
               <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '20px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
                 <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '1rem' }}>
-                  Required Skills & Clinical Competencies
+                  Required Skills & Key Competencies
                 </h3>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
                   {currentJob.skills.map((skill, sIdx) => (
@@ -463,8 +465,9 @@ export default function JobDetail() {
                         color: 'var(--nims-navy)',
                         background: '#f1f5f9',
                         border: '1px solid #cbd5e1',
-                        padding: '0.4rem 0.9rem',
-                        borderRadius: '999px'
+                        padding: '0.45rem 1rem',
+                        borderRadius: '999px',
+                        lineHeight: 1.4
                       }}
                     >
                       {skill}
@@ -638,10 +641,10 @@ export default function JobDetail() {
                   }}
                 >
                   <PhoneCall size={15} color="var(--nims-orange)" />
-                  <span>0141-23 88 999 (Ext: 3410)</span>
+                  <span>0141-23 88 999</span>
                 </a>
                 <a
-                  href="mailto:hr@nimshospitals.in"
+                  href="mailto:info@nimshospitals.in"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -653,7 +656,7 @@ export default function JobDetail() {
                   }}
                 >
                   <Mail size={15} color="#38bdf8" />
-                  <span>hr@nimshospitals.in</span>
+                  <span>info@nimshospitals.in</span>
                 </a>
               </div>
             </div>
@@ -706,6 +709,7 @@ export default function JobDetail() {
           </div>
         </div>
       </div>
+      </section>
 
       {/* Mobile Sticky Floating Apply Bar (Always pinned at bottom on mobile screens <= 992px) */}
       <div className="mobile-job-floating-bar">

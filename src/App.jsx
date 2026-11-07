@@ -159,6 +159,14 @@ export default function App() {
   const [packageModalOpen, setPackageModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
 
+  // Auto-open OPD booking drawer when returning from payment gateway
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('opdPayment') === 'success') {
+      setBookingOpen(true);
+    }
+  }, []);
+
   const handleOpenPackageBooking = (pkg) => {
     setSelectedPackage(pkg || null);
     setPackageModalOpen(true);

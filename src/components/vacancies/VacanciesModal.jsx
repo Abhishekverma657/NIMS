@@ -125,19 +125,23 @@ export default function VacanciesModal({ isOpen, onClose, initialJob, vacanciesD
           formData.append(key, applicant[key]);
         }
       });
+      if (selectedJob?.title) {
+        formData.append('jobTitle', selectedJob.title);
+      }
       if (resumeFile) {
         formData.append('resume', resumeFile);
       }
 
+      const jobIdParam = selectedJob?._id || selectedJob?.id || 'general';
       const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
-      const res = await fetch(`${baseUrl}/hr/jobs/${selectedJob.id}/apply`, {
+      const res = await fetch(`${baseUrl}/hr/jobs/${jobIdParam}/apply`, {
         method: 'POST',
         body: formData
       });
       
       const data = await res.json();
       if (data.success) {
-        const token = 'NIMS-HR-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
+        const token = data.tokenNumber || ('NIMS-HR-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000));
         setTokenNumber(token);
         setFormSubmitted(true);
       } else {
@@ -395,14 +399,14 @@ export default function VacanciesModal({ isOpen, onClose, initialJob, vacanciesD
               <ol style="padding-left: 18px; margin: 0;">
                 <li><strong>Credential Review:</strong> Profile submitted to Medical Superintendent & Departmental Head.</li>
                 <li><strong>Interview Shortlisting:</strong> Shortlisted candidates are contacted within 3 business days for technical and clinical panel rounds.</li>
-                <li><strong>Enquiry Contact:</strong> For recruitment inquiries, email <strong>hr@nimshospitals.in</strong> quoting your Application Token: <strong>${tokenNumber}</strong>.</li>
+                <li><strong>Enquiry Contact:</strong> For recruitment inquiries, email <strong>info@nimshospitals.in</strong> quoting your Application Token: <strong>${tokenNumber}</strong>.</li>
               </ol>
             </div>
           </div>
 
           <div class="slip-footer">
             <div><strong>NIMS Hospital HR Department</strong> &bull; Central Recruitment Board</div>
-            <div>Helpline: 0141-23 88 999 (Ext: 3410)</div>
+            <div>Helpline: 0141-23 88 999</div>
           </div>
         </div>
       </body>
@@ -613,7 +617,7 @@ export default function VacanciesModal({ isOpen, onClose, initialJob, vacanciesD
               </div>
 
               <div style={{ marginTop: '1.5rem', fontSize: '0.78rem', color: '#64748b' }}>
-                For recruitment queries, email <strong>hr@nimshospitals.in</strong> or call HR Desk: <strong>0141-23 88 999 (Ext: 3410)</strong>
+                For recruitment queries, email <strong>info@nimshospitals.in</strong> or call HR Desk: <strong>0141-23 88 999</strong>
               </div>
             </motion.div>
           ) : selectedJob ? (

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { MapPin, PhoneCall, Mail, Clock, Send, CheckCircle2, ShieldAlert, Navigation } from 'lucide-react';
+import { MapPin, PhoneCall, Mail, Clock, Send, CheckCircle2, ShieldAlert, Navigation, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function Contact() {
   const [msgSent, setMsgSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [successData, setSuccessData] = useState(null);
   const [form, setForm] = useState({
     name: '',
     phone: '',
@@ -11,9 +14,86 @@ export default function Contact() {
     message: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setMsgSent(true);
+    setSubmitError('');
+
+    const cleanName = form.name.trim();
+    const cleanPhone = form.phone.replace(/\D/g, '');
+
+    if (!cleanName) {
+      setSubmitError('Please enter your full name.');
+      return;
+    }
+
+    if (cleanPhone.length < 10) {
+      setSubmitError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    if (!form.message.trim()) {
+      setSubmitError('Please enter your message or query.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://api.nimshospitals.net/api';
+    const localFallbackUrl = 'http://localhost:5001/api';
+
+    const payload = {
+      name: cleanName,
+      phone: cleanPhone.slice(-10),
+      email: form.email.trim(),
+      department: form.department,
+      message: form.message.trim(),
+      source: 'WEBSITE_CONTACT_FORM'
+    };
+
+    try {
+      let res;
+      try {
+        res = await fetch(`${baseUrl}/callbacks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (primaryErr) {
+        if (!baseUrl.includes('localhost:5001')) {
+          res = await fetch(`${localFallbackUrl}/callbacks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } else {
+          throw primaryErr;
+        }
+      }
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSuccessData({
+          name: cleanName,
+          phone: cleanPhone.slice(-10),
+          department: form.department,
+          message: data.message || 'Your enquiry has been received successfully.'
+        });
+        setMsgSent(true);
+        setForm({
+          name: '',
+          phone: '',
+          email: '',
+          department: 'General Enquiry',
+          message: ''
+        });
+      } else {
+        setSubmitError(data.message || 'Unable to submit your enquiry. Please call our helpline directly.');
+      }
+    } catch (err) {
+      console.error('Contact form submission error:', err);
+      setSubmitError('Network connection error. Please call our 24x7 helpline: 0141-23 88 999.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -177,10 +257,10 @@ export default function Contact() {
                     <CheckCircle2 size={32} />
                   </div>
                   <h4 style={{ fontSize: '1.2rem', color: 'var(--nims-navy)' }}>
-                    Message Dispatched Successfully
+                    Enquiry Dispatched to NIMS Desk
                   </h4>
                   <p style={{ fontSize: '0.88rem', color: '#64748b', margin: '0.5rem 0 1.25rem' }}>
-                    Our patient coordination desk has received your request and will call you back on <b>+91 {form.phone}</b> shortly.
+                    Thank you, <b>{successData?.name}</b>! Our patient coordination team has received your enquiry regarding <b>{successData?.department}</b> and will connect with you on <b>+91 {successData?.phone}</b> shortly.
                   </p>
                   <button onClick={() => setMsgSent(false)} className="btn btn-ghost">
                     Send Another Message
@@ -188,6 +268,24 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  {submitError && (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.6rem',
+                      padding: '0.75rem 1rem',
+                      background: '#fef2f2',
+                      border: '1px solid #fecaca',
+                      borderRadius: 'var(--radius-sm)',
+                      color: '#991b1b',
+                      fontSize: '0.85rem',
+                      fontWeight: 500
+                    }}>
+                      <AlertCircle size={16} className="flex-shrink-0" />
+                      <span>{submitError}</span>
+                    </div>
+                  )}
+
                   <div>
                     <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 600, marginBottom: '0.35rem' }}>
                       Full Name *
@@ -263,9 +361,23 @@ export default function Contact() {
                     />
                   </div>
 
-                  <button type="submit" className="btn btn-primary" style={{ padding: '0.85rem' }}>
-                    <Send size={15} />
-                    <span>Submit Enquiry</span>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="btn btn-primary"
+                    style={{ padding: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        <span>Sending Enquiry...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send size={15} />
+                        <span>Submit Enquiry</span>
+                      </>
+                    )}
                   </button>
                 </form>
               )}
@@ -289,11 +401,11 @@ export default function Contact() {
                   </h3>
                 </div>
 
-                {/* Google Map iframe centered on NIMS Hospital Jaipur */}
+                {/* Google Map iframe centered on NIMS Hospital Jaipur with prominent pin marker */}
                 <div style={{ height: '340px', width: '100%', background: '#e2e8f0' }}>
                   <iframe
-                    title="NIMS Hospital Jaipur Map"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113642.48202564245!2d75.9221293!3d27.1852026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396da6bb5e436979%3A0xe54d89fa3ae58fbe!2sNIMS%20Hospital!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                    title="NIMS Hospital Jaipur Location Map"
+                    src="https://maps.google.com/maps?q=NIMS+Hospital,+NH-11C,+Delhi-Jaipur+Expy,+Chandwaji,+Rajasthan+303121&t=&z=16&ie=UTF8&iwloc=B&output=embed"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -309,12 +421,12 @@ export default function Contact() {
                       Quick Highway Access
                     </div>
                     <div style={{ fontSize: '0.78rem', color: '#64748b' }}>
-                      Easy entry directly from Jaipur-Delhi Expressway
+                      Easy entry directly from Jaipur-Delhi Expressway (NH-11C)
                     </div>
                   </div>
 
                   <a
-                    href="https://maps.google.com/?q=NIMS+Hospital+Jaipur"
+                    href="https://www.google.com/maps/dir/?api=1&destination=NIMS+Hospital,+NH-11C,+Chandwaji,+Rajasthan+303121"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-gold"
