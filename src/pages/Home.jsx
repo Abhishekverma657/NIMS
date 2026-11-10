@@ -115,7 +115,6 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
 
   const doctorCategories = useMemo(() => {
     const list = [
-      'All Doctors',
       'Cardiology',
       'CTVS',
       'Neurosurgery',
@@ -168,6 +167,9 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
         }
       });
     }
+
+    // Place 'All Doctors' tab at the very end
+    list.push('All Doctors');
 
     return list;
   }, [doctors]);

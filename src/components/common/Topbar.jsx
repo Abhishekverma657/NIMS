@@ -92,7 +92,7 @@ export default function Topbar({ onOpenVacancies }) {
           className="topbar-marquee-container"
           title="Hospital Live News Headlines (Hover to pause)"
         >
-          <div className="marquee-track">
+          <div className="marquee-track" style={{ animation: 'newsMarquee 95s linear infinite' }}>
             {newsItems.map((item, idx) => (
               <div className="marquee-item" key={`orig-${idx}`}>
                 <span

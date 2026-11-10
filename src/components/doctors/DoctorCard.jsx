@@ -61,27 +61,37 @@ export default function DoctorCard({ doctor, onBook }) {
           </Link>
 
           {/* Designation */}
-          <div className="doctor-title">
-            {doctor.title}
-          </div>
+          {doctor.title ? (
+            <div className="doctor-title">
+              {doctor.title}
+            </div>
+          ) : null}
 
           {/* Qualifications */}
-          <div className="doctor-qual">
-            {doctor.qualification}
-          </div>
+          {doctor.qualification ? (
+            <div className="doctor-qual">
+              {doctor.qualification}
+            </div>
+          ) : null}
         </div>
 
         {/* Schedule & Location Box */}
-        <div className="doctor-schedule-box">
-          <div className="schedule-item">
-            <Clock size={14} color="var(--nims-orange)" style={{ flexShrink: 0 }} />
-            <span><b>OPD:</b> {doctor.opdSchedule}</span>
+        {(doctor.opdSchedule || doctor.roomNo) ? (
+          <div className="doctor-schedule-box">
+            {doctor.opdSchedule ? (
+              <div className="schedule-item">
+                <Clock size={14} color="var(--nims-orange)" style={{ flexShrink: 0 }} />
+                <span><b>OPD:</b> {doctor.opdSchedule}</span>
+              </div>
+            ) : null}
+            {doctor.roomNo ? (
+              <div className="schedule-item">
+                <MapPin size={14} color="var(--nims-navy)" style={{ flexShrink: 0 }} />
+                <span>{doctor.roomNo}</span>
+              </div>
+            ) : null}
           </div>
-          <div className="schedule-item">
-            <MapPin size={14} color="var(--nims-navy)" style={{ flexShrink: 0 }} />
-            <span>{doctor.roomNo}</span>
-          </div>
-        </div>
+        ) : null}
 
         {/* CTA Button */}
         <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>

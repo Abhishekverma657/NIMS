@@ -108,7 +108,11 @@ export function mapDepartmentToSpecialityId(dept = '') {
 export function normalizeApiDoctor(apiDoc) {
   if (!apiDoc) return null;
 
-  const rawName = apiDoc.userId?.name || apiDoc.name || 'Doctor';
+  const rawName = (
+    (typeof apiDoc.userId === 'object' && apiDoc.userId?.name) ||
+    apiDoc.name ||
+    'Doctor'
+  ).trim();
   const cleanNameLower = rawName.toLowerCase().replace(/^(dr\.|dr|prof\.|prof|\(dr\.\))\s*/i, '').trim();
 
   // Check if we have a rich curated entry in static doctorsData for this doctor
@@ -118,86 +122,104 @@ export function normalizeApiDoctor(apiDoc) {
     return curNameLower === cleanNameLower || (cleanNameLower.length > 5 && curNameLower.includes(cleanNameLower));
   });
 
-  const department = apiDoc.department || curated?.department || 'General Medicine';
-  const specialityId = curated?.specialityId || mapDepartmentToSpecialityId(department);
+  const department = (apiDoc.department || apiDoc.dept || curated?.department || '').trim();
+  const specialityId = curated?.specialityId || (department ? mapDepartmentToSpecialityId(department) : '');
   const doctorId = apiDoc.doctorId || curated?.id || `DR-${apiDoc._id?.slice(-4) || 'GEN'}`;
   const id = curated?.id || doctorId;
 
-  // Parse specialization / expertise
+  // Parse specialization / expertise (only real data)
   let expertiseList = curated?.expertise || [];
-  if (apiDoc.specialization) {
-    const fromApi = apiDoc.specialization.split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+  if (apiDoc.specialization || apiDoc.spec) {
+    const fromApi = (apiDoc.specialization || apiDoc.spec).split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
     if (fromApi.length > 0) expertiseList = fromApi;
   }
 
-  // Parse highlights
-  let highlightsList = (Array.isArray(apiDoc.highlights) && apiDoc.highlights.length > 0)
-    ? apiDoc.highlights
-    : (curated?.highlights || [
-        `${apiDoc.designation || 'Senior Consultant'}, Department of ${department}`,
-        `Comprehensive clinical care at NIMS Super Specialty Hospital`,
-        `Available for in-person consultations and second opinions`
-      ]);
+  // Parse highlights (ONLY real data from database or curated, never invent dummy bullet points)
+  let highlightsList = [];
+  if (Array.isArray(apiDoc.highlights) && apiDoc.highlights.length > 0) {
+    highlightsList = apiDoc.highlights.filter(h => h && h.trim());
+  } else if (Array.isArray(apiDoc.bulletPoints) && apiDoc.bulletPoints.length > 0) {
+    highlightsList = apiDoc.bulletPoints.filter(h => h && h.trim());
+  } else if (curated?.highlights && curated.highlights.length > 0) {
+    highlightsList = curated.highlights;
+  }
 
-  // Qualifications
-  const qualification = apiDoc.education || curated?.qualification || 'MBBS';
+  // Qualifications (ONLY real education, never fallback to 'MBBS')
+  const qualification = (apiDoc.education || curated?.qualification || '').trim();
   let detailedQualifications = curated?.detailedQualifications || [];
   if ((!detailedQualifications || detailedQualifications.length === 0) && qualification) {
     const degrees = qualification.split(/[,/]+/).map(s => s.trim()).filter(Boolean);
     detailedQualifications = degrees.map(deg => ({
       title: deg,
-      year: 'Certified Degree',
-      org: 'Medical Council of India'
+      year: '',
+      org: ''
     }));
   }
 
-  // Experience
-  let experience = curated?.experience || '';
+  // Experience (ONLY real experience from database bio or curated, never invent '10+ Years Experience')
+  let experience = (curated?.experience || '').trim();
   if (!experience) {
-    const expMatch = (apiDoc.shortBio || apiDoc.longBio || '').match(/(\d+\+?\s*Years?)/i);
-    experience = expMatch ? `${expMatch[1]} Experience` : '10+ Years Experience';
+    const bioText = (apiDoc.shortBio || apiDoc.longBio || apiDoc.shortDescription || apiDoc.longDescription || '').trim();
+    if (bioText) {
+      const expMatch = bioText.match(/(\d+\+?\s*Years?(?:\s+of)?(?:\s+Clinical)?(?:\s+Experience)?)/i);
+      if (expMatch) {
+        experience = expMatch[1].toLowerCase().includes('experience') ? expMatch[1] : `${expMatch[1]} Experience`;
+      }
+    }
   }
 
   // Photo (ensure dummy stock photos are never used as fallbacks)
-  const candidateImage = (apiDoc.userId?.avatar || apiDoc.image || curated?.image || '').trim();
+  const candidateImage = (
+    (typeof apiDoc.userId === 'object' && apiDoc.userId?.avatar) ||
+    apiDoc.image ||
+    apiDoc.avatar ||
+    curated?.image ||
+    ''
+  ).trim();
   const isDummyImage = !candidateImage || 
     candidateImage.includes('unsplash') || 
     candidateImage.includes('male-doc') || 
     candidateImage.includes('female-doc');
   const image = isDummyImage ? DEFAULT_AVATAR : candidateImage;
 
+  // Real OPD hours and room locations (never invent fake schedule or room)
+  const opdSchedule = (apiDoc.opdOfflineHours || apiDoc.opdOffline || curated?.opdSchedule || '').trim();
+  const roomNo = (apiDoc.room || apiDoc.sittingLocation || curated?.roomNo || '').trim();
+  const block = (apiDoc.block || curated?.block || '').trim();
+  const floor = (apiDoc.floor || curated?.floor || '').trim();
+
+  // About bio (only real bio entered by admin, never auto-generate fake bio)
+  const about = (apiDoc.longBio || apiDoc.shortBio || apiDoc.longDescription || apiDoc.shortDescription || curated?.about || '').trim();
+
+  // Detailed Experience (only if curated has genuine entries, else empty array)
+  const detailedExperience = curated?.detailedExperience || [];
+
   return {
     _id: apiDoc._id,
     id: id,
     doctorId: doctorId,
     name: rawName,
-    title: apiDoc.designation || curated?.title || 'Senior Consultant',
+    title: (apiDoc.designation || curated?.title || '').trim(),
     department: department,
     specialityId: specialityId,
     qualification: qualification,
     experience: experience,
-    opdSchedule: apiDoc.opdOfflineHours || curated?.opdSchedule || 'Mon - Sat (09:00 AM - 01:00 PM)',
-    roomNo: apiDoc.room || apiDoc.sittingLocation || curated?.roomNo || 'Main OPD Block',
-    block: apiDoc.block || curated?.block || 'OPD Super Specialty Block',
-    floor: apiDoc.floor || curated?.floor || '1st Floor',
+    opdSchedule: opdSchedule,
+    roomNo: roomNo,
+    block: block,
+    floor: floor,
     image: image,
-    fee: apiDoc.fee || curated?.fee || 500,
+    fee: apiDoc.fee ?? curated?.fee ?? null,
     featured: curated?.featured ?? (apiDoc.designation?.toLowerCase().includes('hod') || false),
     isOpdAvailable: apiDoc.liveStatus ? (apiDoc.liveStatus !== 'Off Duty' && apiDoc.liveStatus !== 'On Leave') : (curated?.isOpdAvailable !== false),
-    about: apiDoc.longBio || apiDoc.shortBio || curated?.about || `${rawName} is a highly accomplished specialist in the Department of ${department} at NIMS Super Specialty Hospital, committed to patient-first medical care.`,
+    about: about,
     expertise: expertiseList,
     highlights: highlightsList,
     detailedQualifications: detailedQualifications,
-    detailedExperience: curated?.detailedExperience || [
-      {
-        title: apiDoc.designation || 'Attending Senior Faculty',
-        year: 'Current Appointment',
-        org: 'NIMS Super Specialty Hospital, Jaipur'
-      }
-    ],
-    languages: curated?.languages || ['English', 'Hindi'],
+    detailedExperience: detailedExperience,
+    languages: curated?.languages || (apiDoc.languages ? [apiDoc.languages] : ['English', 'Hindi']),
     heroQualification: curated?.heroQualification || qualification,
-    heroDesignation: curated?.heroDesignation || apiDoc.designation,
+    heroDesignation: curated?.heroDesignation || apiDoc.designation || '',
     heroDepartment: curated?.heroDepartment || department,
     rawBackendData: apiDoc
   };

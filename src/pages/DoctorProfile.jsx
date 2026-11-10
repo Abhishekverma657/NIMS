@@ -145,17 +145,23 @@ export default function DoctorProfile({ onOpenBooking }) {
                 {doctor.name}
               </h1>
               
-              <p style={{ fontSize: '1.1rem', color: '#555', margin: '0 0 0.5rem 0', fontWeight: 500 }}>
-                {doctor.heroQualification || doctor.qualification}
-              </p>
+              {(doctor.heroQualification || doctor.qualification) ? (
+                <p style={{ fontSize: '1.1rem', color: '#555', margin: '0 0 0.5rem 0', fontWeight: 500 }}>
+                  {doctor.heroQualification || doctor.qualification}
+                </p>
+              ) : null}
               
-              <p style={{ fontSize: '1.1rem', color: '#555', margin: '0 0 0.5rem 0' }}>
-                {doctor.heroDesignation || doctor.title}
-              </p>
+              {(doctor.heroDesignation || doctor.title) ? (
+                <p style={{ fontSize: '1.1rem', color: '#555', margin: '0 0 0.5rem 0' }}>
+                  {doctor.heroDesignation || doctor.title}
+                </p>
+              ) : null}
               
-              <p style={{ fontSize: '1.1rem', color: '#777', margin: '0 0 1.5rem 0' }}>
-                {doctor.heroDepartment || doctor.department}
-              </p>
+              {(doctor.heroDepartment || doctor.department) ? (
+                <p style={{ fontSize: '1.1rem', color: '#777', margin: '0 0 1.5rem 0' }}>
+                  {doctor.heroDepartment || doctor.department}
+                </p>
+              ) : null}
               
               {doctor.languages && doctor.languages.length > 0 && (
                 <div style={{ marginBottom: '2rem' }}>
