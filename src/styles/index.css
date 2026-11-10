@@ -1001,6 +1001,12 @@ button, input, select, textarea {
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.doctor-photo.doctor-photo-placeholder {
+  object-fit: contain;
+  padding: 16px 12px 0 12px;
+  background: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%);
+}
+
 .nims-doctor-card:hover .doctor-photo {
   transform: translateY(-3px) scale(1.02);
 }
@@ -1294,9 +1300,9 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   white-space: nowrap;
-  gap: 2rem;
+  gap: 2.5rem;
   will-change: transform;
-  animation: newsMarquee 42s linear infinite;
+  animation: newsMarquee 75s linear infinite;
 }
 
 .topbar-marquee-container:hover .marquee-track {

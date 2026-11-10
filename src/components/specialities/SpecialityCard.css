@@ -96,7 +96,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 1.5rem;
+  padding: 1.35rem 1.25rem 1.15rem;
   z-index: 10;
 }
 
@@ -240,81 +240,146 @@
 /* ---- Footer ---- */
 .spec-card-footer {
   border-top: 1px solid #f1f5f9;
-  padding-top: 14px;
+  padding-top: 12px;
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+  flex-wrap: nowrap;
+  width: 100%;
+  box-sizing: border-box;
   transition: border-color 0.3s;
 }
+
 .spec-card-modern:hover .spec-card-footer {
-  border-color: rgba(200, 16, 46, 0.12);
+  border-color: rgba(200, 16, 46, 0.15);
 }
 
 .spec-card-explore {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.94rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #142235;
-  transition: color 0.25s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 0;
+  letter-spacing: -0.01em;
+  transition: color 0.25s ease;
 }
+
 .spec-card-modern:hover .spec-card-explore {
   color: #C8102E;
 }
-.spec-card-explore-icon {
-  transition: transform 0.25s ease;
-}
-.spec-card-modern:hover .spec-card-explore-icon {
-  transform: translateX(5px);
-}
 
 .spec-card-footer-right {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .spec-card-opd {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: #f0fdf4;
   color: #15803d;
-  font-size: 0.74rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 3.5px 8px;
   border-radius: 9999px;
   border: 1px solid #dcfce7;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
 }
 
 .spec-card-opd-dot {
   width: 6px;
   height: 6px;
+  min-width: 6px;
   border-radius: 50%;
   background: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
   animation: nimsPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  flex-shrink: 0;
 }
 
 @keyframes nimsPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.45; 
+    transform: scale(0.85);
+  }
 }
 
 .spec-card-arrow-btn {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
   border-radius: 50%;
   background: linear-gradient(135deg, #C8102E 0%, #9B0000 100%);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.3);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(200, 16, 46, 0.25);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
 }
+
 .spec-card-modern:hover .spec-card-arrow-btn {
-  box-shadow: 0 4px 16px rgba(200, 16, 46, 0.5);
-  transform: scale(1.1);
+  box-shadow: 0 4px 14px rgba(200, 16, 46, 0.45);
+  transform: translateX(3px) scale(1.06);
+}
+
+/* Responsive adjustments for narrow cards / compact viewports */
+@media (max-width: 1200px) and (min-width: 1024px) {
+  .spec-card-body {
+    padding: 1.2rem 1.05rem 1rem 1.05rem;
+  }
+  .spec-card-explore {
+    font-size: 0.82rem;
+  }
+  .spec-card-opd {
+    font-size: 0.64rem;
+    padding: 3px 6px;
+  }
+  .spec-card-arrow-btn {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .spec-card-body {
+    padding: 1.15rem 0.95rem 1rem 0.95rem;
+  }
+  .spec-card-explore {
+    font-size: 0.82rem;
+  }
+  .spec-card-opd {
+    font-size: 0.64rem;
+    padding: 2.5px 6px;
+    gap: 4px;
+  }
+  .spec-card-arrow-btn {
+    width: 25px;
+    height: 25px;
+    min-width: 25px;
+  }
+}
+
+@media (max-width: 360px) {
+  .spec-card-explore-dept {
+    display: none;
+  }
 }

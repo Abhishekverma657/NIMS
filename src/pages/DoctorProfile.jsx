@@ -85,16 +85,45 @@ export default function DoctorProfile({ onOpenBooking }) {
             
             {/* Left Column: Image */}
             <div style={{ maxWidth: '400px' }}>
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '1/1', overflow: 'hidden', borderRadius: '4px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)' }}>
-                <img 
-                  src={doctor.image} 
-                  alt={doctor.name} 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} 
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80";
-                  }}
-                />
-              </div>
+              {(() => {
+                const isDummy = !doctor.image || 
+                  doctor.image.includes('unsplash') || 
+                  doctor.image.includes('male-doc') || 
+                  doctor.image.includes('female-doc');
+                const imageSrc = isDummy ? '/assets/icons/doctor-placeholder.svg' : doctor.image;
+                const isPlaceholder = imageSrc.includes('doctor-placeholder.svg');
+                return (
+                  <div style={{ 
+                    position: 'relative', 
+                    width: '100%', 
+                    aspectRatio: '1/1', 
+                    overflow: 'hidden', 
+                    borderRadius: '8px', 
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+                    background: isPlaceholder ? 'linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%)' : '#fff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <img 
+                      src={imageSrc} 
+                      alt={doctor.name} 
+                      style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: isPlaceholder ? 'contain' : 'cover', 
+                        objectPosition: 'top',
+                        padding: isPlaceholder ? '24px 20px 0 20px' : '0'
+                      }} 
+                      onError={(e) => {
+                        e.currentTarget.src = "/assets/icons/doctor-placeholder.svg";
+                        e.currentTarget.style.objectFit = 'contain';
+                        e.currentTarget.style.padding = '24px 20px 0 20px';
+                      }}
+                    />
+                  </div>
+                );
+              })()}
               
               {doctor.isOpdAvailable !== false && (
                 <motion.button

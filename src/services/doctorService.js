@@ -52,7 +52,7 @@ export async function tryFetchWithFallback(path, options = {}) {
   throw new Error(`Failed to fetch from all API endpoints for ${path}`);
 }
 
-const DEFAULT_AVATAR = "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80";
+const DEFAULT_AVATAR = "/assets/icons/doctor-placeholder.svg";
 
 /**
  * Map raw department string to known speciality ID in specialitiesData
@@ -158,8 +158,13 @@ export function normalizeApiDoctor(apiDoc) {
     experience = expMatch ? `${expMatch[1]} Experience` : '10+ Years Experience';
   }
 
-  // Photo
-  const image = apiDoc.userId?.avatar || apiDoc.image || curated?.image || DEFAULT_AVATAR;
+  // Photo (ensure dummy stock photos are never used as fallbacks)
+  const candidateImage = (apiDoc.userId?.avatar || apiDoc.image || curated?.image || '').trim();
+  const isDummyImage = !candidateImage || 
+    candidateImage.includes('unsplash') || 
+    candidateImage.includes('male-doc') || 
+    candidateImage.includes('female-doc');
+  const image = isDummyImage ? DEFAULT_AVATAR : candidateImage;
 
   return {
     _id: apiDoc._id,

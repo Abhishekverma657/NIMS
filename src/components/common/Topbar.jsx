@@ -6,30 +6,80 @@ import {
 
 export default function Topbar({ onOpenVacancies }) {
   const newsItems = [
+    // --- Hindi Headlines ---
     {
-      fullText: '⚡ NIMS TATKAAL SEVA: 24/7 ONLINE ICU BED BOOKING (PRE-BOOKING ₹5,000/-)',
+      fullText: '⚡ NIMS तत्काल सेवा ऐप अभी डाउनलोड करें',
       color: '#facc15',
-      bg: 'transparent',
     },
     {
-      fullText: '🔴 ADMISSIONS OPEN 2026 - 2027 FOR MBBS',
-      color: '#e5b64a',
-      bg: 'transparent',
-    },
-    {
-      fullText: '🏥 DR. B. S. TOMAR INSTITUTE OF MEDICAL SCIENCES & RESEARCH',
+      fullText: '❤️ NIMS हॉस्पिटल, जयपुर — हर पल आपके साथ',
       color: '#ffffff',
-      bg: 'transparent',
     },
     {
-      fullText: '🚨 24/7 ICU & EMERGENCY CARE AVAILABLE',
+      fullText: '🚨 24×7 ट्रॉमा और इमरजेंसी सेवाएँ',
+      color: '#f87171',
+    },
+    {
+      fullText: '🩺 ऑनलाइन OPD अपॉइंटमेंट',
+      color: '#ffffff',
+    },
+    {
+      fullText: '🚑 ऑनलाइन एम्बुलेंस बुकिंग',
       color: '#facc15',
-      bg: 'transparent',
     },
     {
-      fullText: '📞 CALL EMERGENCY: +91 74120 77125',
-      color: '#e5b64a',
-      bg: 'transparent',
+      fullText: '🧪 घर से सैंपल कलेक्शन',
+      color: '#ffffff',
+    },
+    {
+      fullText: '📋 हेल्थ चेकअप पैकेज बुक करें',
+      color: '#facc15',
+    },
+    {
+      fullText: '🛏️ ऑनलाइन ICU बेड बुकिंग',
+      color: '#ffffff',
+    },
+    {
+      fullText: '💳 पात्र मरीजों के लिए सरकारी स्वास्थ्य योजनाओं के तहत कैशलेस इलाज',
+      color: '#4ade80',
+    },
+
+    // --- English Headlines ---
+    {
+      fullText: '⚡ Download the NIMS Tatkal Seva App Today',
+      color: '#facc15',
+    },
+    {
+      fullText: '❤️ NIMS Hospital, Jaipur — With You Every Step of the Way',
+      color: '#ffffff',
+    },
+    {
+      fullText: '🚨 24×7 Trauma & Emergency Care',
+      color: '#f87171',
+    },
+    {
+      fullText: '🩺 Book OPD Appointments Online',
+      color: '#ffffff',
+    },
+    {
+      fullText: '🚑 Book an Ambulance Online',
+      color: '#facc15',
+    },
+    {
+      fullText: '🧪 Home Sample Collection',
+      color: '#ffffff',
+    },
+    {
+      fullText: '📋 Book a Health Checkup Package',
+      color: '#facc15',
+    },
+    {
+      fullText: '🛏️ Book an ICU Bed Online',
+      color: '#ffffff',
+    },
+    {
+      fullText: '💳 Cashless Treatment for Eligible Patients Under Government Health Schemes',
+      color: '#4ade80',
     }
   ];
 
@@ -53,9 +103,9 @@ export default function Topbar({ onOpenVacancies }) {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.35rem',
-                    fontSize: '0.72rem',
-                    letterSpacing: '0.03em',
-                    textTransform: 'uppercase',
+                    fontSize: '0.74rem',
+                    letterSpacing: '0.02em',
+                    textTransform: 'none',
                     border: 'none',
                     background: 'transparent',
                     padding: 0
@@ -78,9 +128,9 @@ export default function Topbar({ onOpenVacancies }) {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.35rem',
-                    fontSize: '0.72rem',
-                    letterSpacing: '0.03em',
-                    textTransform: 'uppercase',
+                    fontSize: '0.74rem',
+                    letterSpacing: '0.02em',
+                    textTransform: 'none',
                     border: 'none',
                     background: 'transparent',
                     padding: 0

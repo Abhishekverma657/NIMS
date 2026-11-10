@@ -157,7 +157,7 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
         experience: "15+ Years Clinical Experience",
         opdSchedule: "Mon - Sat (09:00 AM - 03:00 PM)",
         roomNo: `OPD Unit, ${specObj?.category || 'Clinical'} Wing`,
-        image: "/assets/images/team/dr-sitaram.png",
+        image: "/assets/icons/doctor-placeholder.svg",
         isDutySpecialist: true
       }
     ];
@@ -604,14 +604,35 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
                         transition: 'all 0.18s ease'
                       }}
                     >
-                      <img
-                        src={doc.image}
-                        alt={doc.name}
-                        style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-                        onError={(e) => {
-                          e.currentTarget.src = "/assets/images/team/dr-sitaram.png";
-                        }}
-                      />
+                      {(() => {
+                        const isDummy = !doc.image || 
+                          doc.image.includes('unsplash') || 
+                          doc.image.includes('male-doc') || 
+                          doc.image.includes('female-doc');
+                        const imgSrc = isDummy ? "/assets/icons/doctor-placeholder.svg" : doc.image;
+                        const isPlaceholder = imgSrc.includes('doctor-placeholder.svg');
+                        return (
+                          <img
+                            src={imgSrc}
+                            alt={doc.name}
+                            style={{ 
+                              width: '56px', 
+                              height: '56px', 
+                              borderRadius: '50%', 
+                              objectFit: isPlaceholder ? 'contain' : 'cover', 
+                              background: '#f1f5f9',
+                              padding: isPlaceholder ? '4px' : '0',
+                              flexShrink: 0,
+                              border: '1px solid #e2e8f0'
+                            }}
+                            onError={(e) => {
+                              e.currentTarget.src = "/assets/icons/doctor-placeholder.svg";
+                              e.currentTarget.style.objectFit = 'contain';
+                              e.currentTarget.style.padding = '4px';
+                            }}
+                          />
+                        );
+                      })()}
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
                           <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--nims-navy)' }}>

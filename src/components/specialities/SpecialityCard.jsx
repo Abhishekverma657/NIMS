@@ -343,17 +343,16 @@ export default function SpecialityCard({ spec, index = 1 }) {
         {/* Footer */}
         <div className="spec-card-footer">
           <div className="spec-card-explore">
-            <span>Explore Department</span>
-            <ArrowRight size={14} color="#C8102E" strokeWidth={2.5} className="spec-card-explore-icon" />
+            <span>Explore <span className="spec-card-explore-dept">Department</span></span>
           </div>
 
           <div className="spec-card-footer-right">
             <span className="spec-card-opd">
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }} />
-              OPD Active
+              <span className="spec-card-opd-dot" />
+              <span>OPD Active</span>
             </span>
-            <div className="spec-card-arrow-btn">
-              <ArrowRight size={14} color="#fff" strokeWidth={2.5} />
+            <div className="spec-card-arrow-btn" aria-hidden="true">
+              <ArrowRight size={13} color="#fff" strokeWidth={2.5} />
             </div>
           </div>
         </div>

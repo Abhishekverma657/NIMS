@@ -177,7 +177,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -190,7 +190,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/female-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -203,7 +203,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/female-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -399,7 +399,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -412,7 +412,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -425,7 +425,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -438,7 +438,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -451,7 +451,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -464,7 +464,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -477,7 +477,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -490,7 +490,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -503,7 +503,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -516,7 +516,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Contact Hospital for Schedule",
     "roomNo": "NIMS Hospital",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false
   },
   {
@@ -571,7 +571,7 @@ export const doctorsData = [
     "experience": "10+ Years Experience",
     "opdSchedule": "Mon - Sat (09:00 AM - 03:00 PM)",
     "roomNo": "ENT OPD Suite, Level 1",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": true
   },
   {
@@ -584,7 +584,7 @@ export const doctorsData = [
     "experience": "15+ Years Experience",
     "opdSchedule": "Mon - Sat (10:00 AM - 04:00 PM)",
     "roomNo": "Medicine OPD, Block A",
-    "image": "/assets/male-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": true
   },
   {
@@ -596,7 +596,7 @@ export const doctorsData = [
     "department": "CTVS",
     "roomNo": "CTVS OPD, NIMS Hospital",
     "opdSchedule": "Mon-Sat, 9:00 AM - 4:00 PM",
-    "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=600&q=80",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false,
     "specialityId": "ctvs"
   },
@@ -609,7 +609,7 @@ export const doctorsData = [
     "department": "General Medicine",
     "roomNo": "OPD 12, NIMS Hospital",
     "opdSchedule": "Mon-Sat, 9:00 AM - 4:00 PM",
-    "image": "/assets/female-doc.jpeg",
+    "image": "/assets/icons/doctor-placeholder.svg",
     "featured": false,
     "specialityId": "general-medicine"
   }

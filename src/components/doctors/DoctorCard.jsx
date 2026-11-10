@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, CheckCircle2, ArrowRight, User } from 'lucide-react';
 
 export default function DoctorCard({ doctor, onBook }) {
+  const isDummyImage = !doctor.image || 
+    doctor.image.includes('unsplash') || 
+    doctor.image.includes('male-doc') || 
+    doctor.image.includes('female-doc');
+  const imageSrc = isDummyImage ? '/assets/icons/doctor-placeholder.svg' : doctor.image;
+  const isPlaceholder = imageSrc.includes('doctor-placeholder.svg');
+
   return (
     <motion.div
       className="nims-doctor-card"
@@ -16,15 +23,15 @@ export default function DoctorCard({ doctor, onBook }) {
     >
       {/* Photo Column */}
       <div className="doctor-photo-wrap">
-        <Link to={`/doctor/${doctor.id}`} style={{ display: 'block', height: '100%' }}>
+        <Link to={`/doctor/${doctor.id}`} style={{ display: 'block', height: '100%', width: '100%' }}>
           <img
-            src={doctor.image}
+            src={imageSrc}
             alt={doctor.name}
-            className="doctor-photo"
+            className={`doctor-photo ${isPlaceholder ? 'doctor-photo-placeholder' : ''}`}
             loading="lazy"
             onError={(e) => {
-              // High quality fallback medical doctor avatar
-              e.currentTarget.src = "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80";
+              e.currentTarget.src = "/assets/icons/doctor-placeholder.svg";
+              e.currentTarget.classList.add('doctor-photo-placeholder');
             }}
           />
         </Link>
