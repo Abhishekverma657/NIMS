@@ -4,7 +4,7 @@ import {
   Heart, HeartHandshake, ShieldCheck, CheckCircle2, AlertCircle,
   Clock, IndianRupee, Users, Share2, Play, X, ArrowRight,
   Lock, Phone, Mail, User, Info, Sparkles, Printer, Check, Download,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, Video
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackMetaEvent } from '../utils/metaPixel';
@@ -62,7 +62,7 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
     <motion.div
       whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(9, 86, 151, 0.12)' }}
       transition={{ duration: 0.2 }}
-      onClick={() => onNavigate(camp._id)}
+      onClick={() => onNavigate(camp.slug || camp._id)}
       style={{
         background: '#ffffff',
         borderRadius: '20px',
@@ -78,8 +78,8 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
       }}
     >
       <div>
-        {/* Visual Viewport: Enhanced 1.85:1 Aspect Ratio - Taller, Richer Presence */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '1.85 / 1', background: '#0a0f1d', overflow: 'hidden' }}>
+        {/* Visual Viewport: 16:10 Aspect Ratio & Center 15% - Patient Head/Face Never Cropped */}
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 10', background: '#0a0f1d', overflow: 'hidden' }}>
           {hasImage ? (
             <img
               src={currentImg}
@@ -88,7 +88,7 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                objectPosition: 'left center',
+                objectPosition: 'center 15%',
                 display: 'block'
               }}
             />
@@ -99,31 +99,45 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             </div>
           )}
 
-          {/* Badges on Photo */}
-          <div style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 3, display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          {/* Badges on Photo: Compact & Sleek (Not Big) */}
+          <div style={{
+            position: 'absolute',
+            top: '8px',
+            left: '8px',
+            zIndex: 3,
+            display: 'flex',
+            gap: '4px',
+            flexWrap: 'wrap',
+            maxWidth: 'calc(100% - 16px)'
+          }}>
             <span style={{
-              padding: '0.24rem 0.65rem',
-              borderRadius: '999px',
-              fontSize: '0.68rem',
+              padding: '0.15rem 0.45rem',
+              borderRadius: '6px',
+              fontSize: '0.62rem',
               fontWeight: 800,
               textTransform: 'uppercase',
               letterSpacing: '0.04em',
               background: isCritical ? '#bd171c' : '#f47521',
               color: '#ffffff',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+              boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+              flexShrink: 0
             }}>
               {camp.urgency} Care
             </span>
 
             <span style={{
-              padding: '0.24rem 0.65rem',
-              borderRadius: '999px',
-              fontSize: '0.68rem',
+              padding: '0.15rem 0.45rem',
+              borderRadius: '6px',
+              fontSize: '0.62rem',
               fontWeight: 800,
               textTransform: 'uppercase',
               background: 'rgba(15, 23, 42, 0.85)',
               backdropFilter: 'blur(6px)',
-              color: '#ffffff'
+              color: '#ffffff',
+              maxWidth: '180px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
             }}>
               {camp.department}
             </span>
@@ -235,8 +249,22 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             </>
           )}
 
-          {/* Watch Story Video Button */}
-          {camp.videoUrl && (
+        </div>
+
+        {/* Watch Story Action Strip Below Image (Outside Photo) */}
+        {camp.videoUrl && (
+          <div style={{
+            background: '#fff1f2',
+            borderBottom: '1px solid #fecaca',
+            padding: '0.35rem 1.1rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <span style={{ fontSize: '0.68rem', fontWeight: 750, color: '#991b1b', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+              <Video size={12} color="#dc2626" />
+              <span>Video Appeal Available</span>
+            </span>
             <button
               type="button"
               onClick={(e) => {
@@ -244,150 +272,164 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
                 onOpenVideo(camp.videoUrl);
               }}
               style={{
-                position: 'absolute',
-                top: '12px',
-                right: '12px',
-                zIndex: 3,
-                background: 'rgba(230, 0, 10, 0.9)',
+                background: '#dc2626',
                 color: '#ffffff',
                 border: 'none',
-                borderRadius: '999px',
-                padding: '0.35rem 0.75rem',
-                fontSize: '0.74rem',
+                borderRadius: '6px',
+                padding: '0.2rem 0.6rem',
+                fontSize: '0.68rem',
                 fontWeight: 800,
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '5px',
+                gap: '4px',
                 cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                boxShadow: '0 1px 4px rgba(220, 38, 38, 0.25)'
               }}
             >
-              <Play size={12} fill="#ffffff" />
+              <Play size={10} fill="#ffffff" />
               <span>Watch Story</span>
             </button>
-          )}
-
-          {/* Floating Share Button on Card Image */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              const title = camp.title || `Support ${camp.patientName}'s Medical Treatment`;
-              const text = `Urgent Medical Appeal: Support ${camp.patientName} fighting ${camp.diagnosis} at NIMS Hospital Jaipur. Donate directly at:`;
-              const url = `${window.location.origin}/help/${camp._id}`;
-              if (navigator.share) {
-                navigator.share({ title, text, url }).catch(() => {});
-              } else {
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${text} ${url}`)}`, '_blank');
-              }
-            }}
-            style={{
-              position: 'absolute',
-              top: '12px',
-              right: camp.videoUrl ? '128px' : '12px',
-              zIndex: 3,
-              background: 'rgba(15, 23, 42, 0.8)',
-              backdropFilter: 'blur(8px)',
-              color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.35)',
-              borderRadius: '999px',
-              padding: '0.35rem 0.7rem',
-              fontSize: '0.72rem',
-              fontWeight: 800,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
-              transition: 'all 0.15s ease'
-            }}
-            title="Share this patient appeal"
-          >
-            <Share2 size={12} color="#25D366" />
-            <span>Share</span>
-          </button>
-        </div>
+          </div>
+        )}
 
         {/* Content Area */}
-        <div style={{ padding: '1.2rem 1.35rem' }}>
-          {/* Patient Details: Name, Age, Gender, Doctor on separate lines with clear labels */}
-          <div style={{ marginBottom: '0.85rem' }}>
-            {/* 1. Patient Name - Full Dedicated Line */}
-            <div style={{ marginBottom: '0.45rem' }}>
+        <div style={{ padding: '0.75rem 1.1rem 0.85rem' }}>
+          {/* Small Title Above Patient Name - Zero Gap */}
+          <span style={{
+            fontSize: '0.62rem',
+            fontWeight: 800,
+            color: '#94a3b8',
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+            display: 'block',
+            lineHeight: 1,
+            marginBottom: '1px'
+          }}>
+            Patient Name
+          </span>
+
+          {/* Row 1: Patient Name (left) & Age | Gender + Share Button (right) */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '8px',
+            marginBottom: '0.55rem'
+          }}>
+            <h3 style={{
+              fontSize: '1.05rem',
+              fontWeight: 850,
+              color: '#0f172a',
+              margin: 0,
+              lineHeight: 1.15,
+              wordBreak: 'break-word'
+            }}>
+              {camp.patientName}
+            </h3>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
               <span style={{
-                fontSize: '0.68rem',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                color: '#64748b',
-                display: 'block',
-                marginBottom: '2px'
+                fontSize: '0.74rem',
+                fontWeight: 750,
+                color: '#475569',
+                background: '#f1f5f9',
+                padding: '0.15rem 0.5rem',
+                borderRadius: '6px'
               }}>
-                Patient Name
+                {camp.age} Yrs | {camp.gender}
               </span>
-              <h3 style={{
-                fontSize: '1.12rem',
-                fontWeight: 850,
-                color: '#0f172a',
-                margin: 0,
-                lineHeight: 1.35,
-                wordBreak: 'break-word'
-              }}>
-                {camp.patientName}
-              </h3>
+
+              {/* Share Button beside name row */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const title = camp.title || `Support ${camp.patientName}'s Medical Treatment`;
+                  const text = `Urgent Medical Appeal: Support ${camp.patientName} fighting ${camp.diagnosis} at NIMS Hospital Jaipur. Donate directly at:`;
+                  const url = `${window.location.origin}/help/${camp.slug || camp._id}`;
+                  if (navigator.share) {
+                    navigator.share({ title, text, url }).catch(() => {});
+                  } else {
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${text} ${url}`)}`, '_blank');
+                  }
+                }}
+                style={{
+                  background: '#f8fafc',
+                  border: '1px solid #cbd5e1',
+                  borderRadius: '6px',
+                  padding: '0.15rem 0.45rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '3px',
+                  fontSize: '0.7rem',
+                  fontWeight: 750,
+                  color: '#1e293b',
+                  cursor: 'pointer'
+                }}
+                title="Share this patient appeal"
+              >
+                <Share2 size={11} color="#16a34a" />
+                <span>Share</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Row 2: Diagnosis, Row 3: Doctor, Row 4: Fund Needed - Distinct, clear, structured cards */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.42rem',
+            marginBottom: '0.65rem'
+          }}>
+            {/* Diagnosis Block */}
+            <div style={{
+              background: '#f8fafc',
+              border: '1px solid #edf2f7',
+              borderRadius: '8px',
+              padding: '0.4rem 0.65rem'
+            }}>
+              <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+                Diagnosis
+              </span>
+              <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.35 }}>
+                {camp.diagnosis}
+              </div>
             </div>
 
-            {/* 2. Age, Gender, Doctor & Diagnosis - Each on a separate line */}
+            {/* Doctor & Fund Needed: Clean Structured Micro-Cards */}
             <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.28rem',
-              marginBottom: '0.65rem'
+              display: 'grid',
+              gridTemplateColumns: camp.doctorName ? 'repeat(2, 1fr)' : '1fr',
+              gap: '6px'
             }}>
-              {/* Age */}
-              <div style={{ fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ color: '#64748b', fontWeight: 700, minWidth: '74px' }}>Age:</span>
-                <strong style={{ color: '#0f172a', fontWeight: 750 }}>{camp.age} Yrs</strong>
-              </div>
-
-              {/* Gender */}
-              <div style={{ fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ color: '#64748b', fontWeight: 700, minWidth: '74px' }}>Gender:</span>
-                <strong style={{ color: '#0f172a', fontWeight: 750 }}>{camp.gender}</strong>
-              </div>
-
-              {/* Doctor */}
               {camp.doctorName && (
-                <div style={{ fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ color: '#64748b', fontWeight: 700, minWidth: '74px' }}>Doctor:</span>
-                  <strong style={{ color: '#0f172a', fontWeight: 750 }}>
+                <div style={{
+                  background: '#f8fafc',
+                  border: '1px solid #edf2f7',
+                  borderRadius: '8px',
+                  padding: '0.35rem 0.6rem'
+                }}>
+                  <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+                    Attending Doctor
+                  </span>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 750, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {camp.doctorName.trim().match(/^dr\.?/i) ? camp.doctorName.trim() : `Dr. ${camp.doctorName.trim()}`}
-                  </strong>
+                  </div>
                 </div>
               )}
 
-              {/* Diagnosis */}
               <div style={{
-                fontSize: '0.82rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
+                background: '#f8fafc',
+                border: '1px solid #edf2f7',
+                borderRadius: '8px',
+                padding: '0.35rem 0.6rem'
               }}>
-                <span style={{ color: '#bd171c', fontWeight: 700, minWidth: '74px' }}>Diagnosis:</span>
-                <strong style={{ color: '#bd171c', fontWeight: 800 }}>{camp.diagnosis}</strong>
-              </div>
-
-              {/* Fund Needed For (Dynamic from Admin) */}
-              <div style={{
-                fontSize: '0.82rem',
-                display: 'flex',
-                alignItems: 'baseline',
-                gap: '6px'
-              }}>
-                <span style={{ color: '#059669', fontWeight: 750, whiteSpace: 'nowrap' }}>Fund Needed For:</span>
-                <strong style={{ color: '#0f172a', fontWeight: 750 }}>
-                  {camp.treatment || 'Direct Patient Clinical Care'}
-                </strong>
+                <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+                  Fund Needed For
+                </span>
+                <div style={{ fontSize: '0.78rem', fontWeight: 750, color: '#0f172a', lineHeight: 1.25 }}>
+                  {camp.treatment || 'Direct Hospital Care'}
+                </div>
               </div>
             </div>
           </div>
@@ -396,35 +438,35 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             style={{
               color: '#bd171c',
               fontWeight: 800,
-              fontSize: '0.82rem',
+              fontSize: '0.76rem',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              marginBottom: '1.15rem'
+              marginBottom: '0.75rem'
             }}
           >
-            <span>Read Full Medical Case &amp; Summary</span>
-            <ArrowRight size={13} />
+            <span>Read Medical Case &amp; Summary</span>
+            <ArrowRight size={12} />
           </div>
 
           {/* Dynamic Progress Bar */}
           <div style={{
             background: '#f8fafc',
             border: '1px solid #edf2f7',
-            borderRadius: '14px',
-            padding: '0.95rem 1rem'
+            borderRadius: '12px',
+            padding: '0.7rem 0.85rem'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <span style={{ fontSize: '0.95rem', fontWeight: 900, color: '#0f172a' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '5px' }}>
+              <span style={{ fontSize: '0.88rem', fontWeight: 900, color: '#0f172a' }}>
                 ₹{raised.toLocaleString('en-IN')}
-                <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 600 }}> raised</span>
+                <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600 }}> raised</span>
               </span>
-              <span style={{ fontSize: '0.82rem', fontWeight: 850, color: percent >= 100 ? '#10b981' : '#bd171c' }}>
+              <span style={{ fontSize: '0.78rem', fontWeight: 850, color: percent >= 100 ? '#10b981' : '#bd171c' }}>
                 {percent}% Funded
               </span>
             </div>
 
-            <div style={{ width: '100%', height: '8px', background: '#e2e8f0', borderRadius: '999px', overflow: 'hidden' }}>
+            <div style={{ width: '100%', height: '6px', background: '#e2e8f0', borderRadius: '999px', overflow: 'hidden' }}>
               <div style={{
                 width: `${percent}%`,
                 height: '100%',
@@ -434,7 +476,7 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
               }} />
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', fontSize: '0.74rem', color: '#64748b', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px', fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>
               <span>Target: ₹{target.toLocaleString('en-IN')}</span>
               <button
                 type="button"
@@ -446,53 +488,42 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
                   background: '#eff6ff',
                   border: '1px solid #bfdbfe',
                   color: '#1d4ed8',
-                  padding: '0.22rem 0.6rem',
-                  borderRadius: '8px',
-                  fontSize: '0.74rem',
+                  padding: '0.15rem 0.5rem',
+                  borderRadius: '6px',
+                  fontSize: '0.7rem',
                   fontWeight: 800,
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
+                  gap: '3px',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease'
                 }}
                 title="Click to view donors who supported this appeal"
               >
-                <Users size={12} color="#2563eb" />
+                <Users size={11} color="#2563eb" />
                 <span>{camp.donorsCount || 0} Contributions</span>
-                <ArrowRight size={11} color="#2563eb" />
+                <ArrowRight size={10} color="#2563eb" />
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* CTA Footer with Compact Remaining Badge & Sleek Donate Button */}
+      {/* CTA Footer with Compact Remaining & Donate Button */}
       <div style={{
-        padding: '0.75rem 1.25rem',
+        padding: '0.65rem 1.1rem',
         background: '#f8fafc',
         borderTop: '1px solid #edf2f7',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '0.65rem'
+        gap: '0.5rem'
       }}>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          background: 'linear-gradient(135deg, #fff1f2 0%, #fee2e2 100%)',
-          border: '1px solid #fecaca',
-          padding: '0.22rem 0.65rem',
-          borderRadius: '8px',
-          boxShadow: '0 1px 4px rgba(225, 29, 72, 0.05)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-            <Clock size={10} color="#e11d48" />
-            <span style={{ fontSize: '0.6rem', fontWeight: 800, color: '#be123c', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              Still Needed
-            </span>
-          </div>
-          <span style={{ fontSize: '0.92rem', fontWeight: 900, color: '#9f1239', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ fontSize: '0.66rem', color: '#64748b', fontWeight: 750, textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+            Help Needed
+          </span>
+          <span style={{ fontSize: '0.94rem', fontWeight: 900, color: '#bd171c', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             ₹{remaining.toLocaleString('en-IN')}
           </span>
         </div>
@@ -508,8 +539,8 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             color: '#ffffff',
             border: 'none',
             borderRadius: '999px',
-            padding: '0.42rem 1.15rem',
-            fontSize: '0.8rem',
+            padding: '0.38rem 1.05rem',
+            fontSize: '0.78rem',
             fontWeight: 850,
             letterSpacing: '0.02em',
             display: 'inline-flex',
@@ -520,7 +551,7 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
-          <Heart size={13} fill="#ffffff" />
+          <Heart size={12} fill="#ffffff" />
           <span>Donate Now</span>
         </button>
       </div>

@@ -4,7 +4,7 @@ import {
   Heart, ShieldCheck, CheckCircle2, AlertCircle, ArrowLeft,
   Clock, IndianRupee, Users, Share2, Play, X, ArrowRight,
   Lock, Phone, Mail, User, Info, Sparkles, Printer, Check, Download,
-  ChevronLeft, ChevronRight, Calendar, Stethoscope, Building2, Eye, Copy,
+  ChevronLeft, ChevronRight, ChevronDown, Calendar, Stethoscope, Building2, Eye, Copy,
   Maximize2, Video
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -57,6 +57,33 @@ export default function PatientCaseDetail() {
 
   // Share Feedback
   const [copiedLink, setCopiedLink] = useState(false);
+
+  // Story expand/collapse
+  const [isStoryExpanded, setIsStoryExpanded] = useState(false);
+
+  // Contributions List Modal State
+  const [showContributionsModal, setShowContributionsModal] = useState(false);
+  const [contributionsList, setContributionsList] = useState([]);
+  const [loadingContributions, setLoadingContributions] = useState(false);
+
+  const handleOpenContributions = async () => {
+    setShowContributionsModal(true);
+    setLoadingContributions(true);
+    try {
+      const res = await fetch(`${baseUrl}/crowdfunding/campaigns/${campaign._id}/contributions`);
+      const json = await res.json();
+      if (json && json.success) {
+        setContributionsList(json.data || []);
+      } else {
+        setContributionsList([]);
+      }
+    } catch (err) {
+      console.error('Error fetching contributions:', err);
+      setContributionsList([]);
+    } finally {
+      setLoadingContributions(false);
+    }
+  };
 
   // Donation Form State
   const [donationAmount, setDonationAmount] = useState(1000);
@@ -354,29 +381,29 @@ export default function PatientCaseDetail() {
       <section style={{
         background: "linear-gradient(to right, rgba(90, 14, 22, 0.92) 0%, rgba(110, 18, 28, 0.82) 40%, rgba(130, 20, 32, 0.6) 70%, rgba(0, 0, 0, 0.2) 100%), url('/images/case-detail-hero-bg.jpg') right center / cover no-repeat",
         color: '#ffffff',
-        padding: '2.5rem 1rem 3.25rem',
+        padding: '1.75rem 1rem 2.35rem',
         borderBottom: '3px solid #f47521',
         position: 'relative',
         overflow: 'hidden'
       }}>
-        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
+        <div className="container" style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 1rem', position: 'relative', zIndex: 2 }}>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '0.85rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '0.65rem' }}>
             <span style={{
               background: isCritical ? '#dc2626' : '#ea580c',
               color: '#ffffff',
-              padding: '0.28rem 0.85rem',
+              padding: '0.22rem 0.75rem',
               borderRadius: '999px',
-              fontSize: '0.72rem',
+              fontSize: '0.68rem',
               fontWeight: 900,
               textTransform: 'uppercase',
-              letterSpacing: '0.06em',
+              letterSpacing: '0.05em',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px',
+              gap: '5px',
               boxShadow: '0 2px 10px rgba(220, 38, 38, 0.4)'
             }}>
-              <span className="pulse-dot" style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#ffffff', display: 'inline-block' }} />
+              <span className="pulse-dot" style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ffffff', display: 'inline-block' }} />
               {campaign.urgency || 'Urgent'} Clinical Relief
             </span>
 
@@ -385,9 +412,9 @@ export default function PatientCaseDetail() {
               backdropFilter: 'blur(6px)',
               border: '1px solid rgba(255, 255, 255, 0.2)',
               color: '#ffffff',
-              padding: '0.28rem 0.85rem',
+              padding: '0.22rem 0.75rem',
               borderRadius: '999px',
-              fontSize: '0.72rem',
+              fontSize: '0.68rem',
               fontWeight: 800,
               textTransform: 'uppercase'
             }}>
@@ -398,24 +425,24 @@ export default function PatientCaseDetail() {
               background: 'rgba(16, 185, 129, 0.2)',
               border: '1px solid rgba(16, 185, 129, 0.4)',
               color: '#34d399',
-              padding: '0.28rem 0.85rem',
+              padding: '0.22rem 0.75rem',
               borderRadius: '999px',
-              fontSize: '0.72rem',
+              fontSize: '0.68rem',
               fontWeight: 800,
               display: 'inline-flex',
               alignItems: 'center',
               gap: '5px'
             }}>
-              <ShieldCheck size={14} />
+              <ShieldCheck size={13} />
               <span>100% Hospital Directed &bull; Zero Fees</span>
             </span>
           </div>
 
           <h1 style={{
-            fontSize: 'clamp(1.75rem, 3.5vw, 2.65rem)',
+            fontSize: 'clamp(1.28rem, 2.3vw, 1.72rem)',
             fontWeight: 900,
-            lineHeight: 1.2,
-            margin: '0 0 0.75rem',
+            lineHeight: 1.25,
+            margin: '0 0 0.5rem',
             color: '#ffffff',
             maxWidth: '850px',
             textShadow: '0 2px 10px rgba(0,0,0,0.35)'
@@ -426,10 +453,10 @@ export default function PatientCaseDetail() {
           </h1>
 
           <p style={{
-            fontSize: 'clamp(0.92rem, 1.8vw, 1.08rem)',
+            fontSize: 'clamp(0.78rem, 1.1vw, 0.88rem)',
             color: '#cbd5e1',
-            maxWidth: '780px',
-            lineHeight: 1.6,
+            maxWidth: '820px',
+            lineHeight: 1.5,
             margin: 0
           }}>
             Diagnosis: <b style={{ color: '#ffffff' }}>{campaign.diagnosis}</b>{campaign.treatment ? <> &bull; Fund Needed For: <b style={{ color: '#ffffff' }}>{campaign.treatment}</b></> : null} &bull; Attending Consultant: <b style={{ color: '#ffffff' }}>{campaign.doctorName?.trim().match(/^dr\.?/i) ? campaign.doctorName.trim() : `Dr. ${campaign.doctorName?.trim() || 'Faculty Clinical Board'}`}</b> &bull; Admitted at NIMS Hospital, Jaipur.
@@ -437,11 +464,11 @@ export default function PatientCaseDetail() {
         </div>
       </section>
 
-      {/* ── 3. Main Two-Column Layout ── */}
-      <section style={{ maxWidth: '1200px', margin: '-1.5rem auto 0', padding: '0 1rem' }}>
+      {/* ── 3. Main Two-Column Layout (Expanded to 1440px to cover left/right empty gutters) ── */}
+      <section style={{ maxWidth: '1440px', margin: '2rem auto 0', padding: '0 1.25rem', position: 'relative', zIndex: 2 }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 540px), 1fr))',
           gap: '2rem',
           alignItems: 'start'
         }}>
@@ -457,16 +484,18 @@ export default function PatientCaseDetail() {
               overflow: 'hidden',
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)'
             }}>
-              {/* Media Switcher Header (If Video Exists) */}
-              {campaign.videoUrl && (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 16px',
-                  background: '#f8fafc',
-                  borderBottom: '1px solid #e2e8f0'
-                }}>
+              {/* Media Switcher Header Bar with Outside Share Button */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '10px 16px',
+                background: '#f8fafc',
+                borderBottom: '1px solid #e2e8f0',
+                gap: '8px',
+                flexWrap: 'wrap'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <button
                     type="button"
                     onClick={() => setActiveMediaType('photo')}
@@ -489,61 +518,59 @@ export default function PatientCaseDetail() {
                     <span>Patient Photos ({images.length})</span>
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() => setActiveMediaType('video')}
-                    style={{
-                      padding: '0.42rem 0.95rem',
-                      borderRadius: '10px',
-                      border: 'none',
-                      background: activeMediaType === 'video' ? '#bd171c' : '#e2e8f0',
-                      color: activeMediaType === 'video' ? '#ffffff' : '#475569',
-                      fontSize: '0.78rem',
-                      fontWeight: 800,
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      transition: 'all 0.15s ease'
-                    }}
-                  >
-                    <Play size={12} fill={activeMediaType === 'video' ? '#ffffff' : '#475569'} />
-                    <span>Video Appeal</span>
-                  </button>
+                  {campaign.videoUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setActiveMediaType('video')}
+                      style={{
+                        padding: '0.42rem 0.95rem',
+                        borderRadius: '10px',
+                        border: 'none',
+                        background: activeMediaType === 'video' ? '#bd171c' : '#e2e8f0',
+                        color: activeMediaType === 'video' ? '#ffffff' : '#475569',
+                        fontSize: '0.78rem',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <Play size={12} fill={activeMediaType === 'video' ? '#ffffff' : '#475569'} />
+                      <span>Video Appeal</span>
+                    </button>
+                  )}
                 </div>
-              )}
 
-              {/* Primary Viewport (Photo or Inline Video Player) */}
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '2.1 / 1', maxHeight: '420px', background: '#0a0f1d', overflow: 'hidden' }}>
-                {/* Floating Share Button (Always Accessible) */}
+                {/* Share Button (Outside Photo Viewport) */}
                 <button
                   type="button"
                   onClick={handleShareClick}
                   style={{
-                    position: 'absolute',
-                    top: '14px',
-                    right: '14px',
-                    zIndex: 6,
-                    background: 'rgba(15, 23, 42, 0.85)',
-                    backdropFilter: 'blur(8px)',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.35)',
-                    borderRadius: '999px',
-                    padding: '0.45rem 0.95rem',
-                    fontSize: '0.78rem',
+                    background: '#ffffff',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '10px',
+                    padding: '0.38rem 0.85rem',
+                    fontSize: '0.76rem',
                     fontWeight: 800,
+                    color: '#0f172a',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px',
+                    gap: '5px',
                     cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)',
+                    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.05)',
                     transition: 'all 0.15s ease'
                   }}
-                  title="Share Medical Appeal"
+                  title="Share this patient appeal"
                 >
-                  <Share2 size={14} color="#25D366" />
-                  <span>Share</span>
+                  <Share2 size={13} color="#16a34a" />
+                  <span>Share Appeal</span>
                 </button>
+              </div>
+
+              {/* Primary Viewport (Photo or Inline Video Player) - 16:10 Aspect Ratio, No Cropping */}
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 10', maxHeight: '460px', background: '#0a0f1d', overflow: 'hidden' }}>
 
                 {/* ── PHOTO VIEW (Clean Photo, Zero Play Overlay) ── */}
                 {activeMediaType === 'photo' ? (
@@ -555,7 +582,7 @@ export default function PatientCaseDetail() {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        objectPosition: 'left center',
+                        objectPosition: 'center 15%',
                         display: 'block'
                       }}
                     />
@@ -905,20 +932,62 @@ export default function PatientCaseDetail() {
                 Medical Summary &amp; Hospital Relief Appeal
               </h2>
 
-              <div style={{
-                fontSize: '0.96rem',
-                color: '#334155',
-                lineHeight: 1.85,
-                margin: '0 0 1.5rem 0'
-              }}>
-                {(campaign.story || 'Patient is admitted under intensive medical care at NIMS Hospital Jaipur. Urgent financial relief is requested to fund emergency surgical, ICU, and pharmacological care.')
-                  .split(/\n\s*\n/)
-                  .map((para, pIdx) => (
-                    <p key={pIdx} style={{ margin: '0 0 1.15rem 0', whiteSpace: 'pre-line' }}>
-                      {para.trim()}
-                    </p>
-                  ))}
+              {/* Narrative Text with 4-5 Lines Truncation & Read More */}
+              <div style={{ position: 'relative', marginBottom: '0.75rem' }}>
+                <div style={{
+                  fontSize: '0.94rem',
+                  color: '#334155',
+                  lineHeight: 1.8,
+                  maxHeight: isStoryExpanded ? 'none' : '135px',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease'
+                }}>
+                  {(campaign.story || 'Patient is admitted under intensive medical care at NIMS Hospital Jaipur. Urgent financial relief is requested to fund emergency surgical, ICU, and pharmacological care.')
+                    .split(/\n\s*\n/)
+                    .map((para, pIdx) => (
+                      <p key={pIdx} style={{ margin: '0 0 1rem 0', whiteSpace: 'pre-line' }}>
+                        {para.trim()}
+                      </p>
+                    ))}
+                </div>
+
+                {/* Fade gradient overlay when collapsed */}
+                {!isStoryExpanded && (
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: '60px',
+                    background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1))',
+                    pointerEvents: 'none'
+                  }} />
+                )}
               </div>
+
+              {/* Read More / Show Less Button */}
+              <button
+                type="button"
+                onClick={() => setIsStoryExpanded(prev => !prev)}
+                style={{
+                  background: '#eff6ff',
+                  border: '1px solid #bfdbfe',
+                  color: '#1d4ed8',
+                  padding: '0.42rem 0.95rem',
+                  borderRadius: '10px',
+                  fontSize: '0.78rem',
+                  fontWeight: 800,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  cursor: 'pointer',
+                  marginBottom: '1.25rem',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <span>{isStoryExpanded ? 'Show Less' : 'Read Full Story'}</span>
+                <ChevronDown size={14} style={{ transform: isStoryExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }} />
+              </button>
 
               {/* Reassuring Hospital Notice */}
               <div style={{
@@ -1057,14 +1126,40 @@ export default function PatientCaseDetail() {
 
               {/* Goal & Live Progress */}
               <div style={{ marginTop: '0.5rem', marginBottom: '1.25rem' }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '6px', flexWrap: 'wrap', gap: '6px' }}>
                   <span style={{ fontSize: '1.65rem', fontWeight: 900, color: '#0f172a' }}>
                     ₹{raised.toLocaleString('en-IN')}
                     <span style={{ fontSize: '0.84rem', color: '#64748b', fontWeight: 600 }}> raised</span>
                   </span>
-                  <span style={{ fontSize: '0.92rem', fontWeight: 900, color: percent >= 100 ? '#059669' : '#bd171c' }}>
-                    {percent}% Funded
-                  </span>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '0.92rem', fontWeight: 900, color: percent >= 100 ? '#059669' : '#bd171c' }}>
+                      {percent}% Funded
+                    </span>
+                    <span style={{ color: '#cbd5e1', fontSize: '0.8rem' }}>&bull;</span>
+                    <button
+                      type="button"
+                      onClick={handleOpenContributions}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        padding: 0,
+                        color: '#2563eb',
+                        fontSize: '0.84rem',
+                        fontWeight: 750,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        cursor: 'pointer',
+                        textDecoration: 'underline',
+                        textUnderlineOffset: '2px'
+                      }}
+                      title="Click to view supporters"
+                    >
+                      <Users size={13} color="#2563eb" />
+                      <span>{campaign.donorsCount || 0} Contributions</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Animated Progress Bar */}
@@ -1412,6 +1507,210 @@ export default function PatientCaseDetail() {
           </div>
         </div>
       )}
+
+      {/* ── 5. Verified Contributions & Donors Modal ── */}
+      <AnimatePresence>
+        {showContributionsModal && (
+          <div
+            onClick={() => setShowContributionsModal(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 10000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '1rem',
+              background: 'rgba(15, 23, 42, 0.75)',
+              backdropFilter: 'blur(6px)'
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                width: '100%',
+                maxWidth: '480px',
+                maxHeight: '85vh',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+                boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.3)',
+                border: '1.5px solid #e2e8f0'
+              }}
+            >
+              {/* Modal Header */}
+              <div style={{
+                padding: '1.25rem 1.5rem',
+                borderBottom: '1px solid #edf2f7',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                background: '#ffffff'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '50%',
+                    background: '#eff6ff',
+                    color: '#2563eb',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Users size={20} />
+                  </div>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 850, color: '#0f172a' }}>
+                      Verified Contributions
+                    </h3>
+                    <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                      For {campaign.patientName} &bull; Case ID #{campaign._id?.slice(-6)}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowContributionsModal(false)}
+                  style={{
+                    background: '#f1f5f9',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: '32px',
+                    height: '32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    color: '#64748b'
+                  }}
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Summary Stats Row */}
+              <div style={{
+                padding: '0.9rem 1.5rem',
+                background: '#f8fafc',
+                borderBottom: '1px solid #edf2f7',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <div>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+                    Total Raised
+                  </span>
+                  <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#059669' }}>
+                    ₹{(campaign.raisedAmount || 0).toLocaleString('en-IN')}
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+                    Total Donors
+                  </span>
+                  <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#1e293b' }}>
+                    {campaign.donorsCount || 0} Supporters
+                  </div>
+                </div>
+              </div>
+
+              {/* Scrollable Donors List */}
+              <div style={{
+                padding: '1rem 1.5rem',
+                overflowY: 'auto',
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px'
+              }}>
+                {loadingContributions ? (
+                  <div style={{ textAlign: 'center', padding: '2rem 0', color: '#64748b' }}>
+                    <div className="animate-spin" style={{ width: '28px', height: '28px', border: '3px solid #cbd5e1', borderTopColor: '#bd171c', borderRadius: '50%', margin: '0 auto 0.75rem' }} />
+                    <span style={{ fontSize: '0.82rem', fontWeight: 600 }}>Loading verified hospital ledger...</span>
+                  </div>
+                ) : contributionsList.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '2.5rem 1rem', color: '#64748b' }}>
+                    <Heart size={36} color="#cbd5e1" style={{ margin: '0 auto 0.5rem' }} />
+                    <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 700, color: '#1e293b' }}>No public contributions yet</p>
+                    <p style={{ margin: '4px 0 0', fontSize: '0.78rem' }}>Be the first verified supporter to fund {campaign.patientName}'s treatment!</p>
+                  </div>
+                ) : (
+                  contributionsList.map((item, idx) => (
+                    <div
+                      key={item._id || idx}
+                      style={{
+                        padding: '0.85rem 1rem',
+                        borderRadius: '14px',
+                        background: '#f8fafc',
+                        border: '1px solid #edf2f7',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '12px'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '50%',
+                          background: item.isPrivate ? '#f1f5f9' : '#fee2e2',
+                          color: item.isPrivate ? '#64748b' : '#bd171c',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontWeight: 800,
+                          fontSize: '0.85rem'
+                        }}>
+                          {item.isPrivate ? <Lock size={15} /> : (item.donorName ? item.donorName.charAt(0).toUpperCase() : 'S')}
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f172a' }}>
+                            {item.isPrivate ? 'Anonymous Supporter' : (item.donorName || 'Hospital Supporter')}
+                          </div>
+                          <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+                            {item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent Contribution'}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ textAlign: 'right' }}>
+                        <span style={{ fontSize: '1.02rem', fontWeight: 900, color: '#059669' }}>
+                          ₹{(item.amount || 0).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Modal Footer Note */}
+              <div style={{
+                padding: '0.85rem 1.5rem',
+                borderTop: '1px solid #edf2f7',
+                background: '#f8fafc',
+                fontSize: '0.74rem',
+                color: '#64748b',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}>
+                <ShieldCheck size={14} color="#059669" />
+                <span>100% of these contributions are audited and credited directly into patient folio.</span>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* ── 5. Payment Success & Official Receipt Modal ── */}
       {showSuccessModal && successDonation && (
