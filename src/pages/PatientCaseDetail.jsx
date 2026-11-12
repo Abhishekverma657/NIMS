@@ -4,7 +4,8 @@ import {
   Heart, ShieldCheck, CheckCircle2, AlertCircle, ArrowLeft,
   Clock, IndianRupee, Users, Share2, Play, X, ArrowRight,
   Lock, Phone, Mail, User, Info, Sparkles, Printer, Check, Download,
-  ChevronLeft, ChevronRight, Calendar, Stethoscope, Building2, Eye, Copy
+  ChevronLeft, ChevronRight, Calendar, Stethoscope, Building2, Eye, Copy,
+  Maximize2, Video
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackMetaEvent } from '../utils/metaPixel';
@@ -47,8 +48,9 @@ export default function PatientCaseDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Gallery Active Photo
+  // Gallery Active Photo & Media
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [activeMediaType, setActiveMediaType] = useState('photo'); // 'photo' | 'video'
 
   // Video Modal
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -62,7 +64,7 @@ export default function PatientCaseDetail() {
   const [donorName, setDonorName] = useState('');
   const [donorMobile, setDonorMobile] = useState('');
   const [donorEmail, setDonorEmail] = useState('');
-  const [isPrivate, setIsPrivate] = useState(true);
+  const [isPrivate, setIsPrivate] = useState(false);
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -162,6 +164,31 @@ export default function PatientCaseDetail() {
     setTimeout(() => setCopiedLink(false), 2500);
   };
 
+  const handleShareClick = async () => {
+    const title = campaign?.title || `Support ${campaign?.patientName}'s Medical Treatment`;
+    const text = `Urgent Medical Appeal: Support ${campaign?.patientName} fighting ${campaign?.diagnosis} at NIMS Hospital Jaipur. Donate directly at:`;
+    const url = window.location.href;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title,
+          text,
+          url
+        });
+        return;
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${text} ${url}`)}`, '_blank');
+        }
+        return;
+      }
+    }
+
+    // Fallback: WhatsApp share
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${text} ${url}`)}`, '_blank');
+  };
+
   const handleProceedToPayment = async (e) => {
     e.preventDefault();
 
@@ -239,6 +266,15 @@ export default function PatientCaseDetail() {
     return url;
   };
 
+  const isDirectVideoUrl = (url) => {
+    if (!url) return false;
+    return !!(
+      url.match(/\.(mp4|webm|mov|m4v|ogg)($|\?)/i) ||
+      url.includes('s3.') ||
+      url.includes('amazonaws.com')
+    );
+  };
+
   if (loading) {
     return (
       <div style={{ minHeight: '70vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
@@ -314,14 +350,16 @@ export default function PatientCaseDetail() {
         </div>
       </section>
 
-      {/* ── 2. Patient Case Hero Header (Lighter, Warmer NIMS Crimson Theme) ── */}
+      {/* ── 2. Patient Case Hero Header (Dynamic Custom Title & Caring Nurse/Patient Background) ── */}
       <section style={{
-        background: 'radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.15) 0%, transparent 65%), linear-gradient(135deg, #6e151f 0%, #8c1a24 35%, #b91c1c 70%, #dc2626 100%)',
+        background: "linear-gradient(to right, rgba(90, 14, 22, 0.92) 0%, rgba(110, 18, 28, 0.82) 40%, rgba(130, 20, 32, 0.6) 70%, rgba(0, 0, 0, 0.2) 100%), url('/images/case-detail-hero-bg.jpg') right center / cover no-repeat",
         color: '#ffffff',
-        padding: '2.5rem 1rem 3rem',
-        borderBottom: '3px solid #f47521'
+        padding: '2.5rem 1rem 3.25rem',
+        borderBottom: '3px solid #f47521',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
-        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '0.85rem' }}>
             <span style={{
@@ -378,9 +416,13 @@ export default function PatientCaseDetail() {
             fontWeight: 900,
             lineHeight: 1.2,
             margin: '0 0 0.75rem',
-            color: '#ffffff'
+            color: '#ffffff',
+            maxWidth: '850px',
+            textShadow: '0 2px 10px rgba(0,0,0,0.35)'
           }}>
-            Support <span style={{ color: '#fb923c' }}>{campaign.patientName}</span>’s Critical Treatment
+            {campaign.title ? campaign.title : (
+              <>Support <span style={{ color: '#fb923c' }}>{campaign.patientName}</span>’s Critical Treatment</>
+            )}
           </h1>
 
           <p style={{
@@ -390,7 +432,7 @@ export default function PatientCaseDetail() {
             lineHeight: 1.6,
             margin: 0
           }}>
-            Diagnosis: <b style={{ color: '#ffffff' }}>{campaign.diagnosis}</b> &bull; Attending Consultant: <b style={{ color: '#ffffff' }}>{campaign.doctorName || 'Faculty Clinical Board'}</b> &bull; Admitted at NIMS Hospital, Jaipur.
+            Diagnosis: <b style={{ color: '#ffffff' }}>{campaign.diagnosis}</b>{campaign.treatment ? <> &bull; Fund Needed For: <b style={{ color: '#ffffff' }}>{campaign.treatment}</b></> : null} &bull; Attending Consultant: <b style={{ color: '#ffffff' }}>{campaign.doctorName?.trim().match(/^dr\.?/i) ? campaign.doctorName.trim() : `Dr. ${campaign.doctorName?.trim() || 'Faculty Clinical Board'}`}</b> &bull; Admitted at NIMS Hospital, Jaipur.
           </p>
         </div>
       </section>
@@ -415,197 +457,392 @@ export default function PatientCaseDetail() {
               overflow: 'hidden',
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)'
             }}>
-              {/* Primary Image Viewport: Proportional Aspect Ratio - Zero Top/Bottom Bars */}
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '2.1 / 1', maxHeight: '420px', background: '#0a0f1d', overflow: 'hidden' }}>
-                <img
-                  src={images[activePhotoIndex]}
-                  alt={`${campaign.patientName} Medical Care`}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: 'left center',
-                    display: 'block'
-                  }}
-                />
-
-                {/* Multiple Image Slider Controls (Left / Right Arrows) */}
-                {images.length > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => setActivePhotoIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1))}
-                      aria-label="Previous photo"
-                      style={{
-                        position: 'absolute',
-                        left: '14px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        zIndex: 4,
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        background: 'rgba(15, 23, 42, 0.8)',
-                        backdropFilter: 'blur(8px)',
-                        color: '#ffffff',
-                        border: '1px solid rgba(255, 255, 255, 0.35)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)',
-                        transition: 'transform 0.15s ease'
-                      }}
-                    >
-                      <ChevronLeft size={22} />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setActivePhotoIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0))}
-                      aria-label="Next photo"
-                      style={{
-                        position: 'absolute',
-                        right: '14px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        zIndex: 4,
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        background: 'rgba(15, 23, 42, 0.8)',
-                        backdropFilter: 'blur(8px)',
-                        color: '#ffffff',
-                        border: '1px solid rgba(255, 255, 255, 0.35)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)',
-                        transition: 'transform 0.15s ease'
-                      }}
-                    >
-                      <ChevronRight size={22} />
-                    </button>
-                  </>
-                )}
-
-                {/* Video Play Overlay Button */}
-                {campaign.videoUrl && (
+              {/* Media Switcher Header (If Video Exists) */}
+              {campaign.videoUrl && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 16px',
+                  background: '#f8fafc',
+                  borderBottom: '1px solid #e2e8f0'
+                }}>
                   <button
                     type="button"
-                    onClick={() => setIsVideoOpen(true)}
+                    onClick={() => setActiveMediaType('photo')}
                     style={{
-                      position: 'absolute',
-                      inset: 0,
-                      zIndex: 2,
-                      background: 'rgba(0, 0, 0, 0.25)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      padding: '0.42rem 0.95rem',
+                      borderRadius: '10px',
                       border: 'none',
+                      background: activeMediaType === 'photo' ? '#0f172a' : '#e2e8f0',
+                      color: activeMediaType === 'photo' ? '#ffffff' : '#475569',
+                      fontSize: '0.78rem',
+                      fontWeight: 800,
                       cursor: 'pointer',
-                      transition: 'background 0.2s ease'
-                    }}
-                    title="Watch Patient Video Appeal"
-                  >
-                    <div style={{
-                      width: '68px',
-                      height: '68px',
-                      borderRadius: '50%',
-                      background: '#bd171c',
-                      color: '#ffffff',
-                      display: 'flex',
+                      display: 'inline-flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 6px 25px rgba(189, 23, 28, 0.6)'
-                    }}>
-                      <Play size={28} fill="#ffffff" style={{ marginLeft: '4px' }} />
-                    </div>
+                      gap: '6px',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    <Eye size={13} />
+                    <span>Patient Photos ({images.length})</span>
                   </button>
-                )}
 
-                {/* S3 Image Indicator Badge */}
-                <span style={{
-                  position: 'absolute',
-                  bottom: '14px',
-                  left: '14px',
-                  zIndex: 3,
-                  background: 'rgba(15, 23, 42, 0.85)',
-                  backdropFilter: 'blur(8px)',
-                  color: '#ffffff',
-                  fontSize: '0.74rem',
-                  fontWeight: 750,
-                  padding: '0.3rem 0.75rem',
-                  borderRadius: '999px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}>
-                  <Eye size={13} />
-                  <span>Verified Clinical Media ({activePhotoIndex + 1}/{images.length})</span>
-                </span>
+                  <button
+                    type="button"
+                    onClick={() => setActiveMediaType('video')}
+                    style={{
+                      padding: '0.42rem 0.95rem',
+                      borderRadius: '10px',
+                      border: 'none',
+                      background: activeMediaType === 'video' ? '#bd171c' : '#e2e8f0',
+                      color: activeMediaType === 'video' ? '#ffffff' : '#475569',
+                      fontSize: '0.78rem',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    <Play size={12} fill={activeMediaType === 'video' ? '#ffffff' : '#475569'} />
+                    <span>Video Appeal</span>
+                  </button>
+                </div>
+              )}
 
-                {/* Dots indicator at bottom right if multiple images */}
-                {images.length > 1 && (
-                  <div style={{
+              {/* Primary Viewport (Photo or Inline Video Player) */}
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '2.1 / 1', maxHeight: '420px', background: '#0a0f1d', overflow: 'hidden' }}>
+                {/* Floating Share Button (Always Accessible) */}
+                <button
+                  type="button"
+                  onClick={handleShareClick}
+                  style={{
                     position: 'absolute',
-                    bottom: '14px',
+                    top: '14px',
                     right: '14px',
-                    zIndex: 3,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    background: 'rgba(0, 0, 0, 0.65)',
+                    zIndex: 6,
+                    background: 'rgba(15, 23, 42, 0.85)',
                     backdropFilter: 'blur(8px)',
-                    padding: '4px 10px',
-                    borderRadius: '999px'
-                  }}>
-                    {images.map((_, dotIdx) => (
-                      <button
-                        key={dotIdx}
-                        type="button"
-                        onClick={() => setActivePhotoIndex(dotIdx)}
+                    color: '#ffffff',
+                    border: '1px solid rgba(255, 255, 255, 0.35)',
+                    borderRadius: '999px',
+                    padding: '0.45rem 0.95rem',
+                    fontSize: '0.78rem',
+                    fontWeight: 800,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)',
+                    transition: 'all 0.15s ease'
+                  }}
+                  title="Share Medical Appeal"
+                >
+                  <Share2 size={14} color="#25D366" />
+                  <span>Share</span>
+                </button>
+
+                {/* ── PHOTO VIEW (Clean Photo, Zero Play Overlay) ── */}
+                {activeMediaType === 'photo' ? (
+                  <>
+                    <img
+                      src={images[activePhotoIndex]}
+                      alt={`${campaign.patientName} Medical Care`}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'left center',
+                        display: 'block'
+                      }}
+                    />
+
+                    {/* Image Slider Controls (Left / Right Chevrons) */}
+                    {images.length > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setActivePhotoIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1))}
+                          aria-label="Previous photo"
+                          style={{
+                            position: 'absolute',
+                            left: '14px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            zIndex: 4,
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            background: 'rgba(15, 23, 42, 0.8)',
+                            backdropFilter: 'blur(8px)',
+                            color: '#ffffff',
+                            border: '1px solid rgba(255, 255, 255, 0.35)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)',
+                            transition: 'transform 0.15s ease'
+                          }}
+                        >
+                          <ChevronLeft size={22} />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setActivePhotoIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0))}
+                          aria-label="Next photo"
+                          style={{
+                            position: 'absolute',
+                            right: '14px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            zIndex: 4,
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            background: 'rgba(15, 23, 42, 0.8)',
+                            backdropFilter: 'blur(8px)',
+                            color: '#ffffff',
+                            border: '1px solid rgba(255, 255, 255, 0.35)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)',
+                            transition: 'transform 0.15s ease'
+                          }}
+                        >
+                          <ChevronRight size={22} />
+                        </button>
+                      </>
+                    )}
+
+                    {/* S3 Image Indicator Badge */}
+                    <span style={{
+                      position: 'absolute',
+                      bottom: '14px',
+                      left: '14px',
+                      zIndex: 3,
+                      background: 'rgba(15, 23, 42, 0.85)',
+                      backdropFilter: 'blur(8px)',
+                      color: '#ffffff',
+                      fontSize: '0.74rem',
+                      fontWeight: 750,
+                      padding: '0.3rem 0.75rem',
+                      borderRadius: '999px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}>
+                      <Eye size={13} />
+                      <span>Verified Clinical Media ({activePhotoIndex + 1}/{images.length})</span>
+                    </span>
+
+                    {/* Dots indicator at bottom right if multiple images */}
+                    {images.length > 1 && (
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '14px',
+                        right: '14px',
+                        zIndex: 3,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        background: 'rgba(0, 0, 0, 0.65)',
+                        backdropFilter: 'blur(8px)',
+                        padding: '4px 10px',
+                        borderRadius: '999px'
+                      }}>
+                        {images.map((_, dotIdx) => (
+                          <button
+                            key={dotIdx}
+                            type="button"
+                            onClick={() => setActivePhotoIndex(dotIdx)}
+                            style={{
+                              width: activePhotoIndex === dotIdx ? '16px' : '6px',
+                              height: '6px',
+                              borderRadius: '999px',
+                              background: activePhotoIndex === dotIdx ? '#ffffff' : 'rgba(255, 255, 255, 0.45)',
+                              border: 'none',
+                              padding: 0,
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease'
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  /* ── INLINE VIDEO PLAYER VIEW (Plays right here inside the card) ── */
+                  <div style={{ width: '100%', height: '100%', position: 'relative', background: '#000000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {isDirectVideoUrl(campaign.videoUrl) ? (
+                      <video
+                        src={campaign.videoUrl}
+                        controls
+                        autoPlay
+                        playsInline
                         style={{
-                          width: activePhotoIndex === dotIdx ? '16px' : '6px',
-                          height: '6px',
-                          borderRadius: '999px',
-                          background: activePhotoIndex === dotIdx ? '#ffffff' : 'rgba(255, 255, 255, 0.45)',
-                          border: 'none',
-                          padding: 0,
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease'
+                          width: '100%',
+                          height: '100%',
+                          maxHeight: '420px',
+                          objectFit: 'contain',
+                          background: '#000000'
                         }}
                       />
-                    ))}
+                    ) : (
+                      <iframe
+                        src={getYoutubeEmbedUrl(campaign.videoUrl)}
+                        title="Patient Video Appeal"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          border: 'none',
+                          background: '#000000'
+                        }}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    )}
+
+                    {/* Expand Fullscreen Popup Button */}
+                    <button
+                      type="button"
+                      onClick={() => setIsVideoOpen(true)}
+                      style={{
+                        position: 'absolute',
+                        top: '14px',
+                        left: '14px',
+                        zIndex: 5,
+                        background: 'rgba(15, 23, 42, 0.85)',
+                        backdropFilter: 'blur(8px)',
+                        color: '#ffffff',
+                        border: '1px solid rgba(255, 255, 255, 0.35)',
+                        borderRadius: '999px',
+                        padding: '0.42rem 0.9rem',
+                        fontSize: '0.76rem',
+                        fontWeight: 800,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 14px rgba(0, 0, 0, 0.35)',
+                        transition: 'all 0.15s ease'
+                      }}
+                      title="Expand Video in Popup Modal"
+                    >
+                      <Maximize2 size={13} />
+                      <span>Expand Popup</span>
+                    </button>
+
+                    {/* Video Badge */}
+                    <span style={{
+                      position: 'absolute',
+                      bottom: '14px',
+                      left: '14px',
+                      zIndex: 5,
+                      background: 'rgba(15, 23, 42, 0.85)',
+                      backdropFilter: 'blur(8px)',
+                      color: '#ffffff',
+                      fontSize: '0.74rem',
+                      fontWeight: 750,
+                      padding: '0.3rem 0.75rem',
+                      borderRadius: '999px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}>
+                      <Video size={13} color="#f87171" />
+                      <span>Verified Clinical Video Appeal</span>
+                    </span>
                   </div>
                 )}
               </div>
 
-              {/* Thumbnails Strip if multiple photos */}
-              {images.length > 1 && (
-                <div style={{ display: 'flex', gap: '8px', padding: '12px 16px', background: '#f8fafc', overflowX: 'auto', borderTop: '1px solid #e2e8f0' }}>
+              {/* Thumbnails Strip (Photos + Video Thumbnail) */}
+              {(images.length > 1 || campaign.videoUrl) && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '12px 16px',
+                  background: '#f8fafc',
+                  overflowX: 'auto',
+                  borderTop: '1px solid #e2e8f0'
+                }}>
                   {images.map((imgUrl, idx) => (
                     <button
                       key={idx}
                       type="button"
-                      onClick={() => setActivePhotoIndex(idx)}
+                      onClick={() => {
+                        setActiveMediaType('photo');
+                        setActivePhotoIndex(idx);
+                      }}
                       style={{
                         width: '74px',
                         height: '56px',
                         borderRadius: '10px',
                         overflow: 'hidden',
-                        border: activePhotoIndex === idx ? '2.5px solid #bd171c' : '1.5px solid #cbd5e1',
+                        border: activeMediaType === 'photo' && activePhotoIndex === idx ? '2.5px solid #bd171c' : '1.5px solid #cbd5e1',
                         padding: 0,
                         cursor: 'pointer',
                         flexShrink: 0,
-                        opacity: activePhotoIndex === idx ? 1 : 0.65,
-                        transition: 'all 0.2s ease'
+                        opacity: activeMediaType === 'photo' && activePhotoIndex === idx ? 1 : 0.65,
+                        transition: 'all 0.2s ease',
+                        boxShadow: activeMediaType === 'photo' && activePhotoIndex === idx ? '0 2px 8px rgba(189, 23, 28, 0.3)' : 'none'
                       }}
                     >
                       <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </button>
                   ))}
+
+                  {/* Video Thumbnail Button */}
+                  {campaign.videoUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setActiveMediaType('video')}
+                      style={{
+                        width: '84px',
+                        height: '56px',
+                        borderRadius: '10px',
+                        overflow: 'hidden',
+                        border: activeMediaType === 'video' ? '2.5px solid #bd171c' : '1.5px solid #cbd5e1',
+                        padding: '4px',
+                        cursor: 'pointer',
+                        flexShrink: 0,
+                        background: '#0f172a',
+                        color: '#ffffff',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '3px',
+                        opacity: activeMediaType === 'video' ? 1 : 0.75,
+                        transition: 'all 0.2s ease',
+                        boxShadow: activeMediaType === 'video' ? '0 2px 8px rgba(189, 23, 28, 0.3)' : 'none'
+                      }}
+                      title="Watch Patient Video Appeal"
+                    >
+                      <div style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        background: '#bd171c',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <Play size={12} fill="#ffffff" style={{ marginLeft: '1px' }} />
+                      </div>
+                      <span style={{ fontSize: '0.62rem', fontWeight: 800, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+                        Video
+                      </span>
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -630,8 +867,13 @@ export default function PatientCaseDetail() {
                 fontSize: '0.86rem'
               }}>
                 <div style={{ background: '#f8fafc', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #edf2f7' }}>
-                  <span style={{ color: '#64748b', fontSize: '0.74rem', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Age &amp; Gender</span>
-                  <b style={{ color: '#0f172a' }}>{campaign.age} Yrs &bull; {campaign.gender}</b>
+                  <span style={{ color: '#64748b', fontSize: '0.74rem', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Age</span>
+                  <b style={{ color: '#0f172a' }}>{campaign.age} Yrs</b>
+                </div>
+
+                <div style={{ background: '#f8fafc', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #edf2f7' }}>
+                  <span style={{ color: '#64748b', fontSize: '0.74rem', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Gender</span>
+                  <b style={{ color: '#0f172a' }}>{campaign.gender}</b>
                 </div>
 
                 <div style={{ background: '#f8fafc', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #edf2f7' }}>
@@ -641,17 +883,17 @@ export default function PatientCaseDetail() {
 
                 <div style={{ background: '#f8fafc', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #edf2f7' }}>
                   <span style={{ color: '#64748b', fontSize: '0.74rem', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Attending Clinician</span>
-                  <b style={{ color: '#0f172a' }}>{campaign.doctorName || 'Faculty Medical Board'}</b>
+                  <b style={{ color: '#0f172a' }}>{campaign.doctorName?.trim().match(/^dr\.?/i) ? campaign.doctorName.trim() : `Dr. ${campaign.doctorName?.trim() || 'Faculty Medical Board'}`}</b>
                 </div>
 
                 <div style={{ background: '#f8fafc', padding: '0.85rem 1rem', borderRadius: '12px', border: '1px solid #edf2f7' }}>
-                  <span style={{ color: '#64748b', fontSize: '0.74rem', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Treatment Folio</span>
-                  <b style={{ color: '#059669' }}>Direct Patient Folio</b>
+                  <span style={{ color: '#64748b', fontSize: '0.74rem', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Fund Needed For</span>
+                  <b style={{ color: '#059669' }}>{campaign.treatment || 'Direct Patient Clinical Care'}</b>
                 </div>
               </div>
             </div>
 
-            {/* Case Background Narrative */}
+            {/* Case Medical Summary Narrative */}
             <div style={{
               background: '#ffffff',
               borderRadius: '24px',
@@ -660,17 +902,22 @@ export default function PatientCaseDetail() {
               boxShadow: '0 4px 18px rgba(0, 0, 0, 0.03)'
             }}>
               <h2 style={{ fontSize: '1.35rem', fontWeight: 850, color: '#0f172a', margin: '0 0 1rem 0' }}>
-                Medical Background &amp; Hospital Relief Appeal
+                Medical Summary &amp; Hospital Relief Appeal
               </h2>
 
               <div style={{
                 fontSize: '0.96rem',
                 color: '#334155',
-                lineHeight: 1.8,
-                whiteSpace: 'pre-line',
+                lineHeight: 1.85,
                 margin: '0 0 1.5rem 0'
               }}>
-                {campaign.story || 'Patient is admitted under intensive medical care at NIMS Hospital Jaipur. Urgent financial relief is requested to fund emergency surgical, ICU, and pharmacological care.'}
+                {(campaign.story || 'Patient is admitted under intensive medical care at NIMS Hospital Jaipur. Urgent financial relief is requested to fund emergency surgical, ICU, and pharmacological care.')
+                  .split(/\n\s*\n/)
+                  .map((para, pIdx) => (
+                    <p key={pIdx} style={{ margin: '0 0 1.15rem 0', whiteSpace: 'pre-line' }}>
+                      {para.trim()}
+                    </p>
+                  ))}
               </div>
 
               {/* Reassuring Hospital Notice */}
@@ -685,40 +932,78 @@ export default function PatientCaseDetail() {
               }}>
                 <ShieldCheck size={24} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
                 <div style={{ fontSize: '0.84rem', color: '#166534', lineHeight: 1.55 }}>
-                  <b>100% Direct Hospital Clinical Allocation:</b> Every rupee donated through this page is directly credited into {campaign.patientName}'s official inpatient folio at NIMS Hospital Jaipur. Zero administrative fees or commission is deducted.
+                  <b>100% Direct Hospital Clinical Allocation:</b> Every rupee donated through this page is directly credited into {campaign.patientName}'s official hospital medical treatment at NIMS Hospital Jaipur. Zero administrative fees or commission is deducted.
                 </div>
               </div>
             </div>
 
-            {/* Share Toolbar */}
+            {/* 24x7 Hospital Helpdesk & Case Verification Card */}
             <div style={{
-              background: '#ffffff',
-              borderRadius: '18px',
+              background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+              borderRadius: '20px',
               border: '1.5px solid #e2e8f0',
-              padding: '1.25rem 1.5rem',
+              padding: '1.35rem 1.6rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               flexWrap: 'wrap',
-              gap: '12px'
+              gap: '16px',
+              boxShadow: '0 4px 20px rgba(15, 23, 42, 0.04)'
             }}>
-              <div>
-                <span style={{ fontSize: '0.88rem', fontWeight: 850, color: '#0f172a', display: 'block' }}>
-                  Help Spread the Word
-                </span>
-                <span style={{ fontSize: '0.76rem', color: '#64748b' }}>
-                  Sharing this medical appeal can save a life.
-                </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '14px',
+                  background: '#eff6ff',
+                  border: '1.5px solid #bfdbfe',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#1d4ed8',
+                  flexShrink: 0
+                }}>
+                  <Phone size={22} />
+                </div>
+                <div>
+                  <span style={{ fontSize: '0.94rem', fontWeight: 850, color: '#0f172a', display: 'block', letterSpacing: '-0.01em' }}>
+                    For Any Support, Case Verification or Info
+                  </span>
+                  <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginTop: '2px' }}>
+                    24×7 NIMS Hospital Patient Care & Medical Relief Desk
+                  </span>
+                </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                 <a
-                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Urgent Medical Appeal: Support ${campaign.patientName} fighting ${campaign.diagnosis} at NIMS Hospital Jaipur. Donate directly at: ${window.location.href}`)}`}
+                  href="tel:01412388999"
+                  style={{
+                    padding: '0.62rem 1.15rem',
+                    borderRadius: '12px',
+                    background: '#0f172a',
+                    color: '#ffffff',
+                    fontWeight: 800,
+                    fontSize: '0.82rem',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '7px',
+                    boxShadow: '0 2px 10px rgba(15, 23, 42, 0.2)',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  <Phone size={14} color="#f87171" />
+                  <span>Call: 0141-23 88 999</span>
+                </a>
+
+                <a
+                  href={`https://wa.me/911412388999?text=${encodeURIComponent(`Hello NIMS Hospital Support Desk, I need information / case verification regarding patient relief appeal: ${campaign.patientName} (${window.location.href})`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    padding: '0.55rem 1rem',
-                    borderRadius: '10px',
+                    padding: '0.62rem 1.2rem',
+                    borderRadius: '12px',
                     background: '#25D366',
                     color: '#ffffff',
                     fontWeight: 800,
@@ -726,33 +1011,16 @@ export default function PatientCaseDetail() {
                     textDecoration: 'none',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px'
+                    gap: '7px',
+                    boxShadow: '0 2px 10px rgba(37, 211, 102, 0.25)',
+                    transition: 'all 0.15s ease'
                   }}
                 >
-                  <Share2 size={14} />
-                  <span>Share on WhatsApp</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.584 1.777.893 2.791.893 3.18 0 5.767-2.587 5.767-5.766.001-3.187-2.575-5.779-5.767-5.779zm9.969 5.768c0 5.518-4.482 10-10 10-1.761 0-3.411-.458-4.851-1.258l-7.149 1.872 1.905-6.969c-.901-1.503-1.423-3.262-1.423-5.145 0-5.518 4.482-10 10-10s10 4.482 10 10z" />
+                  </svg>
+                  <span>WhatsApp Us</span>
                 </a>
-
-                <button
-                  type="button"
-                  onClick={handleCopyShare}
-                  style={{
-                    padding: '0.55rem 1rem',
-                    borderRadius: '10px',
-                    background: '#f1f5f9',
-                    border: '1.5px solid #cbd5e1',
-                    color: '#1e293b',
-                    fontWeight: 800,
-                    fontSize: '0.82rem',
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
-                >
-                  {copiedLink ? <Check size={14} color="#059669" /> : <Copy size={14} />}
-                  <span>{copiedLink ? 'Link Copied!' : 'Copy Link'}</span>
-                </button>
               </div>
             </div>
 
@@ -784,7 +1052,7 @@ export default function PatientCaseDetail() {
                 borderRadius: '999px',
                 boxShadow: '0 4px 12px rgba(189, 23, 28, 0.4)'
               }}>
-                Direct Patient Care Folio
+                Direct Patient Medical Care
               </div>
 
               {/* Goal & Live Progress */}
@@ -810,9 +1078,22 @@ export default function PatientCaseDetail() {
                   }} />
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px', fontSize: '0.78rem', color: '#64748b', fontWeight: 700 }}>
-                  <span>Goal: ₹{target.toLocaleString('en-IN')}</span>
-                  <span>₹{remaining.toLocaleString('en-IN')} more needed</span>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '10px',
+                  padding: '0.5rem 0.85rem',
+                  background: '#fff1f2',
+                  border: '1px solid #fecaca',
+                  borderRadius: '10px'
+                }}>
+                  <div style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 700 }}>
+                    Target: <strong style={{ color: '#0f172a' }}>₹{target.toLocaleString('en-IN')}</strong>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: '#be123c', fontWeight: 850 }}>
+                    ₹{remaining.toLocaleString('en-IN')} more needed
+                  </div>
                 </div>
               </div>
 
@@ -1063,7 +1344,7 @@ export default function PatientCaseDetail() {
                 {/* Gateway Trust Marks */}
                 <div style={{ textAlign: 'center', fontSize: '0.72rem', color: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                   <ShieldCheck size={14} color="#059669" />
-                  <span>Secured by ICICI Bank PG &bull; 100% Direct Hospital Folio</span>
+                  <span>Secured by ICICI Bank PG &bull; 100% Direct Hospital Credit</span>
                 </div>
 
               </form>
@@ -1109,15 +1390,25 @@ export default function PatientCaseDetail() {
             >
               <X size={18} />
             </button>
-            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
-              <iframe
-                src={getYoutubeEmbedUrl(campaign.videoUrl)}
-                title="Patient Story Video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+            {isDirectVideoUrl(campaign.videoUrl) ? (
+              <video
+                src={campaign.videoUrl}
+                controls
+                autoPlay
+                playsInline
+                style={{ width: '100%', maxHeight: '78vh', display: 'block', margin: '0 auto', background: '#000000' }}
               />
-            </div>
+            ) : (
+              <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+                <iframe
+                  src={getYoutubeEmbedUrl(campaign.videoUrl)}
+                  title="Patient Story Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+                />
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -1152,7 +1443,7 @@ export default function PatientCaseDetail() {
             </div>
 
             <span style={{ fontSize: '0.76rem', fontWeight: 850, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Payment Verified &bull; Direct Hospital Folio Credited
+              Payment Verified &bull; Direct Hospital Medical Care Credited
             </span>
 
             <h3 style={{ fontSize: '1.45rem', fontWeight: 900, color: '#0f172a', margin: '0.35rem 0 0.4rem 0' }}>
@@ -1160,7 +1451,7 @@ export default function PatientCaseDetail() {
             </h3>
 
             <p style={{ fontSize: '0.86rem', color: '#64748b', lineHeight: 1.5, margin: '0 0 1.25rem 0' }}>
-              Your contribution of <b style={{ color: '#0f172a' }}>₹{(successDonation.amount || 0).toLocaleString('en-IN')}</b> has been successfully credited directly to the medical treatment folio of <b style={{ color: '#bd171c' }}>{successDonation.patientName}</b>.
+              Your contribution of <b style={{ color: '#0f172a' }}>₹{(successDonation.amount || 0).toLocaleString('en-IN')}</b> has been successfully credited directly to the hospital medical treatment of <b style={{ color: '#bd171c' }}>{successDonation.patientName}</b>.
             </p>
 
             {/* Official Digital Receipt Ticket Card */}
@@ -1406,7 +1697,7 @@ export default function PatientCaseDetail() {
               {/* Banner */}
               <div className="receipt-banner">
                 <div className="receipt-banner-main">OFFICIAL DONATION &amp; PATIENT RELIEF RECEIPT</div>
-                <div className="receipt-banner-sub">Direct Hospital Medical Folio Credit &bull; 100% Hospital Directed Patient Care</div>
+                <div className="receipt-banner-sub">Direct Hospital Medical Credit &bull; 100% Hospital Directed Patient Care</div>
               </div>
 
               {/* Metadata */}
@@ -1456,7 +1747,7 @@ export default function PatientCaseDetail() {
                 </div>
 
                 <div className="receipt-party-box">
-                  <div className="party-box-title">BENEFICIARY PATIENT &amp; FOLIO ALLOCATION</div>
+                  <div className="party-box-title">BENEFICIARY PATIENT ALLOCATION</div>
                   <table className="party-table">
                     <tbody>
                       <tr>
@@ -1468,8 +1759,8 @@ export default function PatientCaseDetail() {
                         <td className="field-val">{successDonation.campaign?.department || 'Emergency & Quaternary Care'}</td>
                       </tr>
                       <tr>
-                        <td className="field-name">Hospital Ledger Folio:</td>
-                        <td className="field-val">Direct Patient IPD/OPD Clinical Folio</td>
+                        <td className="field-name">Hospital Medical Account:</td>
+                        <td className="field-val">Direct Patient IPD/OPD Clinical Care</td>
                       </tr>
                       <tr>
                         <td className="field-name">Clinical Audit &amp; Vetting:</td>
@@ -1527,7 +1818,7 @@ export default function PatientCaseDetail() {
               {/* Declaration */}
               <div className="receipt-legal-notice">
                 <b>Hospital Declaration &amp; Certification:</b> This is an official system-generated electronic receipt issued by NIMS Hospital, Jaipur.
-                Certified that the amount stated above has been received and 100% credited directly into the clinical treatment folio of the aforementioned patient.
+                Certified that the amount stated above has been received and 100% credited directly into the hospital medical treatment of the aforementioned patient.
                 NIMS Hospital does not charge any administrative or intermediary platform commission on patient relief contributions.
               </div>
 

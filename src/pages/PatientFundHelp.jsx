@@ -36,7 +36,7 @@ function amountToWordsINR(amount) {
 }
 
 // Interactive Patient Fund Card with Uncropped Ambient Image & Multi-Photo Slider
-function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate }) {
+function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewContributions }) {
   const [activeImgIdx, setActiveImgIdx] = useState(0);
   const target = camp.targetAmount || 1;
   const raised = camp.raisedAmount || 0;
@@ -78,8 +78,8 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate }) {
       }}
     >
       <div>
-        {/* Visual Viewport: Perfect 2.1:1 Wide Banner Ratio - Zero Top/Bottom Space, Zero Side Cropping */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '2.1 / 1', background: '#0a0f1d', overflow: 'hidden' }}>
+        {/* Visual Viewport: Enhanced 1.85:1 Aspect Ratio - Taller, Richer Presence */}
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '1.85 / 1', background: '#0a0f1d', overflow: 'hidden' }}>
           {hasImage ? (
             <img
               src={currentImg}
@@ -266,44 +266,131 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate }) {
               <span>Watch Story</span>
             </button>
           )}
+
+          {/* Floating Share Button on Card Image */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              const title = camp.title || `Support ${camp.patientName}'s Medical Treatment`;
+              const text = `Urgent Medical Appeal: Support ${camp.patientName} fighting ${camp.diagnosis} at NIMS Hospital Jaipur. Donate directly at:`;
+              const url = `${window.location.origin}/help/${camp._id}`;
+              if (navigator.share) {
+                navigator.share({ title, text, url }).catch(() => {});
+              } else {
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${text} ${url}`)}`, '_blank');
+              }
+            }}
+            style={{
+              position: 'absolute',
+              top: '12px',
+              right: camp.videoUrl ? '128px' : '12px',
+              zIndex: 3,
+              background: 'rgba(15, 23, 42, 0.8)',
+              backdropFilter: 'blur(8px)',
+              color: '#ffffff',
+              border: '1px solid rgba(255, 255, 255, 0.35)',
+              borderRadius: '999px',
+              padding: '0.35rem 0.7rem',
+              fontSize: '0.72rem',
+              fontWeight: 800,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+              transition: 'all 0.15s ease'
+            }}
+            title="Share this patient appeal"
+          >
+            <Share2 size={12} color="#25D366" />
+            <span>Share</span>
+          </button>
         </div>
 
         {/* Content Area */}
-        <div style={{ padding: '1.35rem 1.45rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 850, color: '#0f172a', margin: 0, transition: 'color 0.2s' }}>
-              {camp.patientName}
-            </h3>
-            <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 700 }}>
-              {camp.age} Yrs &bull; {camp.gender}
-            </span>
-          </div>
+        <div style={{ padding: '1.2rem 1.35rem' }}>
+          {/* Patient Details: Name, Age, Gender, Doctor on separate lines with clear labels */}
+          <div style={{ marginBottom: '0.85rem' }}>
+            {/* 1. Patient Name - Full Dedicated Line */}
+            <div style={{ marginBottom: '0.45rem' }}>
+              <span style={{
+                fontSize: '0.68rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: '#64748b',
+                display: 'block',
+                marginBottom: '2px'
+              }}>
+                Patient Name
+              </span>
+              <h3 style={{
+                fontSize: '1.12rem',
+                fontWeight: 850,
+                color: '#0f172a',
+                margin: 0,
+                lineHeight: 1.35,
+                wordBreak: 'break-word'
+              }}>
+                {camp.patientName}
+              </h3>
+            </div>
 
-          <div style={{
-            fontSize: '0.84rem',
-            fontWeight: 700,
-            color: '#bd171c',
-            marginBottom: '0.75rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}>
-            <span>Diagnosis:</span>
-            <span style={{ color: '#0f172a' }}>{camp.diagnosis}</span>
-          </div>
+            {/* 2. Age, Gender, Doctor & Diagnosis - Each on a separate line */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.28rem',
+              marginBottom: '0.65rem'
+            }}>
+              {/* Age */}
+              <div style={{ fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#64748b', fontWeight: 700, minWidth: '74px' }}>Age:</span>
+                <strong style={{ color: '#0f172a', fontWeight: 750 }}>{camp.age} Yrs</strong>
+              </div>
 
-          <p style={{
-            fontSize: '0.85rem',
-            color: '#475569',
-            lineHeight: 1.55,
-            margin: '0 0 1rem 0',
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden'
-          }}>
-            {camp.story}
-          </p>
+              {/* Gender */}
+              <div style={{ fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#64748b', fontWeight: 700, minWidth: '74px' }}>Gender:</span>
+                <strong style={{ color: '#0f172a', fontWeight: 750 }}>{camp.gender}</strong>
+              </div>
+
+              {/* Doctor */}
+              {camp.doctorName && (
+                <div style={{ fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ color: '#64748b', fontWeight: 700, minWidth: '74px' }}>Doctor:</span>
+                  <strong style={{ color: '#0f172a', fontWeight: 750 }}>
+                    {camp.doctorName.trim().match(/^dr\.?/i) ? camp.doctorName.trim() : `Dr. ${camp.doctorName.trim()}`}
+                  </strong>
+                </div>
+              )}
+
+              {/* Diagnosis */}
+              <div style={{
+                fontSize: '0.82rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <span style={{ color: '#bd171c', fontWeight: 700, minWidth: '74px' }}>Diagnosis:</span>
+                <strong style={{ color: '#bd171c', fontWeight: 800 }}>{camp.diagnosis}</strong>
+              </div>
+
+              {/* Fund Needed For (Dynamic from Admin) */}
+              <div style={{
+                fontSize: '0.82rem',
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: '6px'
+              }}>
+                <span style={{ color: '#059669', fontWeight: 750, whiteSpace: 'nowrap' }}>Fund Needed For:</span>
+                <strong style={{ color: '#0f172a', fontWeight: 750 }}>
+                  {camp.treatment || 'Direct Patient Clinical Care'}
+                </strong>
+              </div>
+            </div>
+          </div>
 
           <div
             style={{
@@ -313,10 +400,10 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              marginBottom: '1.25rem'
+              marginBottom: '1.15rem'
             }}
           >
-            <span>Read Full Medical Case &amp; Story</span>
+            <span>Read Full Medical Case &amp; Summary</span>
             <ArrowRight size={13} />
           </div>
 
@@ -347,29 +434,67 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate }) {
               }} />
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '7px', fontSize: '0.74rem', color: '#64748b', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', fontSize: '0.74rem', color: '#64748b', fontWeight: 600 }}>
               <span>Target: ₹{target.toLocaleString('en-IN')}</span>
-              <span>{camp.donorsCount || 0} Contributions</span>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewContributions(camp);
+                }}
+                style={{
+                  background: '#eff6ff',
+                  border: '1px solid #bfdbfe',
+                  color: '#1d4ed8',
+                  padding: '0.22rem 0.6rem',
+                  borderRadius: '8px',
+                  fontSize: '0.74rem',
+                  fontWeight: 800,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease'
+                }}
+                title="Click to view donors who supported this appeal"
+              >
+                <Users size={12} color="#2563eb" />
+                <span>{camp.donorsCount || 0} Contributions</span>
+                <ArrowRight size={11} color="#2563eb" />
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* CTA Footer with Highlighted Glowing Donate Button */}
+      {/* CTA Footer with Compact Remaining Badge & Sleek Donate Button */}
       <div style={{
-        padding: '1.15rem 1.45rem',
+        padding: '0.75rem 1.25rem',
         background: '#f8fafc',
         borderTop: '1px solid #edf2f7',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '0.75rem'
+        gap: '0.65rem'
       }}>
-        <div style={{ fontSize: '0.78rem', color: '#64748b' }}>
-          <span style={{ display: 'block', fontWeight: 800, color: '#0f172a' }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          background: 'linear-gradient(135deg, #fff1f2 0%, #fee2e2 100%)',
+          border: '1px solid #fecaca',
+          padding: '0.22rem 0.65rem',
+          borderRadius: '8px',
+          boxShadow: '0 1px 4px rgba(225, 29, 72, 0.05)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+            <Clock size={10} color="#e11d48" />
+            <span style={{ fontSize: '0.6rem', fontWeight: 800, color: '#be123c', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              Still Needed
+            </span>
+          </div>
+          <span style={{ fontSize: '0.92rem', fontWeight: 900, color: '#9f1239', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
             ₹{remaining.toLocaleString('en-IN')}
           </span>
-          <span>more needed</span>
         </div>
 
         <button
@@ -383,19 +508,19 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate }) {
             color: '#ffffff',
             border: 'none',
             borderRadius: '999px',
-            padding: '0.65rem 1.45rem',
-            fontSize: '0.88rem',
-            fontWeight: 900,
+            padding: '0.42rem 1.15rem',
+            fontSize: '0.8rem',
+            fontWeight: 850,
             letterSpacing: '0.02em',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '6px',
+            gap: '5px',
             cursor: 'pointer',
-            boxShadow: '0 6px 20px rgba(189, 23, 28, 0.45)',
+            boxShadow: '0 4px 14px rgba(189, 23, 28, 0.35)',
             transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
-          <Heart size={15} fill="#ffffff" />
+          <Heart size={13} fill="#ffffff" />
           <span>Donate Now</span>
         </button>
       </div>
@@ -418,15 +543,39 @@ export default function PatientFundHelp() {
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Donation Form State (Name & Mobile mandatory, Email optional, Privacy toggle)
+  // Donation Form State (Name & Mobile mandatory, Email optional, Privacy toggle default false)
   const [donationAmount, setDonationAmount] = useState(1000);
   const [customAmount, setCustomAmount] = useState('');
   const [donorName, setDonorName] = useState('');
   const [donorMobile, setDonorMobile] = useState('');
   const [donorEmail, setDonorEmail] = useState('');
-  const [isPrivate, setIsPrivate] = useState(true);
+  const [isPrivate, setIsPrivate] = useState(false);
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  // Contributions List Modal State
+  const [contributionsCampaign, setContributionsCampaign] = useState(null);
+  const [contributionsList, setContributionsList] = useState([]);
+  const [loadingContributions, setLoadingContributions] = useState(false);
+
+  const handleOpenContributions = async (camp) => {
+    setContributionsCampaign(camp);
+    setLoadingContributions(true);
+    try {
+      const res = await fetch(`${baseUrl}/crowdfunding/campaigns/${camp._id}/contributions`);
+      const json = await res.json();
+      if (json && json.success) {
+        setContributionsList(json.data || []);
+      } else {
+        setContributionsList([]);
+      }
+    } catch (err) {
+      console.error('Error fetching contributions:', err);
+      setContributionsList([]);
+    } finally {
+      setLoadingContributions(false);
+    }
+  };
 
   // Video Player Modal
   const [activeVideoUrl, setActiveVideoUrl] = useState(null);
@@ -632,30 +781,27 @@ export default function PatientFundHelp() {
     }
   };
 
+  const isDirectVideoUrl = (url) => {
+    if (!url) return false;
+    return !!(
+      url.match(/\.(mp4|webm|mov|m4v|ogg)($|\?)/i) ||
+      url.includes('s3.') ||
+      url.includes('amazonaws.com')
+    );
+  };
+
   return (
     <div className="patient-fund-page" style={{ background: '#f8fafc', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
       
-      {/* ── 1. Hero & Trust Banner (Softer, Lighter NIMS Crimson & Warm Ruby Theme) ── */}
+      {/* ── 1. Hero & Trust Banner with Natural Hospital Background Image & Sleek Compact Height ── */}
       <section style={{
-        background: 'radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.15) 0%, transparent 65%), linear-gradient(135deg, #6e151f 0%, #8c1a24 35%, #b91c1c 70%, #dc2626 100%)',
+        background: "linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.38)), url('/images/crowdfunding-hero-bg.jpg') center/cover no-repeat",
         color: '#ffffff',
-        padding: 'clamp(2.5rem, 5vw, 4.5rem) 1rem 3.25rem',
+        padding: 'clamp(2.2rem, 4vw, 3.25rem) 1rem 2.25rem',
         position: 'relative',
         overflow: 'hidden',
         borderBottom: '3px solid #f47521'
       }}>
-        {/* Subtle decorative warm glow */}
-        <div style={{
-          position: 'absolute',
-          top: '-15%',
-          right: '-5%',
-          width: '450px',
-          height: '450px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(244, 117, 33, 0.2) 50%, transparent 70%)',
-          pointerEvents: 'none'
-        }} />
-
         <div className="container" style={{ maxWidth: '1100px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
           <div style={{
             display: 'inline-flex',
@@ -686,9 +832,9 @@ export default function PatientFundHelp() {
             margin: '0 auto 1rem',
             maxWidth: '850px',
             color: '#ffffff',
-            textShadow: '0 2px 12px rgba(0, 0, 0, 0.25)'
+            textShadow: '0 2px 12px rgba(0, 0, 0, 0.35)'
           }}>
-            Save a Life Today. <span style={{ color: '#fef08a', textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>Direct Medical Relief</span> for Critical Patients.
+            Save a Life Today. <span style={{ color: '#fef08a', textShadow: '0 2px 10px rgba(0, 0, 0, 0.4)' }}>Direct Medical Relief</span> for Critical Patients.
           </h1>
 
           <p style={{
@@ -696,81 +842,11 @@ export default function PatientFundHelp() {
             color: '#fef2f2',
             lineHeight: 1.6,
             maxWidth: '720px',
-            margin: '0 auto 2.25rem'
+            margin: '0 auto'
           }}>
-            100% of your donation is directly credited to the patient's hospital treatment folio at NIMS Hospital Jaipur.
+            100% of your donation is directly credited to the patient's hospital medical treatment at NIMS Hospital Jaipur.
             Zero administrative deductions, verified by our medical faculty.
           </p>
-
-          {/* Three Trust Pillars */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '1rem',
-            maxWidth: '900px',
-            margin: '0 auto',
-            textAlign: 'left'
-          }}>
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.28)',
-              borderRadius: '16px',
-              padding: '1rem 1.15rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)'
-            }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <ShieldCheck size={22} color="#34d399" />
-              </div>
-              <div>
-                <h4 style={{ margin: 0, fontSize: '0.88rem', fontWeight: 800, color: '#ffffff' }}>100% Faculty Verified</h4>
-                <p style={{ margin: 0, fontSize: '0.74rem', color: '#f1f5f9' }}>Every case audited by NIMS Clinical Faculty</p>
-              </div>
-            </div>
-
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.28)',
-              borderRadius: '16px',
-              padding: '1rem 1.15rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)'
-            }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(244, 117, 33, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <IndianRupee size={22} color="#fef08a" />
-              </div>
-              <div>
-                <h4 style={{ margin: 0, fontSize: '0.88rem', fontWeight: 800, color: '#ffffff' }}>0% Platform Fees</h4>
-                <p style={{ margin: 0, fontSize: '0.74rem', color: '#f1f5f9' }}>Direct to patient surgical &amp; ICU billing</p>
-              </div>
-            </div>
-
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.28)',
-              borderRadius: '16px',
-              padding: '1rem 1.15rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)'
-            }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(245, 158, 11, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Lock size={22} color="#fef08a" />
-              </div>
-              <div>
-                <h4 style={{ margin: 0, fontSize: '0.88rem', fontWeight: 800, color: '#ffffff' }}>Complete Privacy</h4>
-                <p style={{ margin: 0, fontSize: '0.74rem', color: '#f1f5f9' }}>Your identity is never shown publicly</p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -863,6 +939,7 @@ export default function PatientFundHelp() {
                   onOpenDonate={handleOpenDonateDrawer}
                   onOpenVideo={(url) => setActiveVideoUrl(url)}
                   onNavigate={(id) => navigate(`/help/${id}`)}
+                  onViewContributions={handleOpenContributions}
                 />
               ))}
             </div>
@@ -1130,7 +1207,7 @@ export default function PatientFundHelp() {
                 {/* Trust Footer Notice */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.74rem', color: '#64748b' }}>
                   <ShieldCheck size={16} color="#059669" style={{ flexShrink: 0 }} />
-                  <span>Secured by ICICI Bank Payment Gateway &bull; 100% Direct Hospital Folio Transfer</span>
+                  <span>Secured by ICICI Bank Payment Gateway &bull; 100% Direct Hospital Credit</span>
                 </div>
 
                 {/* Submit Button */}
@@ -1209,15 +1286,25 @@ export default function PatientFundHelp() {
             >
               <X size={18} />
             </button>
-            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
-              <iframe
-                src={getYoutubeEmbedUrl(activeVideoUrl)}
-                title="Patient Story Video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+            {isDirectVideoUrl(activeVideoUrl) ? (
+              <video
+                src={activeVideoUrl}
+                controls
+                autoPlay
+                playsInline
+                style={{ width: '100%', maxHeight: '78vh', display: 'block', margin: '0 auto', background: '#000000' }}
               />
-            </div>
+            ) : (
+              <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+                <iframe
+                  src={getYoutubeEmbedUrl(activeVideoUrl)}
+                  title="Patient Story Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+                />
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -1291,17 +1378,25 @@ export default function PatientFundHelp() {
 
               <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '14px', border: '1px solid #e2e8f0', marginBottom: '1.25rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.82rem' }}>
-                  <div><span style={{ color: '#64748b' }}>Age / Gender:</span> <b>{detailsCampaign.age} Yrs, {detailsCampaign.gender}</b></div>
-                  <div><span style={{ color: '#64748b' }}>Consultant:</span> <b>{detailsCampaign.doctorName || 'Faculty Team'}</b></div>
-                  <div><span style={{ color: '#64748b' }}>Urgency:</span> <b style={{ color: '#bd171c' }}>{detailsCampaign.urgency}</b></div>
+                  <div><span style={{ color: '#64748b' }}>Age:</span> <b>{detailsCampaign.age} Yrs</b></div>
+                  <div><span style={{ color: '#64748b' }}>Gender:</span> <b>{detailsCampaign.gender}</b></div>
+                  <div><span style={{ color: '#64748b' }}>Doctor:</span> <b>{detailsCampaign.doctorName?.trim().match(/^dr\.?/i) ? detailsCampaign.doctorName.trim() : `Dr. ${detailsCampaign.doctorName?.trim() || 'Faculty Team'}`}</b></div>
+                  <div><span style={{ color: '#64748b' }}>Diagnosis:</span> <b style={{ color: '#bd171c' }}>{detailsCampaign.diagnosis}</b></div>
+                  <div><span style={{ color: '#64748b' }}>Fund Needed For:</span> <b style={{ color: '#059669' }}>{detailsCampaign.treatment || 'Direct Patient Clinical Care'}</b></div>
                   <div><span style={{ color: '#64748b' }}>Goal:</span> <b>₹{(detailsCampaign.targetAmount || 0).toLocaleString('en-IN')}</b></div>
                 </div>
               </div>
 
-              <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: 800, color: '#0f172a' }}>Case Background & Appeal</h4>
-              <p style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.7, margin: 0, whiteSpace: 'pre-line' }}>
-                {detailsCampaign.story}
-              </p>
+              <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: 800, color: '#0f172a' }}>Case Summary &amp; Medical Appeal</h4>
+              <div style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.75, margin: 0 }}>
+                {(detailsCampaign.story || '')
+                  .split(/\n\s*\n/)
+                  .map((para, pIdx) => (
+                    <p key={pIdx} style={{ margin: '0 0 0.85rem 0', whiteSpace: 'pre-line' }}>
+                      {para.trim()}
+                    </p>
+                  ))}
+              </div>
             </div>
 
             <div style={{ padding: '1.25rem 1.6rem', borderTop: '1px solid #e2e8f0', background: '#f8fafc', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
@@ -1389,7 +1484,7 @@ export default function PatientFundHelp() {
             </div>
 
             <span style={{ fontSize: '0.76rem', fontWeight: 850, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Payment Verified &bull; Direct Hospital Folio Credited
+              Payment Verified &bull; Direct Hospital Medical Care Credited
             </span>
 
             <h3 style={{ fontSize: '1.45rem', fontWeight: 900, color: '#0f172a', margin: '0.35rem 0 0.4rem 0' }}>
@@ -1397,7 +1492,7 @@ export default function PatientFundHelp() {
             </h3>
 
             <p style={{ fontSize: '0.86rem', color: '#64748b', lineHeight: 1.5, margin: '0 0 1.25rem 0' }}>
-              Your contribution of <b style={{ color: '#0f172a' }}>₹{(successDonation.amount || 0).toLocaleString('en-IN')}</b> has been successfully credited directly to the medical treatment folio of <b style={{ color: '#bd171c' }}>{successDonation.patientName}</b>.
+              Your contribution of <b style={{ color: '#0f172a' }}>₹{(successDonation.amount || 0).toLocaleString('en-IN')}</b> has been successfully credited directly to the hospital medical treatment of <b style={{ color: '#bd171c' }}>{successDonation.patientName}</b>.
             </p>
 
             {/* Official Digital Receipt Ticket Card */}
@@ -1622,6 +1717,271 @@ export default function PatientFundHelp() {
         </div>
       )}
 
+      {/* ── Public Contributions & Donors Modal ── */}
+      <AnimatePresence>
+        {contributionsCampaign && (
+          <div
+            onClick={() => setContributionsCampaign(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 10000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '1rem',
+              background: 'rgba(15, 23, 42, 0.75)',
+              backdropFilter: 'blur(6px)'
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                width: '100%',
+                maxWidth: '480px',
+                maxHeight: '85vh',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+                boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.3)',
+                border: '1.5px solid #e2e8f0'
+              }}
+            >
+              {/* Modal Header */}
+              <div style={{
+                padding: '1.25rem 1.5rem',
+                borderBottom: '1px solid #edf2f7',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                background: '#ffffff'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '50%',
+                    background: '#eff6ff',
+                    color: '#2563eb',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Users size={20} />
+                  </div>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 850, color: '#0f172a' }}>
+                      Verified Contributions
+                    </h3>
+                    <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                      For {contributionsCampaign.patientName} &bull; Case ID #{contributionsCampaign._id?.slice(-6)}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setContributionsCampaign(null)}
+                  style={{
+                    background: '#f1f5f9',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: '32px',
+                    height: '32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    color: '#64748b'
+                  }}
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Summary Stats Row */}
+              <div style={{
+                padding: '0.9rem 1.5rem',
+                background: '#f8fafc',
+                borderBottom: '1px solid #edf2f7',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <div>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+                    Total Raised
+                  </span>
+                  <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#059669' }}>
+                    ₹{(contributionsCampaign.raisedAmount || 0).toLocaleString('en-IN')}
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+                    Total Donors
+                  </span>
+                  <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#1e293b' }}>
+                    {contributionsCampaign.donorsCount || 0} Supporters
+                  </div>
+                </div>
+              </div>
+
+              {/* Scrollable Donors List */}
+              <div style={{
+                padding: '1rem 1.5rem',
+                overflowY: 'auto',
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.65rem'
+              }}>
+                {loadingContributions ? (
+                  <div style={{ padding: '2.5rem', textAlign: 'center', color: '#64748b' }}>
+                    <div className="animate-spin" style={{ width: '28px', height: '28px', border: '3px solid #e2e8f0', borderTopColor: '#bd171c', borderRadius: '50%', margin: '0 auto 10px' }} />
+                    <span style={{ fontSize: '0.84rem', fontWeight: 600 }}>Loading verified donations...</span>
+                  </div>
+                ) : contributionsList.length === 0 ? (
+                  <div style={{ padding: '2.5rem 1rem', textAlign: 'center', color: '#64748b' }}>
+                    <HeartHandshake size={42} color="#cbd5e1" style={{ margin: '0 auto 10px' }} />
+                    <h4 style={{ margin: '0 0 4px', fontSize: '0.95rem', fontWeight: 800, color: '#334155' }}>
+                      No Public Contributions Yet
+                    </h4>
+                    <p style={{ margin: '0 0 1rem', fontSize: '0.78rem', color: '#94a3b8' }}>
+                      Be the very first compassionate supporter to fund this medical appeal!
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const targetCamp = contributionsCampaign;
+                        setContributionsCampaign(null);
+                        handleOpenDonateDrawer(targetCamp);
+                      }}
+                      style={{
+                        background: '#bd171c',
+                        color: '#ffffff',
+                        border: 'none',
+                        padding: '0.55rem 1.25rem',
+                        borderRadius: '999px',
+                        fontSize: '0.84rem',
+                        fontWeight: 800,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Donate Now
+                    </button>
+                  </div>
+                ) : (
+                  contributionsList.map((c, idx) => (
+                    <div
+                      key={c._id || idx}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0.75rem 0.9rem',
+                        background: '#f8fafc',
+                        border: '1px solid #edf2f7',
+                        borderRadius: '12px'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '50%',
+                          background: c.isAnonymous ? '#e2e8f0' : '#fee2e2',
+                          color: c.isAnonymous ? '#64748b' : '#bd171c',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontWeight: 800,
+                          fontSize: '0.85rem'
+                        }}>
+                          {c.isAnonymous ? <Lock size={15} /> : (c.donorName?.charAt(0)?.toUpperCase() || 'D')}
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.25 }}>
+                            {c.donorName}
+                          </div>
+                          <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+                            {c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent Contribution'}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontSize: '1.02rem', fontWeight: 900, color: '#059669' }}>
+                          ₹{(c.amount || 0).toLocaleString('en-IN')}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Modal Footer CTA */}
+              <div style={{
+                padding: '0.9rem 1.5rem',
+                borderTop: '1px solid #edf2f7',
+                background: '#ffffff',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <button
+                  type="button"
+                  onClick={() => setContributionsCampaign(null)}
+                  style={{
+                    background: 'transparent',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '10px',
+                    padding: '0.55rem 1rem',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    color: '#64748b',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Close
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const targetCamp = contributionsCampaign;
+                    setContributionsCampaign(null);
+                    handleOpenDonateDrawer(targetCamp);
+                  }}
+                  style={{
+                    background: 'linear-gradient(135deg, #bd171c 0%, #e02424 50%, #f47521 100%)',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '10px',
+                    padding: '0.55rem 1.35rem',
+                    fontSize: '0.84rem',
+                    fontWeight: 900,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 14px rgba(189, 23, 28, 0.35)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <Heart size={14} fill="#ffffff" />
+                  <span>Contribute Now</span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* ── 7. Official Printable Donation Receipt (Hidden on screen, Visible ONLY when printing / Save as PDF) ── */}
       {successDonation && (
         <div id="nims-official-receipt-print" className="official-receipt-printable-doc">
@@ -1645,7 +2005,7 @@ export default function PatientFundHelp() {
               {/* Official Title Banner */}
               <div className="receipt-banner">
                 <div className="receipt-banner-main">OFFICIAL DONATION &amp; PATIENT RELIEF RECEIPT</div>
-                <div className="receipt-banner-sub">Direct Hospital Medical Folio Credit &bull; 100% Hospital Directed Patient Care</div>
+                <div className="receipt-banner-sub">Direct Hospital Medical Credit &bull; 100% Hospital Directed Patient Care</div>
               </div>
 
               {/* Transaction Summary Strip */}
@@ -1697,7 +2057,7 @@ export default function PatientFundHelp() {
 
                 {/* Beneficiary Patient */}
                 <div className="receipt-party-box">
-                  <div className="party-box-title">BENEFICIARY PATIENT &amp; FOLIO ALLOCATION</div>
+                  <div className="party-box-title">BENEFICIARY PATIENT ALLOCATION</div>
                   <table className="party-table">
                     <tbody>
                       <tr>
@@ -1709,8 +2069,8 @@ export default function PatientFundHelp() {
                         <td className="field-val">{successDonation.campaign?.department || 'Emergency & Quaternary Care'}</td>
                       </tr>
                       <tr>
-                        <td className="field-name">Hospital Ledger Folio:</td>
-                        <td className="field-val">Direct Patient IPD/OPD Clinical Folio</td>
+                        <td className="field-name">Hospital Medical Account:</td>
+                        <td className="field-val">Direct Patient IPD/OPD Clinical Care</td>
                       </tr>
                       <tr>
                         <td className="field-name">Clinical Audit &amp; Vetting:</td>
@@ -1768,7 +2128,7 @@ export default function PatientFundHelp() {
               {/* Legal & Reassurance Notice */}
               <div className="receipt-legal-notice">
                 <b>Hospital Declaration &amp; Certification:</b> This is an official system-generated electronic receipt issued by NIMS Hospital, Jaipur. 
-                Certified that the amount stated above has been received and 100% credited directly into the clinical treatment folio of the aforementioned patient. 
+                Certified that the amount stated above has been received and 100% credited directly into the hospital medical treatment of the aforementioned patient. 
                 NIMS Hospital does not charge any administrative or intermediary platform commission on patient relief contributions.
               </div>
 
