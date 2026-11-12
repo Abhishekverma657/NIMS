@@ -415,34 +415,17 @@ export default function PatientCaseDetail() {
               overflow: 'hidden',
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)'
             }}>
-              {/* Primary Image Viewport with Ambient Blurred Backdrop & Uncropped Contain Foreground */}
-              <div style={{ position: 'relative', height: 'clamp(280px, 44vw, 460px)', background: '#0a0f1d', overflow: 'hidden' }}>
-                {/* Layer 1: Ambient Blurred Backdrop to gracefully fill letterboxing */}
-                {images[activePhotoIndex] && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: '-20px',
-                      backgroundImage: `url(${images[activePhotoIndex]})`,
-                      backgroundPosition: 'center',
-                      backgroundSize: 'cover',
-                      filter: 'blur(25px) brightness(0.4)',
-                      opacity: 0.9,
-                      transform: 'scale(1.2)'
-                    }}
-                  />
-                )}
-
-                {/* Layer 2: Contained Crisp Foreground (100% visible, never cropped) */}
+              {/* Primary Image Viewport: Proportional Aspect Ratio - Zero Top/Bottom Bars */}
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '2.1 / 1', maxHeight: '420px', background: '#0a0f1d', overflow: 'hidden' }}>
                 <img
                   src={images[activePhotoIndex]}
                   alt={`${campaign.patientName} Medical Care`}
                   style={{
-                    position: 'relative',
-                    zIndex: 1,
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain'
+                    objectFit: 'cover',
+                    objectPosition: 'left center',
+                    display: 'block'
                   }}
                 />
 
@@ -946,7 +929,7 @@ export default function PatientCaseDetail() {
                 {/* Mandatory Mobile Number */}
                 <div>
                   <label style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0f172a', display: 'block', marginBottom: '0.35rem' }}>
-                    Mobile Number <span style={{ color: '#bd171c' }}>*</span> (For SMS receipt)
+                    Mobile Number <span style={{ color: '#bd171c' }}>*</span>
                   </label>
                   <div style={{ position: 'relative' }}>
                     <Phone size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />

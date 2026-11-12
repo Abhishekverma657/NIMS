@@ -78,38 +78,22 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate }) {
       }}
     >
       <div>
-        {/* Visual Viewport with Ambient Blurred Backdrop & Contain Foreground (Zero Cropping) */}
-        <div style={{ position: 'relative', height: '220px', background: '#0a0f1d', overflow: 'hidden' }}>
+        {/* Visual Viewport: Perfect 2.1:1 Wide Banner Ratio - Zero Top/Bottom Space, Zero Side Cropping */}
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '2.1 / 1', background: '#0a0f1d', overflow: 'hidden' }}>
           {hasImage ? (
-            <>
-              {/* Layer 1: Ambient Blurred Backdrop to gracefully fill letterboxing */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: '-20px',
-                  backgroundImage: `url(${currentImg})`,
-                  backgroundPosition: 'center',
-                  backgroundSize: 'cover',
-                  filter: 'blur(20px) brightness(0.4)',
-                  opacity: 0.85,
-                  transform: 'scale(1.2)'
-                }}
-              />
-              {/* Layer 2: Contained Crisp Foreground (100% visible, never cropped) */}
-              <img
-                src={currentImg}
-                alt={camp.patientName}
-                style={{
-                  position: 'relative',
-                  zIndex: 1,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain'
-                }}
-              />
-            </>
+            <img
+              src={currentImg}
+              alt={camp.patientName}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'left center',
+                display: 'block'
+              }}
+            />
           ) : (
-            <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
               <Heart size={36} />
               <span style={{ fontSize: '0.78rem', marginTop: '6px', fontWeight: 600 }}>NIMS Verified Case</span>
             </div>
