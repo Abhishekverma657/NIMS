@@ -74,12 +74,13 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
         justifyContent: 'space-between',
         boxShadow: '0 4px 18px rgba(0, 0, 0, 0.04)',
         cursor: 'pointer',
-        position: 'relative'
+        position: 'relative',
+        height: 'fit-content'
       }}
     >
       <div>
-        {/* Visual Viewport: 16:10 Aspect Ratio & Center 15% - Patient Head/Face Never Cropped */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 10', background: '#0a0f1d', overflow: 'hidden' }}>
+        {/* Visual Viewport: 1.85:1 Aspect Ratio & Center 15% - Face Visible, Compact Height */}
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '1.85 / 1', background: '#0a0f1d', overflow: 'hidden' }}>
           {hasImage ? (
             <img
               src={currentImg}
@@ -99,7 +100,7 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             </div>
           )}
 
-          {/* Badges on Photo: Compact & Sleek (Not Big) */}
+          {/* Badges on Photo: Compact & Sleek Matching Badges */}
           <div style={{
             position: 'absolute',
             top: '8px',
@@ -113,14 +114,15 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             <span style={{
               padding: '0.15rem 0.45rem',
               borderRadius: '6px',
-              fontSize: '0.62rem',
+              fontSize: '0.6rem',
               fontWeight: 800,
               textTransform: 'uppercase',
               letterSpacing: '0.04em',
               background: isCritical ? '#bd171c' : '#f47521',
               color: '#ffffff',
               boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
-              flexShrink: 0
+              flexShrink: 0,
+              lineHeight: 1.25
             }}>
               {camp.urgency} Care
             </span>
@@ -128,16 +130,14 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             <span style={{
               padding: '0.15rem 0.45rem',
               borderRadius: '6px',
-              fontSize: '0.62rem',
+              fontSize: '0.6rem',
               fontWeight: 800,
               textTransform: 'uppercase',
+              letterSpacing: '0.02em',
               background: 'rgba(15, 23, 42, 0.85)',
               backdropFilter: 'blur(6px)',
               color: '#ffffff',
-              maxWidth: '180px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap'
+              lineHeight: 1.25
             }}>
               {camp.department}
             </span>
@@ -293,7 +293,7 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
         )}
 
         {/* Content Area */}
-        <div style={{ padding: '0.75rem 1.1rem 0.85rem' }}>
+        <div style={{ padding: '0.65rem 0.95rem 0.65rem' }}>
           {/* Small Title Above Patient Name - Zero Gap */}
           <span style={{
             fontSize: '0.62rem',
@@ -314,10 +314,10 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '8px',
-            marginBottom: '0.55rem'
+            marginBottom: '0.35rem'
           }}>
             <h3 style={{
-              fontSize: '1.05rem',
+              fontSize: '1.02rem',
               fontWeight: 850,
               color: '#0f172a',
               margin: 0,
@@ -329,11 +329,11 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
               <span style={{
-                fontSize: '0.74rem',
+                fontSize: '0.72rem',
                 fontWeight: 750,
                 color: '#475569',
                 background: '#f1f5f9',
-                padding: '0.15rem 0.5rem',
+                padding: '0.12rem 0.45rem',
                 borderRadius: '6px'
               }}>
                 {camp.age} Yrs | {camp.gender}
@@ -357,11 +357,11 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
                   background: '#f8fafc',
                   border: '1px solid #cbd5e1',
                   borderRadius: '6px',
-                  padding: '0.15rem 0.45rem',
+                  padding: '0.12rem 0.45rem',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '3px',
-                  fontSize: '0.7rem',
+                  fontSize: '0.68rem',
                   fontWeight: 750,
                   color: '#1e293b',
                   cursor: 'pointer'
@@ -378,20 +378,20 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
           <div style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.42rem',
-            marginBottom: '0.65rem'
+            gap: '0.35rem',
+            marginBottom: '0.45rem'
           }}>
             {/* Diagnosis Block */}
             <div style={{
               background: '#f8fafc',
               border: '1px solid #edf2f7',
               borderRadius: '8px',
-              padding: '0.4rem 0.65rem'
+              padding: '0.3rem 0.55rem'
             }}>
-              <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+              <span style={{ fontSize: '0.6rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
                 Diagnosis
               </span>
-              <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.35 }}>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.3 }}>
                 {camp.diagnosis}
               </div>
             </div>
@@ -407,12 +407,12 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
                   background: '#f8fafc',
                   border: '1px solid #edf2f7',
                   borderRadius: '8px',
-                  padding: '0.35rem 0.6rem'
+                  padding: '0.28rem 0.55rem'
                 }}>
-                  <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+                  <span style={{ fontSize: '0.6rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
                     Attending Doctor
                   </span>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 750, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <div style={{ fontSize: '0.76rem', fontWeight: 750, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {camp.doctorName.trim().match(/^dr\.?/i) ? camp.doctorName.trim() : `Dr. ${camp.doctorName.trim()}`}
                   </div>
                 </div>
@@ -422,12 +422,12 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
                 background: '#f8fafc',
                 border: '1px solid #edf2f7',
                 borderRadius: '8px',
-                padding: '0.35rem 0.6rem'
+                padding: '0.28rem 0.55rem'
               }}>
-                <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
+                <span style={{ fontSize: '0.6rem', fontWeight: 800, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
                   Fund Needed For
                 </span>
-                <div style={{ fontSize: '0.78rem', fontWeight: 750, color: '#0f172a', lineHeight: 1.25 }}>
+                <div style={{ fontSize: '0.76rem', fontWeight: 750, color: '#0f172a', lineHeight: 1.25 }}>
                   {camp.treatment || 'Direct Hospital Care'}
                 </div>
               </div>
@@ -438,35 +438,35 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
             style={{
               color: '#bd171c',
               fontWeight: 800,
-              fontSize: '0.76rem',
+              fontSize: '0.74rem',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              marginBottom: '0.75rem'
+              marginBottom: '0.45rem'
             }}
           >
             <span>Read Medical Case &amp; Summary</span>
-            <ArrowRight size={12} />
+            <ArrowRight size={11} />
           </div>
 
           {/* Dynamic Progress Bar */}
           <div style={{
             background: '#f8fafc',
             border: '1px solid #edf2f7',
-            borderRadius: '12px',
-            padding: '0.7rem 0.85rem'
+            borderRadius: '10px',
+            padding: '0.55rem 0.75rem'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '5px' }}>
-              <span style={{ fontSize: '0.88rem', fontWeight: 900, color: '#0f172a' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <span style={{ fontSize: '0.86rem', fontWeight: 900, color: '#0f172a' }}>
                 ₹{raised.toLocaleString('en-IN')}
-                <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600 }}> raised</span>
+                <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600 }}> raised</span>
               </span>
-              <span style={{ fontSize: '0.78rem', fontWeight: 850, color: percent >= 100 ? '#10b981' : '#bd171c' }}>
+              <span style={{ fontSize: '0.76rem', fontWeight: 850, color: percent >= 100 ? '#10b981' : '#bd171c' }}>
                 {percent}% Funded
               </span>
             </div>
 
-            <div style={{ width: '100%', height: '6px', background: '#e2e8f0', borderRadius: '999px', overflow: 'hidden' }}>
+            <div style={{ width: '100%', height: '5px', background: '#e2e8f0', borderRadius: '999px', overflow: 'hidden' }}>
               <div style={{
                 width: `${percent}%`,
                 height: '100%',
@@ -476,7 +476,7 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
               }} />
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px', fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '5px', fontSize: '0.7rem', color: '#64748b', fontWeight: 600 }}>
               <span>Target: ₹{target.toLocaleString('en-IN')}</span>
               <button
                 type="button"
@@ -488,9 +488,9 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
                   background: '#eff6ff',
                   border: '1px solid #bfdbfe',
                   color: '#1d4ed8',
-                  padding: '0.15rem 0.5rem',
+                  padding: '0.12rem 0.45rem',
                   borderRadius: '6px',
-                  fontSize: '0.7rem',
+                  fontSize: '0.68rem',
                   fontWeight: 800,
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -511,7 +511,7 @@ function PatientFundCard({ camp, onOpenDonate, onOpenVideo, onNavigate, onViewCo
 
       {/* CTA Footer with Compact Remaining & Donate Button */}
       <div style={{
-        padding: '0.65rem 1.1rem',
+        padding: '0.55rem 0.95rem',
         background: '#f8fafc',
         borderTop: '1px solid #edf2f7',
         display: 'flex',
@@ -960,7 +960,8 @@ export default function PatientFundHelp() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 350px), 1fr))',
-              gap: '1.75rem',
+              gap: '1.5rem',
+              alignItems: 'start',
               width: '100%'
             }}>
               {campaigns.map((camp) => (
