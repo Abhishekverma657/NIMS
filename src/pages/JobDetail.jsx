@@ -352,15 +352,9 @@ export default function JobDetail() {
             className="job-detail-grid-layout"
           >
           {/* Left Column: Comprehensive Role Details */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
             {/* 4 Metric Cards */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '1rem'
-              }}
-            >
+            <div className="job-metrics-grid">
               <div style={{ background: '#ffffff', padding: '1.15rem 1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 14px rgba(0,0,0,0.03)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--nims-navy)', fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '4px' }}>
                   <Building2 size={15} color="var(--nims-navy)" />
@@ -403,7 +397,7 @@ export default function JobDetail() {
             </div>
 
             {/* Role Overview */}
-            <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '20px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
+            <div className="job-detail-card">
               <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '0.75rem' }}>
                 Role Overview & Clinical Scope
               </h2>
@@ -414,7 +408,7 @@ export default function JobDetail() {
 
             {/* Minimum Qualifications Box (Only shown when qualification exists; council note only if requiresCouncilReg is true) */}
             {currentJob.qualification && (
-              <div style={{ background: '#eff6ff', padding: '1.5rem 1.75rem', borderRadius: '20px', border: '1.5px solid #bfdbfe' }}>
+              <div className="job-detail-eligibility-box">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1d4ed8', fontWeight: 800, fontSize: '0.86rem', marginBottom: '0.5rem' }}>
                   <GraduationCap size={18} />
                   <span>
@@ -434,7 +428,7 @@ export default function JobDetail() {
 
             {/* Key Clinical & Operational Responsibilities (Only rendered if explicitly provided in job data) */}
             {hasResponsibilities && (
-              <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '20px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
+              <div className="job-detail-card">
                 <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '1rem' }}>
                   Key Responsibilities & Operational Scope
                 </h3>
@@ -451,34 +445,25 @@ export default function JobDetail() {
 
             {/* Required Skills & Competencies */}
             {currentJob.skills && currentJob.skills.length > 0 && (
-              <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '20px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
+              <div className="job-detail-card">
                 <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--nims-navy)', marginBottom: '1rem' }}>
                   Required Skills & Key Competencies
                 </h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
+                <div className="job-skills-grid">
                   {currentJob.skills.map((skill, sIdx) => (
-                    <span
-                      key={sIdx}
-                      style={{
-                        fontSize: '0.84rem',
-                        fontWeight: 700,
-                        color: 'var(--nims-navy)',
-                        background: '#f1f5f9',
-                        border: '1px solid #cbd5e1',
-                        padding: '0.45rem 1rem',
-                        borderRadius: '999px',
-                        lineHeight: 1.4
-                      }}
-                    >
-                      {skill}
-                    </span>
+                    <div key={sIdx} className="job-skill-card">
+                      <div className="job-skill-bullet">
+                        <CheckCircle2 size={16} />
+                      </div>
+                      <span className="job-skill-text">{skill}</span>
+                    </div>
                   ))}
                 </div>
               </div>
             )}
 
             {/* Why Work at NIMS Hospital (Campus Perks & Environment) */}
-            <div style={{ background: '#f0fdf4', padding: '2rem', borderRadius: '20px', border: '1.5px solid #bbf7d0' }}>
+            <div style={{ background: '#f0fdf4', padding: '1.75rem 2rem', borderRadius: '20px', border: '1.5px solid #bbf7d0' }} className="job-detail-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#166534', fontWeight: 800, fontSize: '0.88rem', marginBottom: '0.75rem' }}>
                 <ShieldCheck size={20} color="#166534" />
                 <span>BENEFITS & CAMPUS LIFE AT NIMS HOSPITAL JAIPUR</span>
@@ -494,7 +479,7 @@ export default function JobDetail() {
             </div>
 
             {/* Recruitment Flow Timeline */}
-            <div style={{ background: '#ffffff', padding: '1.75rem 2rem', borderRadius: '20px', border: '1px solid #e2e8f0' }}>
+            <div className="job-detail-card">
               <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--nims-navy)', margin: '0 0 1rem' }}>
                 Selection & Recruitment Process
               </h4>

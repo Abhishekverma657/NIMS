@@ -56,6 +56,12 @@ export default function TatkaalBooking() {
     const bId = params.get('bookingId') || params.get('orderId');
 
     if (bId) {
+      // If a Donation was routed to tatkaal-booking, seamlessly route to patient relief help page
+      if (bId.startsWith('NIMS-DON-') || bId.startsWith('DON-')) {
+        navigate(`/help?donationStatus=${pStatus || 'success'}&orderId=${encodeURIComponent(bId)}`, { replace: true });
+        return;
+      }
+
       // If an OPD booking was routed to tatkaal-booking, seamlessly route to OPD confirmation
       if (bId.startsWith('NIMS-OPD-') || bId.startsWith('BK-') || bId.startsWith('OPD-')) {
         navigate(`/?opdPayment=${pStatus || 'success'}&bookingId=${encodeURIComponent(bId)}&token=${encodeURIComponent(bId)}`, { replace: true });

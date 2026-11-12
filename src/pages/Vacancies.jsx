@@ -205,7 +205,10 @@ export default function Vacancies() {
                         <span className="v-dept-badge">{job.department}</span>
                         <h4 className="v-job-title">{job.title}</h4>
                       </div>
-                      <span className="v-type-badge">{job.type || 'Full-Time'}</span>
+                      <span className="v-type-badge">
+                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
+                        {job.type || 'Full-Time'}
+                      </span>
                     </div>
 
                     <p className="v-job-desc">{job.description}</p>
@@ -242,13 +245,13 @@ export default function Vacancies() {
                     )}
 
                     {/* Card Footer: View Details & Quick Apply CTA */}
-                    <div className="v-card-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <div className="v-card-footer">
                       <span className="v-openings-count">
                         <Users size={13} color="#10b981" />
                         <span>{job.openings || job.vacanciesCount || 1} Openings</span>
                       </span>
 
-                      <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center' }}>
+                      <div className="v-card-actions">
                         <button
                           type="button"
                           onClick={(e) => {
@@ -268,17 +271,7 @@ export default function Vacancies() {
                             e.stopPropagation();
                             navigate(`/careers/${job.slug || generateJobSlug(job.title)}?apply=true`);
                           }}
-                          className="btn btn-orange"
-                          style={{
-                            padding: '0.42rem 0.95rem',
-                            fontSize: '0.78rem',
-                            fontWeight: 800,
-                            borderRadius: '999px',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '5px',
-                            boxShadow: '0 2px 8px rgba(255, 107, 53, 0.35)'
-                          }}
+                          className="v-card-apply-btn"
                           title={`Apply directly for ${job.title}`}
                         >
                           <Send size={12} />

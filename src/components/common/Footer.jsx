@@ -261,6 +261,12 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 </Link>
               </li>
               <li>
+                <Link to="/help" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
+                  <ChevronRight size={14} color="var(--nims-orange)" />
+                  <span>Patient Relief &amp; Care Fund</span>
+                </Link>
+              </li>
+              <li>
                 <Link to="/vacancies" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
                   <ChevronRight size={14} color="var(--nims-orange)" />
                   <span>Hospital Careers &amp; Vacancies</span>

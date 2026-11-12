@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { X, Calendar, Clock, User, Phone, CheckCircle2, ChevronRight, ArrowLeft, ShieldCheck, HeartPulse, Loader2, CreditCard, Building2, Wallet, Check } from 'lucide-react';
+import { X, Calendar, Clock, User, Phone, CheckCircle2, ChevronRight, ArrowLeft, ShieldCheck, HeartPulse, Loader2, CreditCard, Building2, Wallet, Check, ChevronDown, Search } from 'lucide-react';
 import { specialitiesData } from '../../data/specialitiesData';
 import { useDoctors } from '../../context/DoctorContext';
 
@@ -8,6 +8,10 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
   const [step, setStep] = useState(1);
   const [selectedSpeciality, setSelectedSpeciality] = useState('cardiology');
   const [selectedDoctor, setSelectedDoctor] = useState(() => (doctors[0]?.id || 'dr-01'));
+  const [doctorSearchQuery, setDoctorSearchQuery] = useState('');
+  const [isDeptModalOpen, setIsDeptModalOpen] = useState(false);
+  const [deptSearchQuery, setDeptSearchQuery] = useState('');
+  const [deptCategoryFilter, setDeptCategoryFilter] = useState('All');
   const [selectedDate, setSelectedDate] = useState(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -163,15 +167,44 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
     ];
   }, [selectedSpeciality, doctors]);
 
-  // Keep selectedDoctor in sync when displayedDoctors changes
+  const deptCategories = ['All', 'Super Speciality', 'Surgical', 'Medical & Allied', 'Mother & Child', 'Diagnostics'];
+
+  const filteredSpecialities = useMemo(() => {
+    let list = specialitiesData;
+    if (deptCategoryFilter !== 'All') {
+      list = list.filter(s => s.category === deptCategoryFilter);
+    }
+    if (deptSearchQuery.trim()) {
+      const q = deptSearchQuery.toLowerCase().trim();
+      list = list.filter(s => 
+        s.name.toLowerCase().includes(q) || 
+        s.category?.toLowerCase().includes(q) ||
+        (s.shortDesc && s.shortDesc.toLowerCase().includes(q))
+      );
+    }
+    return list;
+  }, [deptCategoryFilter, deptSearchQuery]);
+
+  const finalFilteredDoctors = useMemo(() => {
+    if (!doctorSearchQuery.trim()) return displayedDoctors;
+    const q = doctorSearchQuery.toLowerCase().trim();
+    return displayedDoctors.filter(doc => 
+      doc.name?.toLowerCase().includes(q) ||
+      doc.department?.toLowerCase().includes(q) ||
+      doc.title?.toLowerCase().includes(q) ||
+      doc.qualification?.toLowerCase().includes(q)
+    );
+  }, [displayedDoctors, doctorSearchQuery]);
+
+  // Keep selectedDoctor in sync when finalFilteredDoctors changes
   useEffect(() => {
-    if (displayedDoctors && displayedDoctors.length > 0) {
-      const exists = displayedDoctors.some(d => d.id === selectedDoctor);
+    if (finalFilteredDoctors && finalFilteredDoctors.length > 0) {
+      const exists = finalFilteredDoctors.some(d => d.id === selectedDoctor);
       if (!exists) {
-        setSelectedDoctor(displayedDoctors[0].id);
+        setSelectedDoctor(finalFilteredDoctors[0].id);
       }
     }
-  }, [displayedDoctors, selectedDoctor]);
+  }, [finalFilteredDoctors, selectedDoctor]);
 
   if (!isOpen) return null;
 
@@ -181,8 +214,10 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
   ];
 
   const currentDoctorObj =
+    finalFilteredDoctors.find(d => d.id === selectedDoctor || d.doctorId === selectedDoctor) ||
     displayedDoctors.find(d => d.id === selectedDoctor || d.doctorId === selectedDoctor) ||
     doctors.find(d => d.id === selectedDoctor || d.doctorId === selectedDoctor) ||
+    finalFilteredDoctors[0] ||
     displayedDoctors[0] ||
     doctors[0];
 
@@ -520,160 +555,352 @@ export default function BookingDrawer({ isOpen, onClose, prefill }) {
           ) : step === 1 ? (
             /* Step 1: Select Department & Doctor */
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
-                <label style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--nims-navy)', margin: 0 }}>
-                  1. Select Speciality / Department
-                </label>
-                {selectedSpeciality !== 'all' && (
-                  <button
-                    type="button"
-                    onClick={() => setSelectedSpeciality('all')}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--nims-orange)',
-                      fontSize: '0.78rem',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      padding: 0,
-                      textDecoration: 'underline'
-                    }}
-                  >
-                    View All Doctors
-                  </button>
-                )}
+              {/* 1. Searchable Speciality / Department */}
+              <div style={{ marginBottom: '1.25rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+                  <label style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--nims-navy)', margin: 0 }}>
+                    1. Select Speciality / Department
+                  </label>
+                  {selectedSpeciality !== 'all' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedSpeciality('all');
+                        setDoctorSearchQuery('');
+                      }}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--nims-crimson, #bd171c)',
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        padding: 0,
+                        textDecoration: 'underline'
+                      }}
+                    >
+                      View All Departments
+                    </button>
+                  )}
+                </div>
+
+                {/* Custom Searchable Department Selector Button (Replaces ugly native OS select) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDeptModalOpen(true);
+                    setDeptSearchQuery('');
+                  }}
+                  className="booking-dept-selector-btn"
+                  title="Click to search and change clinical department"
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flex: 1, textAlign: 'left' }}>
+                    <Building2 size={16} color="var(--nims-crimson, #bd171c)" style={{ flexShrink: 0 }} />
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <div style={{ fontSize: '0.86rem', fontWeight: 750, color: 'var(--nims-navy)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {selectedSpeciality === 'all'
+                          ? '★ All Departments & Specialities'
+                          : `${currentSpecialityObj.name} (${currentSpecialityObj.category || 'Speciality'})`}
+                      </div>
+                      <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>
+                        {selectedSpeciality === 'all'
+                          ? `Showing all ${doctors.length} doctors across hospital • Tap to filter`
+                          : `Clinical Wing: ${currentSpecialityObj.category || 'Speciality'} • Tap to search & change`}
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', flexShrink: 0 }}>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 700, background: '#f1f5f9', padding: '0.22rem 0.55rem', borderRadius: '6px', color: 'var(--nims-navy)', border: '1px solid #e2e8f0' }}>
+                      Search
+                    </span>
+                    <ChevronDown size={16} />
+                  </div>
+                </button>
               </div>
 
-              <select
-                value={selectedSpeciality}
-                onChange={(e) => setSelectedSpeciality(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem 1rem',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1.5px solid var(--nims-border)',
-                  fontSize: '0.92rem',
-                  background: '#f8fafc',
-                  marginBottom: '1.4rem',
-                  outline: 'none',
-                  fontWeight: 600,
-                  color: 'var(--nims-navy)',
-                  cursor: 'pointer'
-                }}
-              >
-                <option value="all">★ All Departments & Specialities (Show All Doctors)</option>
-                {specialitiesData.map((spec) => (
-                  <option key={spec.id} value={spec.id}>
-                    {spec.name} ({spec.category})
-                  </option>
-                ))}
-              </select>
+              {/* Department Search & Selection Modal / Bottom Sheet */}
+              {isDeptModalOpen && (
+                <div className="booking-dept-modal-backdrop" onClick={() => setIsDeptModalOpen(false)}>
+                  <div className="booking-dept-modal-card" onClick={(e) => e.stopPropagation()}>
+                    {/* Modal Header */}
+                    <div className="booking-dept-modal-header">
+                      <div>
+                        <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--nims-navy)', margin: 0 }}>
+                          Select Department
+                        </h3>
+                        <p style={{ fontSize: '0.76rem', color: '#64748b', margin: '2px 0 0' }}>
+                          Search by speciality name or filter by clinical category
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setIsDeptModalOpen(false)}
+                        className="booking-dept-modal-close"
+                        title="Close department picker"
+                      >
+                        <X size={17} />
+                      </button>
+                    </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
-                <label style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--nims-navy)', margin: 0 }}>
+                    {/* Search Input Bar */}
+                    <div className="booking-dept-search-wrap">
+                      <Search size={15} color="#64748b" style={{ flexShrink: 0 }} />
+                      <input
+                        type="text"
+                        placeholder="Search department (e.g. Cardiology, Ortho, Neuro)..."
+                        value={deptSearchQuery}
+                        onChange={(e) => setDeptSearchQuery(e.target.value)}
+                        autoFocus
+                      />
+                      {deptSearchQuery && (
+                        <button
+                          type="button"
+                          onClick={() => setDeptSearchQuery('')}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', display: 'flex', padding: 0 }}
+                        >
+                          <X size={14} />
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Category Filter Pills */}
+                    <div className="booking-dept-cats-wrap">
+                      {deptCategories.map((cat) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          className={`booking-dept-cat-chip ${deptCategoryFilter === cat ? 'active' : ''}`}
+                          onClick={() => setDeptCategoryFilter(cat)}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Departments Scrollable List */}
+                    <div className="booking-dept-list-scroll">
+                      {/* Option 1: All Departments */}
+                      <div
+                        className={`booking-dept-item ${selectedSpeciality === 'all' ? 'selected' : ''}`}
+                        onClick={() => {
+                          setSelectedSpeciality('all');
+                          setIsDeptModalOpen(false);
+                        }}
+                      >
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: '0.86rem', fontWeight: 750, color: 'var(--nims-navy)' }}>
+                            ★ All Departments &amp; Specialities
+                          </div>
+                          <div style={{ fontSize: '0.73rem', color: '#64748b', marginTop: '1px' }}>
+                            View all {doctors.length} doctors across the hospital
+                          </div>
+                        </div>
+                        {selectedSpeciality === 'all' && (
+                          <CheckCircle2 size={17} color="var(--nims-crimson, #bd171c)" style={{ flexShrink: 0 }} />
+                        )}
+                      </div>
+
+                      {filteredSpecialities.map((spec) => {
+                        const isSelected = selectedSpeciality === spec.id;
+                        return (
+                          <div
+                            key={spec.id}
+                            className={`booking-dept-item ${isSelected ? 'selected' : ''}`}
+                            onClick={() => {
+                              setSelectedSpeciality(spec.id);
+                              setIsDeptModalOpen(false);
+                            }}
+                          >
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{ fontSize: '0.86rem', fontWeight: 750, color: 'var(--nims-navy)' }}>
+                                  {spec.name}
+                                </span>
+                                <span className="booking-dept-item-badge">
+                                  {spec.category}
+                                </span>
+                              </div>
+                              {spec.shortDesc && (
+                                <div style={{ fontSize: '0.73rem', color: '#64748b', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                  {spec.shortDesc}
+                                </div>
+                              )}
+                            </div>
+                            {isSelected && (
+                              <CheckCircle2 size={17} color="var(--nims-crimson, #bd171c)" style={{ flexShrink: 0 }} />
+                            )}
+                          </div>
+                        );
+                      })}
+
+                      {filteredSpecialities.length === 0 && (
+                        <div style={{ textAlign: 'center', padding: '2rem 1rem', color: '#64748b', fontSize: '0.84rem' }}>
+                          No departments matching &ldquo;{deptSearchQuery}&rdquo;
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 2. Choose Clinical Specialist with Dedicated Doctor Search Bar */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.55rem' }}>
+                <label style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--nims-navy)', margin: 0 }}>
                   2. Choose Clinical Specialist
                 </label>
                 <span style={{
                   fontSize: '0.74rem',
-                  fontWeight: 600,
+                  fontWeight: 750,
                   padding: '0.2rem 0.65rem',
                   borderRadius: '20px',
-                  background: 'rgba(35, 32, 33, 0.08)',
-                  color: 'var(--nims-navy)'
+                  background: '#ecfdf5',
+                  color: '#047857',
+                  border: '1px solid #a7f3d0'
                 }}>
-                  {displayedDoctors.length} {displayedDoctors.length === 1 ? 'Doctor' : 'Doctors'} Available
+                  {finalFilteredDoctors.length} {finalFilteredDoctors.length === 1 ? 'Doctor' : 'Doctors'} Available
                 </span>
               </div>
 
+              {/* Doctor Quick Search Input Bar */}
+              <div className="booking-doctor-search-box">
+                <Search size={14} color="#64748b" style={{ flexShrink: 0 }} />
+                <input
+                  type="text"
+                  placeholder="Search doctor by name (e.g. Dr. Amitesh, Dr. Sakarwal)..."
+                  value={doctorSearchQuery}
+                  onChange={(e) => setDoctorSearchQuery(e.target.value)}
+                />
+                {doctorSearchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setDoctorSearchQuery('')}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', display: 'flex', padding: 0 }}
+                    title="Clear doctor search"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
+
+              {/* Doctor Cards List */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {displayedDoctors.map((doc) => {
-                  const isSelected = selectedDoctor === doc.id;
-                  return (
-                    <div
-                      key={doc.id}
-                      onClick={() => setSelectedDoctor(doc.id)}
+                {finalFilteredDoctors.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '2rem 1rem', background: '#f8fafc', borderRadius: '12px', border: '1.5px dashed #cbd5e1' }}>
+                    <p style={{ margin: '0 0 0.5rem', color: '#64748b', fontSize: '0.88rem', fontWeight: 600 }}>
+                      No doctors found matching &ldquo;{doctorSearchQuery}&rdquo;
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setDoctorSearchQuery('')}
                       style={{
-                        display: 'flex',
-                        gap: '0.85rem',
-                        padding: '0.85rem',
-                        borderRadius: 'var(--radius-md)',
-                        border: isSelected ? '2px solid var(--nims-crimson)' : '1px solid var(--nims-border)',
-                        background: isSelected ? 'rgba(192, 48, 74, 0.04)' : '#ffffff',
-                        boxShadow: isSelected ? '0 4px 14px rgba(192, 48, 74, 0.12)' : 'none',
-                        cursor: 'pointer',
-                        transition: 'all 0.18s ease'
+                        background: 'var(--nims-navy)',
+                        color: '#ffffff',
+                        border: 'none',
+                        padding: '0.4rem 0.95rem',
+                        borderRadius: '20px',
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        cursor: 'pointer'
                       }}
                     >
-                      {(() => {
-                        const isDummy = !doc.image || 
-                          doc.image.includes('unsplash') || 
-                          doc.image.includes('male-doc') || 
-                          doc.image.includes('female-doc');
-                        const imgSrc = isDummy ? "/assets/icons/doctor-placeholder.svg" : doc.image;
-                        const isPlaceholder = imgSrc.includes('doctor-placeholder.svg');
-                        return (
-                          <img
-                            src={imgSrc}
-                            alt={doc.name}
-                            style={{ 
-                              width: '56px', 
-                              height: '56px', 
-                              borderRadius: '50%', 
-                              objectFit: isPlaceholder ? 'contain' : 'cover', 
-                              background: '#f1f5f9',
-                              padding: isPlaceholder ? '4px' : '0',
-                              flexShrink: 0,
-                              border: '1px solid #e2e8f0'
-                            }}
-                            onError={(e) => {
-                              e.currentTarget.src = "/assets/icons/doctor-placeholder.svg";
-                              e.currentTarget.style.objectFit = 'contain';
-                              e.currentTarget.style.padding = '4px';
-                            }}
-                          />
-                        );
-                      })()}
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
-                          <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--nims-navy)' }}>
-                            {doc.name}
+                      Clear Doctor Search
+                    </button>
+                  </div>
+                ) : (
+                  finalFilteredDoctors.map((doc) => {
+                    const isSelected = selectedDoctor === doc.id;
+                    return (
+                      <div
+                        key={doc.id}
+                        onClick={() => setSelectedDoctor(doc.id)}
+                        style={{
+                          display: 'flex',
+                          gap: '0.85rem',
+                          padding: '0.85rem',
+                          borderRadius: 'var(--radius-md)',
+                          border: isSelected ? '2px solid var(--nims-crimson)' : '1.5px solid var(--nims-border)',
+                          background: isSelected ? 'rgba(192, 48, 74, 0.04)' : '#ffffff',
+                          boxShadow: isSelected ? '0 4px 14px rgba(192, 48, 74, 0.12)' : '0 2px 6px rgba(0,0,0,0.02)',
+                          cursor: 'pointer',
+                          transition: 'all 0.18s ease'
+                        }}
+                      >
+                        {(() => {
+                          const isDummy = !doc.image || 
+                            doc.image.includes('unsplash') || 
+                            doc.image.includes('male-doc') || 
+                            doc.image.includes('female-doc');
+                          const imgSrc = isDummy ? "/assets/icons/doctor-placeholder.svg" : doc.image;
+                          const isPlaceholder = imgSrc.includes('doctor-placeholder.svg');
+                          return (
+                            <img
+                              src={imgSrc}
+                              alt={doc.name}
+                              style={{ 
+                                width: '52px', 
+                                height: '52px', 
+                                borderRadius: '50%', 
+                                objectFit: isPlaceholder ? 'contain' : 'cover', 
+                                background: '#f1f5f9',
+                                padding: isPlaceholder ? '4px' : '0',
+                                flexShrink: 0,
+                                border: '1px solid #e2e8f0'
+                              }}
+                              onError={(e) => {
+                                e.currentTarget.src = "/assets/icons/doctor-placeholder.svg";
+                                e.currentTarget.style.objectFit = 'contain';
+                                e.currentTarget.style.padding = '4px';
+                              }}
+                            />
+                          );
+                        })()}
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+                            <div style={{ fontWeight: 750, fontSize: '0.94rem', color: 'var(--nims-navy)' }}>
+                              {doc.name}
+                            </div>
+                            {isSelected && (
+                              <span style={{
+                                fontSize: '0.7rem',
+                                fontWeight: 750,
+                                color: 'var(--nims-crimson)',
+                                background: 'rgba(192, 48, 74, 0.1)',
+                                padding: '0.15rem 0.5rem',
+                                borderRadius: '12px',
+                                flexShrink: 0
+                              }}>
+                                Selected ✓
+                              </span>
+                            )}
                           </div>
-                          {isSelected && (
-                            <span style={{
-                              fontSize: '0.7rem',
-                              fontWeight: 700,
-                              color: 'var(--nims-crimson)',
-                              background: 'rgba(192, 48, 74, 0.1)',
-                              padding: '0.15rem 0.5rem',
-                              borderRadius: '12px',
-                              flexShrink: 0
-                            }}>
-                              Selected ✓
-                            </span>
+                          {doc.title && (
+                            <div style={{ fontSize: '0.77rem', color: 'var(--nims-crimson)', fontWeight: 600, marginTop: '0.1rem' }}>
+                              {doc.title}
+                            </div>
                           )}
-                        </div>
-                        <div style={{ fontSize: '0.78rem', color: 'var(--nims-crimson)', fontWeight: 600, marginTop: '0.1rem' }}>
-                          {doc.title}
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
-                          <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
-                            {doc.opdSchedule}
-                          </span>
-                          <span style={{
-                            fontSize: '0.76rem',
-                            fontWeight: 800,
-                            color: '#15803d',
-                            background: '#dcfce7',
-                            padding: '0.12rem 0.5rem',
-                            borderRadius: '6px'
-                          }}>
-                            Fee: ₹{doc.fee || 500}
-                          </span>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
+                            {doc.opdSchedule && (
+                              <span style={{ fontSize: '0.73rem', color: '#64748b' }}>
+                                {doc.opdSchedule}
+                              </span>
+                            )}
+                            <span style={{
+                              fontSize: '0.75rem',
+                              fontWeight: 800,
+                              color: '#15803d',
+                              background: '#dcfce7',
+                              padding: '0.12rem 0.5rem',
+                              borderRadius: '6px',
+                              marginLeft: 'auto'
+                            }}>
+                              Fee: ₹{doc.fee || 500}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                )}
               </div>
             </div>
           ) : step === 2 ? (
