@@ -1009,36 +1009,76 @@ export default function PatientFundHelp() {
                 flexDirection: 'column'
               }}
             >
+              {/* Drawer Pull Handle */}
+              <div style={{ width: '40px', height: '4px', background: '#cbd5e1', borderRadius: '999px', margin: '10px auto 2px', flexShrink: 0 }} />
+
               {/* Drawer Header */}
               <div style={{
-                padding: '1.25rem 1.5rem',
-                borderBottom: '1px solid #e2e8f0',
+                padding: '0.75rem 1.4rem 1rem',
+                borderBottom: '1px solid #edf2f7',
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 justifyContent: 'space-between',
                 background: '#ffffff',
-                position: 'sticky',
-                top: 0,
-                zIndex: 10
+                gap: '12px'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#fef2f2', color: '#bd171c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', flex: 1, minWidth: 0 }}>
+                  <div style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '12px',
+                    background: '#fef2f2',
+                    border: '1px solid #fee2e2',
+                    color: '#bd171c',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    marginTop: '2px'
+                  }}>
                     <Heart size={20} fill="#bd171c" />
                   </div>
-                  <div>
-                    <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 850, color: '#0f172a' }}>
+
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <h3 style={{ margin: '0 0 3px 0', fontSize: '1.15rem', fontWeight: 850, color: '#0f172a', lineHeight: 1.25 }}>
                       Support {selectedCampaign.patientName}
                     </h3>
-                    <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
-                      {selectedCampaign.diagnosis} &bull; {selectedCampaign.department}
-                    </span>
+                    <div style={{
+                      fontSize: '0.76rem',
+                      color: '#475569',
+                      lineHeight: 1.4,
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden'
+                    }}>
+                      <span style={{ color: '#0f172a', fontWeight: 700 }}>{selectedCampaign.diagnosis}</span>
+                      {selectedCampaign.department && (
+                        <span style={{ color: '#64748b' }}> &bull; {selectedCampaign.department}</span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={handleCloseDrawer}
-                  style={{ background: '#f1f5f9', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }}
+                  style={{
+                    background: '#f8fafc',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '50%',
+                    width: '32px',
+                    height: '32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    color: '#64748b',
+                    flexShrink: 0,
+                    marginTop: '2px',
+                    transition: 'all 0.15s ease'
+                  }}
+                  title="Close"
                 >
                   <X size={16} />
                 </button>
