@@ -333,7 +333,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           item.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesTab && matchesSearch;
-  });
+  }).sort((a, b) => a.name.localeCompare(b.name));
 
   const stats = [
     {
@@ -1275,6 +1275,7 @@ export default function Home({ onOpenBooking, onOpenPackageBooking }) {
       <VideoGalleryModal 
         activeVideoIndex={activeVideoIndex} 
         setActiveVideoIndex={setActiveVideoIndex} 
+        videoList={videoReviews}
       />
     </div>
   );

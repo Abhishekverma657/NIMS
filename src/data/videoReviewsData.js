@@ -74,5 +74,39 @@ export const videoReviewsData = [
     id: 'vid-14',
     title: "3 साल का दर्द, कई निराशाएं, और अंततः एक नई शुरुआत!",
     videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/niims%20video/%E2%9C%A8%203%20%E0%A4%B8%E0%A4%BE%E0%A4%B2%20%E0%A4%95%E0%A4%BE%20%E0%A4%A6%E0%A4%B0%E0%A5%8D%E0%A4%A6%2C%20%E0%A4%95%E0%A4%88%20%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BE%E0%A4%8F%E0%A4%82%2C%20%E0%A4%94%E0%A4%B0%20%E0%A4%85%E0%A4%82%E0%A4%A4%E0%A4%A4%E0%A4%83%20%E0%A4%8F%E0%A4%95%20%E0%A4%A8%E0%A4%88%20%E0%A4%B6%E0%A5%81%E0%A4%B0%E0%A5%81%E0%A4%86%E0%A4%A4%21%20%E2%9C%A8%E0%A4%97%E0%A5%8D%E0%A4%B5%E0%A4%BE%E0%A4%B2%E0%A4%BF%E0%A4%AF%E0%A4%B0%20%E0%A4%95%E0%A5%87%20%E0%A4%B0%E0%A4%B9%E0%A4%A8%E0%A5%87%20%E0%A4%B5%E0%A4%BE%E0%A4%B2%E0%A5%87%20%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%20%E0%A4%AE%E0%A5%81%E0%A4%95%E0%A5%87%E0%A4%B6%20%E0%A4%9C%E0%A5%80%20%E0%A4%AA%E0%A4%BF%E0%A4%9B%E0%A4%B2%E0%A5%87%20.mp4"
+  },
+  {
+    id: 'vid-new-1',
+    title: "Director Message - Department of Neurosurgery, NIMS",
+    department: 'neurosurgery',
+    videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/arkebank/videos/nims/neurosurgery-director.mp4"
+  },
+  {
+    id: 'vid-new-2',
+    title: "NIMS Cancer Hospital & Research Centre Overview",
+    department: 'oncology',
+    videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/arkebank/videos/nims/cancer-hospital.mp4"
+  },
+  {
+    id: 'vid-new-3',
+    title: "Department of Radio-Diagnosis & Advanced Imaging",
+    department: 'radiology',
+    videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/arkebank/videos/nims/radiology-department.mp4"
+  },
+  {
+    id: 'vid-new-4',
+    title: "Patient Care Excellence & Compassionate Healing",
+    videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/arkebank/videos/nims/patient-care.mp4"
+  },
+  {
+    id: 'vid-new-5',
+    title: "Appendicitis Awareness, Symptoms & Modern Surgical Care",
+    department: 'general-surgery',
+    videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/arkebank/videos/nims/appendicitis-awareness.mp4"
+  },
+  {
+    id: 'vid-new-6',
+    title: "Life & Medical Training at NIMS University Hospital",
+    videoUrl: "https://lms-media-storage-2026.s3.ap-south-1.amazonaws.com/arkebank/videos/nims/medical-student-life.mp4"
   }
 ];

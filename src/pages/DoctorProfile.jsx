@@ -58,6 +58,10 @@ export default function DoctorProfile({ onOpenBooking }) {
   }
 
   const doctorVideos = videoReviewsData.filter(v => v.doctorId === doctor.id || v.doctorId === doctor.doctorId || v.doctorId === id);
+  const homeVideos = videoReviewsData.filter(v => !v.doctorId).slice(0, 4);
+  const displayedVideos = doctorVideos.length > 0 
+    ? [...doctorVideos, ...homeVideos.filter(h => !doctorVideos.some(d => d.id === h.id))].slice(0, 4)
+    : homeVideos;
 
   return (
     <div className="page-transition" style={{ background: '#fff' }}>
@@ -277,7 +281,7 @@ export default function DoctorProfile({ onOpenBooking }) {
       )}
 
       {/* Testimonials Section */}
-      {doctorVideos.length > 0 && (
+      {displayedVideos.length > 0 && (
         <section style={{ padding: '5rem 5%', background: '#fff', borderTop: '1px solid #eaeaea' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
@@ -285,13 +289,16 @@ export default function DoctorProfile({ onOpenBooking }) {
                 Patient Stories
               </div>
               <h2 style={{ fontSize: '2.5rem', color: 'var(--nims-navy)' }}>
-                Testimonials for {doctor.name}
+                {doctorVideos.length > 0 ? `Testimonials & Stories for ${doctor.name}` : 'Featured Patient Stories & Reviews'}
               </h2>
+              <p style={{ color: 'var(--color-text-secondary)', maxWidth: '600px', margin: '0.5rem auto 0', fontSize: '1rem' }}>
+                Listen directly to patients and families who experienced remarkable healing and compassionate care at NIMS Hospital.
+              </p>
             </div>
 
             <MotionStagger>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
-                {doctorVideos.map((video, index) => (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
+                {displayedVideos.map((video, index) => (
                   <VideoCard 
                     key={video.id} 
                     item={video} 
@@ -307,7 +314,7 @@ export default function DoctorProfile({ onOpenBooking }) {
 
       {activeVideoIndex !== null && (
         <VideoGalleryModal
-          videoList={doctorVideos}
+          videoList={displayedVideos}
           activeVideoIndex={activeVideoIndex}
           setActiveVideoIndex={setActiveVideoIndex}
         />

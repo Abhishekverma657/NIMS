@@ -25,7 +25,7 @@ export default function Specialities({ onOpenBooking }) {
                           (item.shortDesc && item.shortDesc.toLowerCase().includes(searchTerm.toLowerCase())) ||
                           item.procedures.some(p => p.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchesCat && matchesSearch;
-  });
+  }).sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div>

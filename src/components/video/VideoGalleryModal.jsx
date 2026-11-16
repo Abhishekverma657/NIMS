@@ -140,7 +140,7 @@ const VideoGalleryModal = ({ activeVideoIndex, setActiveVideoIndex, videoList = 
         {/* Video Details */}
         <div style={{ padding: '1.25rem 2rem', background: '#373435', color: '#fff' }}>
           <h3 style={{ color: '#fff', fontSize: '1.25rem', margin: '0' }}>
-            {videoList[activeVideoIndex]?.title}
+            {videoList[activeVideoIndex]?.title || 'NIMS Video Story'}
           </h3>
           <p style={{ color: 'var(--nims-orange)', fontSize: '0.9rem', margin: '0.25rem 0 0 0', fontWeight: 600 }}>
             Video {activeVideoIndex + 1} of {videoList.length}

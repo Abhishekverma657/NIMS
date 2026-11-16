@@ -69,10 +69,10 @@ const VideoCard = ({ item, index, setActiveVideoModal }) => {
 
         <div style={{ padding: '1.25rem 1.5rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', borderTop: '4px solid var(--nims-orange)' }}>
           <h3 style={{ fontSize: '1.05rem', color: 'var(--nims-navy)', margin: 0, lineHeight: 1.4, fontWeight: 700 }}>
-            {item.title}
+            {item.title || 'NIMS Patient Story'}
           </h3>
           <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Video size={14} /> Watch Patient Story
+            <Video size={14} /> Watch Story
           </span>
         </div>
       </motion.div>
