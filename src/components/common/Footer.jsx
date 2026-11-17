@@ -285,6 +285,12 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 </Link>
               </li>
               <li>
+                <Link to="/feedback" style={{ color: '#e5b64a', fontSize: '0.88rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'} onMouseLeave={(e) => e.currentTarget.style.color = '#e5b64a'}>
+                  <ChevronRight size={14} color="var(--nims-orange)" />
+                  <span>मरीज फीडबैक (Patient Feedback &amp; Ratings)</span>
+                </Link>
+              </li>
+              <li>
                 <Link to="/privacypolicy" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
                   <ChevronRight size={14} color="var(--nims-orange)" />
                   <span>Privacy Policy &amp; DPDP Act</span>

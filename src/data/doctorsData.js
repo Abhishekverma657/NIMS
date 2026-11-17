@@ -85,26 +85,77 @@ export const doctorsData = [
   },
   {
     "id": "doc-amitesh-nagarwal",
-    "name": "Dr. Amitesh Nagarwal",
+    "aliases": ["DR-012", "doc-amitesh-agarwal", "dr-amitesh-agarwal", "dr-amitesh-nagarwal", "amitesh-agarwal"],
+    "name": "Dr. Amitesh Agarwal",
     "title": "HOD - CARDIOLOGY",
     "department": "Cardiology",
     "specialityId": "cardiology",
-    "qualification": "MBBS, MS (CARDIOLOGY)",
+    "qualification": "MBBS, MD, DM (CARDIOLOGY), FSCAI",
     "experience": "10+ Years Experience",
-    "opdSchedule": "Contact Hospital for Schedule",
-    "roomNo": "NIMS Hospital",
+    "opdSchedule": "Mon - Sat (09:00 AM - 04:00 PM)",
+    "roomNo": "Room No. 204, 2nd Floor, Cardiology Wing",
     "image": "https://nimshospitals.in/assets/images/team/dr-amitesh-nagarwal.png",
-    "featured": false,
-    "highlights": [
-      "Professor, Department of Cardiology.",
-      "DM - Cardiology (Post-Doctoral) from GB Pant Hospital, MAMC, Delhi.",
-      "Fellowship in FSCAI."
+    "featured": true,
+    "about": "Dr. Amitesh Agarwal is a distinguished Senior Interventional Cardiologist, Professor and Head of the Department of Cardiology at NIMS Super Speciality Hospital, Jaipur. Having completed his post-doctoral DM in Cardiology from the premier GB Pant Hospital & Maulana Azad Medical College (MAMC), New Delhi, along with a prestigious International Fellowship in FSCAI (USA), he is recognized for his clinical precision and compassionate approach to cardiovascular medicine.\n\nHe has led numerous successful complex coronary interventions, emergency primary angioplasties (PAMI), pacemaker/ICD implantations, and advanced heart failure therapies. At NIMS Hospital, Dr. Agarwal directs the 24x7 Cath Lab and Cardiac Critical Care Units, providing round-the-clock emergency cardiac support.",
+    "expertise": [
+      "Coronary Angiography & Complex Angioplasty (PTCA)",
+      "Primary PCI (PAMI) in Acute Heart Attack",
+      "Radial Artery Cardiac Interventions",
+      "Single & Dual Chamber Pacemaker Implantation",
+      "ICD & CRT Device Implantation for Heart Failure",
+      "Echocardiography (2D / 3D Echo, Color Doppler, TEE)",
+      "Hypertension, Lipidology & Preventive Cardiology",
+      "Valvular Heart Disease & Structural Interventions"
     ],
-    "detailedQualifications": [],
-    "detailedExperience": [],
-    "heroQualification": "MBBS (2004 - 2010): SMS Medical College, Jaipur | MD - Medicine (2010 - 2013): SMS Medical College, Jaipur | DM - Cardiology (Post-Doctoral) (2015 - 2018): GB Pant Hospital, MAMC, Delhi | Fellowship: FSCAI",
-    "heroDesignation": "Professor, Department of Cardiology",
-    "heroDepartment": "Department of Cardiology, NIMS Medical College & Hospital, Jaipur, Rajasthan",
+    "highlights": [
+      "Professor & Head of the Department of Cardiology, NIMS Hospital.",
+      "DM - Cardiology (Post-Doctoral) from prestigious GB Pant Hospital, MAMC, New Delhi.",
+      "Fellowship in FSCAI (Society for Cardiovascular Angiography & Interventions, USA).",
+      "MBBS & MD (Internal Medicine) from prestigious SMS Medical College, Jaipur.",
+      "Expertise in complex radial angioplasty, emergency primary PCI, and cardiac pacing."
+    ],
+    "detailedQualifications": [
+      {
+        "year": "Post-Doctoral",
+        "title": "DM in Cardiology",
+        "org": "GB Pant Hospital, Maulana Azad Medical College (MAMC), New Delhi (2015 - 2018)"
+      },
+      {
+        "year": "Post Graduation",
+        "title": "MD in Internal Medicine",
+        "org": "SMS Medical College & Attached Hospitals, Jaipur (2010 - 2013)"
+      },
+      {
+        "year": "Graduation",
+        "title": "MBBS",
+        "org": "SMS Medical College, Jaipur (2004 - 2010)"
+      },
+      {
+        "year": "International Fellowship",
+        "title": "Fellow of FSCAI (USA)",
+        "org": "Society for Cardiovascular Angiography and Interventions"
+      }
+    ],
+    "detailedExperience": [
+      {
+        "year": "Present",
+        "title": "Professor & Head of Department (HOD) - Cardiology",
+        "org": "NIMS Super Speciality Hospital & Medical College, Jaipur"
+      },
+      {
+        "year": "Senior Consultant",
+        "title": "Senior Interventional Cardiologist",
+        "org": "NIMS Heart Centre & 24x7 Cath Lab Services"
+      },
+      {
+        "year": "2015 - 2018",
+        "title": "Post-Doctoral Senior Resident (DM Cardiology)",
+        "org": "Govind Ballabh Pant Hospital & MAMC, New Delhi"
+      }
+    ],
+    "heroQualification": "MBBS (SMS Jaipur) | MD - Medicine (SMS Jaipur) | DM - Cardiology (GB Pant Hospital, MAMC Delhi) | FSCAI (USA)",
+    "heroDesignation": "Professor & HOD, Department of Cardiology",
+    "heroDepartment": "Department of Cardiology, NIMS Super Speciality Hospital, Jaipur",
     "languages": [
       "Hindi",
       "English"
@@ -572,7 +623,16 @@ export const doctorsData = [
     "opdSchedule": "Mon - Sat (09:00 AM - 03:00 PM)",
     "roomNo": "ENT OPD Suite, Level 1",
     "image": "/assets/icons/doctor-placeholder.svg",
-    "featured": true
+    "featured": true,
+    "shortBio": "Pioneering Head & Neck Surgeon & ENT Specialist with advanced surgical expertise.",
+    "longBio": "Dr. Samanvaya Soni is a distinguished ENT and Head & Neck Surgeon at NIMS Super Speciality Hospital, Jaipur. He specializes in endoscopic sinus surgery, cochlear implants, microscopic ear surgeries, and head-neck oncological reconstructions with patient-centric care.",
+    "about": "Dr. Samanvaya Soni is a distinguished ENT and Head & Neck Surgeon at NIMS Super Speciality Hospital, Jaipur. He specializes in endoscopic sinus surgery, cochlear implants, microscopic ear surgeries, and head-neck oncological reconstructions with patient-centric care.",
+    "highlights": [
+      "Specialized Fellowship in Head and Neck Micro-vascular Surgery",
+      "Over 1,500+ successful endoscopic sinus and micro-ear surgeries",
+      "Executive Faculty in Department of ENT at NIMS Medical College",
+      "Dedicated OPD & Emergency trauma consultations available"
+    ]
   },
   {
     "id": "doc-ss-dariya",

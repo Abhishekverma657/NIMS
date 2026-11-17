@@ -1,5 +1,8 @@
 import { doctorsData } from '../data/doctorsData.js';
 import { specialitiesData } from '../data/specialitiesData.js';
+import { isDoctorMatch, getDoctorSlug } from '../utils/doctorSlug.js';
+
+export { getDoctorSlug, isDoctorMatch };
 
 function getApiCandidates() {
   const envUrl = (typeof import.meta !== 'undefined' && import.meta?.env)
@@ -117,9 +120,11 @@ export function normalizeApiDoctor(apiDoc) {
 
   // Check if we have a rich curated entry in static doctorsData for this doctor
   const curated = doctorsData.find(d => {
-    if (apiDoc.doctorId && d.id === apiDoc.doctorId) return true;
+    if (apiDoc.doctorId && (d.id === apiDoc.doctorId || d.aliases?.includes(apiDoc.doctorId))) return true;
+    if (apiDoc._id && d.aliases?.includes(String(apiDoc._id))) return true;
+    if (isDoctorMatch(d, apiDoc.doctorId) || isDoctorMatch(d, rawName)) return true;
     const curNameLower = d.name.toLowerCase().replace(/^(dr\.|dr|prof\.|prof|\(dr\.\))\s*/i, '').trim();
-    return curNameLower === cleanNameLower || (cleanNameLower.length > 5 && curNameLower.includes(cleanNameLower));
+    return curNameLower === cleanNameLower || (cleanNameLower.length > 5 && (curNameLower.includes(cleanNameLower) || cleanNameLower.includes(curNameLower)));
   });
 
   const department = (apiDoc.department || apiDoc.dept || curated?.department || '').trim();
@@ -148,7 +153,7 @@ export function normalizeApiDoctor(apiDoc) {
   const qualification = (apiDoc.education || curated?.qualification || '').trim();
   let detailedQualifications = curated?.detailedQualifications || [];
   if ((!detailedQualifications || detailedQualifications.length === 0) && qualification) {
-    const degrees = qualification.split(/[,/]+/).map(s => s.trim()).filter(Boolean);
+    const degrees = qualification.split(/[|;,/]+/).map(s => s.trim()).filter(Boolean);
     detailedQualifications = degrees.map(deg => ({
       title: deg,
       year: '',
@@ -203,9 +208,11 @@ export function normalizeApiDoctor(apiDoc) {
     department: department,
     specialityId: specialityId,
     qualification: qualification,
+    education: qualification,
     experience: experience,
     opdSchedule: opdSchedule,
     roomNo: roomNo,
+    room: apiDoc.room || roomNo,
     block: block,
     floor: floor,
     image: image,
@@ -221,6 +228,17 @@ export function normalizeApiDoctor(apiDoc) {
     heroQualification: curated?.heroQualification || qualification,
     heroDesignation: curated?.heroDesignation || apiDoc.designation || '',
     heroDepartment: curated?.heroDepartment || department,
+    weeklySchedule: apiDoc.weeklySchedule || curated?.weeklySchedule || [],
+    opdOnlineHours: apiDoc.opdOnlineHours || '',
+    liveStatus: apiDoc.liveStatus || '',
+    sittingLocation: apiDoc.sittingLocation || roomNo,
+    specialization: apiDoc.specialization || apiDoc.spec || '',
+    shortBio: apiDoc.shortBio || apiDoc.shortDescription || '',
+    longBio: apiDoc.longBio || apiDoc.longDescription || '',
+    slotConfig: apiDoc.slotConfig || null,
+    socialLinks: apiDoc.socialLinks || null,
+    phone: apiDoc.phone || (typeof apiDoc.userId === 'object' && apiDoc.userId?.phone) || '',
+    email: apiDoc.email || (typeof apiDoc.userId === 'object' && apiDoc.userId?.email) || '',
     rawBackendData: apiDoc
   };
 }
@@ -262,7 +280,7 @@ export async function getDoctorById(idOrSlug) {
 
   // 1. Try fetching from Backend API directly
   try {
-    const res = await tryFetchWithFallback(`/doctors/${idOrSlug}`, {
+    const res = await tryFetchWithFallback(`/doctors/${encodeURIComponent(idOrSlug)}`, {
       headers: { 'Accept': 'application/json' }
     });
 
@@ -276,13 +294,18 @@ export async function getDoctorById(idOrSlug) {
     // Continue to fallback
   }
 
-  // 2. Fallback to local doctorsData
-  const localMatch = doctorsData.find(d => 
-    d.id === idOrSlug || 
-    d.id.toLowerCase() === String(idOrSlug).toLowerCase()
-  );
+  // 2. If it's a slug or wasn't found by direct API call, check from full list
+  try {
+    const list = await getDoctorsList();
+    const found = list.find(d => isDoctorMatch(d, idOrSlug));
+    if (found) return found;
+  } catch (e) {
+    // Continue to fallback
+  }
 
-  return localMatch || null;
+  // 3. Fallback to local static doctorsData
+  const localMatch = doctorsData.find(d => isDoctorMatch(d, idOrSlug));
+  return localMatch ? normalizeApiDoctor(localMatch) : null;
 }
 
 /**

@@ -2,8 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, CheckCircle2, ArrowRight, User } from 'lucide-react';
+import { getDoctorSlug } from '../../utils/doctorSlug.js';
 
 export default function DoctorCard({ doctor, onBook }) {
+  const doctorSlug = getDoctorSlug(doctor) || doctor.id;
   const isDummyImage = !doctor.image || 
     doctor.image.includes('unsplash') || 
     doctor.image.includes('male-doc') || 
@@ -23,7 +25,7 @@ export default function DoctorCard({ doctor, onBook }) {
     >
       {/* Photo Column */}
       <div className="doctor-photo-wrap">
-        <Link to={`/doctor/${doctor.id}`} style={{ display: 'block', height: '100%', width: '100%' }}>
+        <Link to={`/doctor/${doctorSlug}`} style={{ display: 'block', height: '100%', width: '100%' }}>
           <img
             src={imageSrc}
             alt={doctor.name}
@@ -36,9 +38,9 @@ export default function DoctorCard({ doctor, onBook }) {
           />
         </Link>
         
-        {/* Verified Badge */}
+        {/* Verified Badge (Compact) */}
         <div className="doctor-verified-badge" title="NIMS Verified Super Specialist">
-          <CheckCircle2 size={13} color="#ffffff" />
+          <CheckCircle2 size={10} color="#ffffff" />
           <span>Verified</span>
         </div>
       </div>
@@ -54,7 +56,7 @@ export default function DoctorCard({ doctor, onBook }) {
           </div>
 
           {/* Doctor Name */}
-          <Link to={`/doctor/${doctor.id}`} style={{ textDecoration: 'none' }}>
+          <Link to={`/doctor/${doctorSlug}`} style={{ textDecoration: 'none' }}>
             <h3 className="doctor-name" style={{ color: 'var(--nims-navy)', transition: 'color 0.2s ease' }} onMouseOver={(e) => e.target.style.color = 'var(--nims-orange)'} onMouseOut={(e) => e.target.style.color = 'var(--nims-navy)'}>
               {doctor.name}
             </h3>
@@ -96,7 +98,7 @@ export default function DoctorCard({ doctor, onBook }) {
         {/* CTA Button */}
         <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
           <Link 
-            to={`/doctor/${doctor.id}`} 
+            to={`/doctor/${doctorSlug}`} 
             className="btn btn-outline" 
             style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', padding: '0.65rem 0', fontSize: '0.85rem' }}
           >

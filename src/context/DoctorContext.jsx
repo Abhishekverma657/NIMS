@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { doctorsData } from '../data/doctorsData.js';
 import { getDoctorsList, getDoctorById, bookOpdAppointment } from '../services/doctorService.js';
+import { isDoctorMatch, getDoctorSlug } from '../utils/doctorSlug.js';
+
+export { getDoctorSlug, isDoctorMatch, DoctorContext };
 
 const DoctorContext = createContext({
   doctors: doctorsData,
@@ -37,39 +40,37 @@ export function DoctorProvider({ children }) {
     loadDoctors();
   }, [loadDoctors]);
 
-  // Synchronous lookup from memory
-  const getDoctor = useCallback((idOrSlug) => {
-    if (!idOrSlug) return null;
-    const target = String(idOrSlug).toLowerCase().trim();
-
-    return doctors.find(d => {
-      if (d.id && String(d.id).toLowerCase() === target) return true;
-      if (d.doctorId && String(d.doctorId).toLowerCase() === target) return true;
-      if (d._id && String(d._id).toLowerCase() === target) return true;
-      const cleanName = d.name.toLowerCase().replace(/^(dr\.|dr|prof\.|prof|\(dr\.\))\s*/i, '').trim();
-      const cleanSlug = cleanName.replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-      return cleanSlug === target;
-    }) || null;
+  const doctorsRef = React.useRef(doctors);
+  useEffect(() => {
+    doctorsRef.current = doctors;
   }, [doctors]);
 
-  // Asynchronous fetch (checks memory first, then API)
-  const fetchDoctor = useCallback(async (idOrSlug) => {
-    const existing = getDoctor(idOrSlug);
-    if (existing) return existing;
+  // Synchronous lookup from memory using robust slug & ID matching (stable reference)
+  const getDoctor = useCallback((idOrSlug) => {
+    if (!idOrSlug) return null;
+    return doctorsRef.current.find(d => isDoctorMatch(d, idOrSlug)) || null;
+  }, []);
 
+  // Asynchronous fetch (fetches fresh from API to capture latest admin updates)
+  const fetchDoctor = useCallback(async (idOrSlug) => {
     try {
       const fetched = await getDoctorById(idOrSlug);
       if (fetched) {
         setDoctors(prev => {
-          const exists = prev.some(d => d.id === fetched.id || d._id === fetched._id);
-          return exists ? prev : [fetched, ...prev];
+          const idx = prev.findIndex(d => isDoctorMatch(d, idOrSlug) || d.id === fetched.id || d._id === fetched._id);
+          if (idx !== -1) {
+            const next = [...prev];
+            next[idx] = { ...next[idx], ...fetched };
+            return next;
+          }
+          return [fetched, ...prev];
         });
         return fetched;
       }
     } catch (e) {
       console.warn('fetchDoctor failed for', idOrSlug, e);
     }
-    return null;
+    return getDoctor(idOrSlug);
   }, [getDoctor]);
 
   const handleBookAppointment = useCallback(async (bookingData) => {

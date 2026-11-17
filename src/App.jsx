@@ -22,6 +22,7 @@ import JobDetail from './pages/JobDetail';
 import Contact from './pages/Contact';
 import Reviews from './pages/Reviews';
 import DoctorProfile from './pages/DoctorProfile';
+import Feedback from './pages/Feedback';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import DeleteUserAccount from './pages/DeleteUserAccount';
 import TatkaalBooking from './pages/TatkaalBooking';
@@ -82,6 +83,8 @@ function AnimatedPageContent({ onOpenBooking, onOpenPackageBooking }) {
           <Route path="/careers/:slug" element={<JobDetail />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/reviews" element={<Reviews />} />
+          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/patient-feedback" element={<Feedback />} />
           <Route path="/doctor/:id" element={<DoctorProfile onOpenBooking={onOpenBooking} />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy initialTab="privacy" />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy initialTab="privacy" />} />
