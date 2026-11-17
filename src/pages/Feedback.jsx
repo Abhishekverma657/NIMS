@@ -1246,7 +1246,7 @@ export default function Feedback() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 0.65rem;
+          gap: 0.75rem;
           background: linear-gradient(135deg, #bd171c 0%, #9e1217 100%);
           color: #ffffff;
           border: none;
@@ -1258,7 +1258,7 @@ export default function Feedback() {
           box-shadow: 0 6px 20px rgba(189, 23, 28, 0.3);
           transition: all 0.2s ease;
           width: 100%;
-          max-width: 440px;
+          max-width: 480px;
         }
         .fb-submit-btn:hover {
           transform: translateY(-2px);
@@ -1268,6 +1268,65 @@ export default function Feedback() {
           opacity: 0.65;
           cursor: not-allowed;
           transform: none;
+        }
+        .fb-submit-btn-content {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.45rem;
+        }
+        .fb-submit-btn-primary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+        }
+        .fb-submit-btn-icon {
+          flex-shrink: 0;
+        }
+        .fb-submit-btn-hi {
+          font-size: 0.98rem;
+          font-weight: 800;
+          letter-spacing: 0.01em;
+        }
+        .fb-submit-btn-en {
+          font-size: 0.92rem;
+          font-weight: 700;
+          opacity: 0.95;
+        }
+        @media (max-width: 768px) {
+          .fb-submit-btn {
+            padding: 0.85rem 1.25rem;
+            max-width: 100%;
+          }
+          .fb-submit-btn-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.15rem;
+            width: 100%;
+            text-align: center;
+          }
+          .fb-submit-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+          }
+          .fb-submit-btn-hi {
+            font-size: 1.05rem;
+            font-weight: 900;
+            line-height: 1.2;
+          }
+          .fb-submit-btn-en {
+            font-size: 0.82rem;
+            font-weight: 600;
+            opacity: 0.92;
+            line-height: 1.2;
+            text-align: center;
+          }
         }
         .fb-privacy-note {
           font-size: 0.76rem;
@@ -1331,16 +1390,16 @@ export default function Feedback() {
 
           <div className="fb-hero-trust-bar">
             <div className="fb-trust-item">
-              <ShieldCheck size={18} color="#e5b64a" />
-              <span>100% गोपनीय समीक्षा</span>
+              <Heart size={18} color="#e5b64a" fill="#e5b64a" />
+              <span>रोगी संतुष्टि हमारी प्राथमिकता</span>
             </div>
             <div className="fb-trust-item">
-              <Clock size={18} color="#e5b64a" />
-              <span>केवल 2 मिनट का समय</span>
+              <ShieldCheck size={18} color="#e5b64a" />
+              <span>गुणवत्ता एवं रोगी सुरक्षा</span>
             </div>
             <div className="fb-trust-item">
               <Award size={18} color="#e5b64a" />
-              <span>सीधे अस्पताल प्रबंधन तक</span>
+              <span>निरंतर सेवा सुधार का संकल्प</span>
             </div>
           </div>
         </div>
@@ -1893,15 +1952,21 @@ export default function Feedback() {
                 className="fb-submit-btn"
               >
                 {isSubmitting ? (
-                  <>
-                    <RefreshCw size={22} className="animate-spin" />
-                    <span>फीडबैक दर्ज किया जा रहा है... (Submitting)</span>
-                  </>
+                  <div className="fb-submit-btn-content">
+                    <div className="fb-submit-btn-primary">
+                      <RefreshCw size={19} className="animate-spin fb-submit-btn-icon" />
+                      <span className="fb-submit-btn-hi">फीडबैक दर्ज किया जा रहा है...</span>
+                    </div>
+                    <span className="fb-submit-btn-en">(Submitting...)</span>
+                  </div>
                 ) : (
-                  <>
-                    <Send size={22} />
-                    <span>फीडबैक जमा करें (Submit Patient Feedback)</span>
-                  </>
+                  <div className="fb-submit-btn-content">
+                    <div className="fb-submit-btn-primary">
+                      <Send size={19} className="fb-submit-btn-icon" />
+                      <span className="fb-submit-btn-hi">फीडबैक जमा करें</span>
+                    </div>
+                    <span className="fb-submit-btn-en">(Submit Patient Feedback)</span>
+                  </div>
                 )}
               </button>
 

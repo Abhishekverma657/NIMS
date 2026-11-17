@@ -223,10 +223,10 @@ export default function DoctorProfile({ onOpenBooking }) {
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem' }}>
           
           {/* Top Breadcrumbs & Utility Bar inside Hero */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '2rem' }}>
+          <div className="doctor-hero-topbar">
             
             {/* Breadcrumb pills */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.84rem', color: '#94a3b8' }}>
+            <div className="doctor-hero-breadcrumbs">
               <Link to="/" style={{ color: '#cbd5e1', textDecoration: 'none' }} onMouseOver={e => e.target.style.color = '#ffffff'} onMouseOut={e => e.target.style.color = '#cbd5e1'}>
                 Home
               </Link>
@@ -247,7 +247,7 @@ export default function DoctorProfile({ onOpenBooking }) {
             </div>
 
             {/* Back, Share & Call Hotline */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <div className="doctor-hero-top-actions">
               <button
                 onClick={() => navigate(-1)}
                 style={{
@@ -310,29 +310,10 @@ export default function DoctorProfile({ onOpenBooking }) {
           </div>
 
           {/* Hero Profile Identity Row */}
-          <div 
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: 'clamp(1.5rem, 3vw, 2.75rem)', 
-              flexWrap: 'wrap' 
-            }}
-          >
+          <div className="doctor-hero-identity">
             
             {/* Doctor Photo Card (Prominent Executive Portrait) */}
-            <div 
-              style={{ 
-                position: 'relative', 
-                width: 'clamp(235px, 25vw, 280px)', 
-                height: 'clamp(285px, 30vw, 340px)', 
-                borderRadius: '22px', 
-                overflow: 'hidden', 
-                background: 'linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%)', 
-                border: '4px solid rgba(255, 255, 255, 0.95)',
-                boxShadow: '0 24px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2)',
-                flexShrink: 0
-              }}
-            >
+            <div className="doctor-hero-photo-card">
               {/* Verified Specialist Tag (Compact Minimal Pill at top) */}
               <div 
                 style={{ 
@@ -377,10 +358,10 @@ export default function DoctorProfile({ onOpenBooking }) {
             </div>
 
             {/* Doctor Name, Designation, and Key Metadata */}
-            <div style={{ flex: '1 1 420px', minWidth: 0 }}>
+            <div className="doctor-hero-info">
               
               {/* Badges */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+              <div className="doctor-hero-badges">
                 {doctor.department && (
                   <span 
                     style={{ 
@@ -433,23 +414,13 @@ export default function DoctorProfile({ onOpenBooking }) {
               </div>
 
               {/* Doctor Name */}
-              <h1 
-                style={{ 
-                  fontSize: 'clamp(2.1rem, 3.2vw, 2.85rem)', 
-                  fontWeight: 800, 
-                  color: '#ffffff', 
-                  margin: '0 0 0.45rem 0', 
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  lineHeight: 1.15,
-                  letterSpacing: '-0.01em'
-                }}
-              >
+              <h1 className="doctor-hero-name">
                 {doctor.name}
               </h1>
 
               {/* Qualifications / Subtitle */}
               {(doctor.education || doctor.heroQualification || doctor.qualification) && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#cbd5e1', fontSize: '1.02rem', fontWeight: 600, margin: '0 0 0.65rem 0' }}>
+                <div className="doctor-hero-quals">
                   <GraduationCap size={18} color="var(--nims-gold, #e5b64a)" />
                   <span>{doctor.education || doctor.heroQualification || doctor.qualification}</span>
                 </div>
@@ -457,13 +428,13 @@ export default function DoctorProfile({ onOpenBooking }) {
 
               {/* Specialization / Sub-department Focus */}
               {(doctor.specialization || doctor.spec) && (
-                <p style={{ color: '#94a3b8', fontSize: '0.94rem', margin: '0 0 0.95rem 0', lineHeight: 1.5 }}>
+                <p className="doctor-hero-spec">
                   {doctor.specialization || doctor.spec}
                 </p>
               )}
 
               {/* High-Impact Quick Facts Strip */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginTop: '0.85rem' }}>
+              <div className="doctor-hero-facts">
                 
                 {doctor.fee != null && Number(doctor.fee) > 0 && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'rgba(255, 255, 255, 0.09)', border: '1px solid rgba(255, 255, 255, 0.12)', padding: '0.4rem 0.85rem', borderRadius: '8px', fontSize: '0.86rem' }}>

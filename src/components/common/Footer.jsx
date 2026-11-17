@@ -44,14 +44,8 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
           padding: '2.25rem 0'
         }}>
-          <div className="container" style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '1.5rem'
-          }}>
-            <div>
+          <div className="container footer-emergency-strip">
+            <div className="footer-emergency-content">
               <h3 style={{ color: '#ffffff', fontSize: 'clamp(1.25rem, 2.2vw, 1.6rem)', margin: 0, fontWeight: 800 }}>
                 Every emergency answered. Every hour of every day.
               </h3>
@@ -60,7 +54,7 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
               </p>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <div className="footer-emergency-actions">
               <motion.a
                 href="tel:0141-2388999"
                 whileHover={{ scale: 1.04 }}

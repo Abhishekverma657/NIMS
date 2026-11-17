@@ -6947,3 +6947,249 @@ textarea {
     position: static;
   }
 }
+
+/* =========================================================================
+   DOCTOR PROFILE HERO & FOOTER EMERGENCY MOBILE RESPONSIVENESS
+   ========================================================================= */
+
+/* Top bar in Hero */
+.doctor-hero-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.doctor-hero-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.84rem;
+  color: #94a3b8;
+  flex-wrap: wrap;
+}
+
+.doctor-hero-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+/* Identity Row */
+.doctor-hero-identity {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+  flex-wrap: wrap;
+}
+
+.doctor-hero-photo-card {
+  position: relative;
+  width: clamp(235px, 25vw, 280px);
+  height: clamp(285px, 30vw, 340px);
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  border: 4px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.doctor-hero-info {
+  flex: 1 1 420px;
+  min-width: 0;
+  text-align: left;
+}
+
+.doctor-hero-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.doctor-hero-name {
+  font-size: clamp(2.1rem, 3.2vw, 2.85rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.45rem 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+
+.doctor-hero-quals {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #cbd5e1;
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin: 0 0 0.65rem 0;
+}
+
+.doctor-hero-spec {
+  color: #94a3b8;
+  font-size: 0.94rem;
+  margin: 0 0 0.95rem 0;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.doctor-hero-facts {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.85rem;
+}
+
+/* Mobile View Adjustments (<= 768px) */
+@media (max-width: 768px) {
+  .doctor-hero-topbar {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .doctor-hero-breadcrumbs {
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .doctor-hero-top-actions {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .doctor-hero-identity {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    gap: 1.5rem;
+  }
+
+  .doctor-hero-photo-card {
+    margin: 0 auto !important;
+    width: min(260px, 75vw) !important;
+    height: min(320px, 90vw) !important;
+  }
+
+  .doctor-hero-info {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .doctor-hero-badges {
+    justify-content: center !important;
+    width: 100%;
+  }
+
+  .doctor-hero-name {
+    text-align: center !important;
+    width: 100%;
+  }
+
+  .doctor-hero-quals {
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100%;
+  }
+
+  .doctor-hero-spec {
+    text-align: center !important;
+    width: 100%;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .doctor-hero-facts {
+    justify-content: center !important;
+    width: 100%;
+  }
+}
+
+/* Footer Emergency CTA Banner Responsiveness */
+.footer-emergency-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.footer-emergency-content {
+  text-align: left;
+}
+
+.footer-emergency-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .footer-emergency-strip {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    gap: 1.25rem !important;
+  }
+
+  .footer-emergency-content {
+    text-align: center !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .footer-emergency-content h3 {
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .footer-emergency-content p {
+    text-align: center !important;
+    width: 100% !important;
+    max-width: 520px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .footer-emergency-actions {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 0.75rem !important;
+  }
+
+  .footer-emergency-actions > * {
+    display: inline-flex !important;
+    width: min(320px, 90vw) !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+}
