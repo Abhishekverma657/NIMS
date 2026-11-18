@@ -28,6 +28,7 @@ import DeleteUserAccount from './pages/DeleteUserAccount';
 import TatkaalBooking from './pages/TatkaalBooking';
 import PatientFundHelp from './pages/PatientFundHelp';
 import PatientCaseDetail from './pages/PatientCaseDetail';
+import MedicalTourism from './pages/MedicalTourism';
 
 import { PhoneCall } from 'lucide-react';
 
@@ -98,6 +99,9 @@ function AnimatedPageContent({ onOpenBooking, onOpenPackageBooking }) {
           <Route path="/patient-relief/:id" element={<PatientCaseDetail />} />
           <Route path="/donate" element={<PatientFundHelp />} />
           <Route path="/donate/:id" element={<PatientCaseDetail />} />
+          <Route path="/medicaltourism" element={<MedicalTourism onOpenBooking={onOpenBooking} />} />
+          <Route path="/medical-tourism" element={<MedicalTourism onOpenBooking={onOpenBooking} />} />
+          <Route path="/international-patient-care" element={<MedicalTourism onOpenBooking={onOpenBooking} />} />
           {/* Fallback redirect */}
           <Route path="*" element={<Home onOpenBooking={onOpenBooking} />} />
         </Routes>

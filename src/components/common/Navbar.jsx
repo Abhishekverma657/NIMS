@@ -24,6 +24,7 @@ export default function Navbar({ onOpenBooking }) {
     { name: 'About Us', path: '/about' },
     { name: 'Specialities', path: '/specialities' },
     { name: 'Health Packages', path: '/health-packages' },
+    { name: 'International Patient Care', path: '/medicaltourism' },
     { name: 'Photo Gallery', path: '/photo-gallery' },
     { name: 'Health Schemes', path: '/loyalty-card' },
     { name: 'Contact', path: '/contact-us' }

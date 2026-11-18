@@ -143,7 +143,7 @@ export default function PatientCaseDetail() {
         setSuccessDonation(json.data);
         setShowSuccessModal(true);
 
-        // Fire Meta Pixel Standard Donate Conversion Event (Pixel ID: 1479647817384879)
+        // Fire Meta Pixel Standard Donate Conversion Event (Pixel ID: 2008365666525669)
         trackMetaEvent('Donate', {
           value: json.data.amount,
           currency: 'INR',
@@ -239,7 +239,7 @@ export default function PatientCaseDetail() {
     setFormError('');
     setSubmitting(true);
 
-    // Track Meta Pixel InitiateCheckout (Pixel ID: 1479647817384879)
+    // Track Meta Pixel InitiateCheckout (Pixel ID: 2008365666525669)
     trackMetaEvent('InitiateCheckout', {
       value: finalAmount,
       currency: 'INR',
