@@ -249,21 +249,9 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 </Link>
               </li>
               <li>
-                <Link to="/specialities" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
-                  <ChevronRight size={14} color="var(--nims-orange)" />
-                  <span>30+ Super Specialities Directory</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/health-packages" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
                   <ChevronRight size={14} color="var(--nims-orange)" />
                   <span>Preventive Health Packages</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/help" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
-                  <ChevronRight size={14} color="var(--nims-orange)" />
-                  <span>Patient Relief &amp; Care Fund</span>
                 </Link>
               </li>
               <li>
@@ -279,18 +267,6 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 </Link>
               </li>
               <li>
-                <Link to="/loyalty-card" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
-                  <ChevronRight size={14} color="var(--nims-orange)" />
-                  <span>Government Healthcare Schemes</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/feedback" style={{ color: '#e5b64a', fontSize: '0.88rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'} onMouseLeave={(e) => e.currentTarget.style.color = '#e5b64a'}>
-                  <ChevronRight size={14} color="var(--nims-orange)" />
-                  <span>मरीज फीडबैक (Patient Feedback &amp; Ratings)</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/privacypolicy" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
                   <ChevronRight size={14} color="var(--nims-orange)" />
                   <span>Privacy Policy &amp; DPDP Act</span>
@@ -300,6 +276,12 @@ export default function Footer({ onOpenBooking, onOpenVacancies }) {
                 <Link to="/terms-and-conditions" style={{ color: '#94a3b8', fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--nims-orange)'} onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}>
                   <ChevronRight size={14} color="var(--nims-orange)" />
                   <span>Terms &amp; Conditions</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/help" style={{ color: '#e5b64a', fontSize: '0.88rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.2s', marginTop: '0.15rem' }} onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'} onMouseLeave={(e) => e.currentTarget.style.color = '#e5b64a'}>
+                  <Heart size={14} color="var(--nims-gold)" fill="var(--nims-gold)" />
+                  <span>मरीज सहायता (Patient Care &amp; Medical Relief)</span>
                 </Link>
               </li>
             </ul>

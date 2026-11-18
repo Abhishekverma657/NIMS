@@ -46,6 +46,7 @@ import {
 } from 'lucide-react';
 import { MotionFadeIn, MotionStagger, MotionItem } from '../components/motion/MotionWrapper';
 import { medicalTourismData } from '../data/medicalTourismData';
+import './MedicalTourism.css';
 
 export default function MedicalTourism({ onOpenBooking }) {
   // Safe Fallback for Lead Doctor in case of any data delay
@@ -57,6 +58,7 @@ export default function MedicalTourism({ onOpenBooking }) {
     phoneRaw: '919622211187',
     email: 'tasleem.jan@hospital.nimsuniversity.org',
     role: 'Single Point of Contact (SPOC) for Global Patients',
+    image: '/assets/international/dr-taslim-studio.jpg',
     message:
       'We understand the sensitivity and urgency of traveling abroad for specialized medical procedures. My team and I ensure personalized clinical coordination, official visa invitation letters within 24 to 48 hours, free airport reception, and constant bedside support throughout your stay in Jaipur.',
     badge: 'Official International Liaison & Desk In-charge'
@@ -121,42 +123,67 @@ export default function MedicalTourism({ onOpenBooking }) {
     }
 
     setIsSubmitting(true);
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://api.nimshospitals.net/api';
-    const localFallbackUrl = 'http://localhost:5001/api';
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+    const remoteUrl = 'https://api.nimshospitals.in/api';
 
     const fullPhone = `${form.countryCode} ${cleanPhone}`;
     const payload = {
       name: cleanName,
-      phone: fullPhone.slice(-15),
+      country: form.country.trim(),
+      countryCode: form.countryCode,
+      phone: fullPhone,
       email: form.email.trim(),
-      department: form.specialty,
-      message: `[International Patient Inquiry for Dr. Tasleem Jan]\nCountry: ${form.country.trim()}\nPreferred Language: ${form.language}\nReports Available: ${form.reportsAvailable ? 'YES' : 'NO'}\n\nClinical Query:\n${form.message.trim()}`,
-      source: 'MEDICAL_TOURISM_PAGE'
+      specialty: form.specialty,
+      message: form.message.trim(),
+      reportsAvailable: Boolean(form.reportsAvailable),
+      language: form.language,
+      source: 'WEBSITE_MEDICAL_TOURISM'
     };
 
     try {
       let res;
       try {
-        res = await fetch(`${baseUrl}/callbacks`, {
+        res = await fetch(`${baseUrl}/international`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
       } catch (err) {
-        res = await fetch(`${localFallbackUrl}/callbacks`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+        try {
+          res = await fetch(`${remoteUrl}/international`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } catch (e) {
+          res = await fetch(`${baseUrl}/callbacks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: cleanName,
+              phone: fullPhone,
+              email: form.email.trim(),
+              department: form.specialty,
+              country: form.country.trim(),
+              countryCode: form.countryCode,
+              language: form.language,
+              reportsAvailable: Boolean(form.reportsAvailable),
+              message: `[International Patient Inquiry for Dr. Tasleem Jan]\nCountry: ${form.country.trim()}\nPreferred Language: ${form.language}\nReports Available: ${form.reportsAvailable ? 'YES' : 'NO'}\n\nClinical Query:\n${form.message.trim()}`,
+              source: 'MEDICAL_TOURISM_PAGE'
+            })
+          });
+        }
       }
 
-      if (res && res.ok) {
+      if (res && (res.ok || res.status === 200 || res.status === 201)) {
         setSubmitSuccess(true);
       } else {
-        setSubmitSuccess(true);
+        const data = await res?.json().catch(() => ({}));
+        setSubmitError(data?.message || 'Something went wrong. Please connect with Dr. Tasleem Jan on WhatsApp.');
       }
     } catch (err) {
-      setSubmitSuccess(true);
+      console.error('Submission error:', err);
+      setSubmitError('Unable to connect to the medical desk right now. Please click the WhatsApp button to chat directly.');
     } finally {
       setIsSubmitting(false);
     }
@@ -176,26 +203,14 @@ export default function MedicalTourism({ onOpenBooking }) {
   return (
     <div className="medical-tourism-page" style={{ background: '#f8fafc', color: 'var(--color-text-primary)' }}>
       {/* 1. HERO SECTION */}
-      <section
-        style={{
-          position: 'relative',
-          minHeight: '84vh',
-          display: 'flex',
-          alignItems: 'center',
-          background: 'linear-gradient(135deg, rgba(15, 35, 46, 0.94) 0%, rgba(23, 42, 52, 0.88) 100%), url("/assets/international/hero-medical-tourism.jpg") center/cover no-repeat',
-          color: '#ffffff',
-          padding: '6rem 0 5rem',
-          borderBottom: '4px solid var(--nims-orange)',
-          overflow: 'hidden'
-        }}
-      >
+      <section className="intl-hero-section">
         <div
           style={{
             position: 'absolute',
             top: '-20%',
             right: '-10%',
-            width: '600px',
-            height: '600px',
+            width: 'min(600px, 90vw)',
+            height: 'min(600px, 90vw)',
             background: 'radial-gradient(circle, rgba(189, 23, 28, 0.25) 0%, rgba(0,0,0,0) 70%)',
             pointerEvents: 'none',
             zIndex: 1
@@ -219,7 +234,7 @@ export default function MedicalTourism({ onOpenBooking }) {
                 }}
               >
                 <Globe2 size={18} style={{ color: 'var(--nims-gold)' }} />
-                <span style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#f8fafc' }}>
+                <span style={{ fontSize: 'clamp(0.75rem, 2vw, 0.9rem)', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#f8fafc' }}>
                   {medicalTourismData.hero.badge}
                 </span>
                 <span
@@ -236,7 +251,7 @@ export default function MedicalTourism({ onOpenBooking }) {
 
               <h1
                 style={{
-                  fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)',
+                  fontSize: 'clamp(1.85rem, 4.2vw, 3.6rem)',
                   fontWeight: 800,
                   lineHeight: 1.15,
                   letterSpacing: '-0.02em',
@@ -249,10 +264,10 @@ export default function MedicalTourism({ onOpenBooking }) {
 
               <p
                 style={{
-                  fontSize: 'clamp(1.05rem, 1.8vw, 1.25rem)',
+                  fontSize: 'clamp(0.95rem, 1.6vw, 1.2rem)',
                   lineHeight: 1.65,
                   color: '#e2e8f0',
-                  marginBottom: '2rem',
+                  marginBottom: '1.75rem',
                   maxWidth: '820px'
                 }}
               >
@@ -265,40 +280,42 @@ export default function MedicalTourism({ onOpenBooking }) {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.85rem',
-                  background: 'rgba(0, 0, 0, 0.45)',
+                  background: 'rgba(0, 0, 0, 0.55)',
                   backdropFilter: 'blur(10px)',
                   border: '1px solid rgba(229, 182, 74, 0.4)',
-                  padding: '0.6rem 1.25rem',
+                  padding: '0.6rem 1.15rem',
                   borderRadius: '16px',
-                  marginBottom: '2rem'
+                  marginBottom: '1.75rem',
+                  maxWidth: '100%',
+                  boxSizing: 'border-box'
                 }}
               >
-                <div
+                <img
+                  src={head.image || '/assets/international/dr-taslim-studio.jpg'}
+                  alt={head.name}
                   style={{
-                    width: '36px',
-                    height: '36px',
+                    width: '40px',
+                    height: '40px',
                     borderRadius: '50%',
-                    background: 'var(--nims-orange)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#ffffff'
+                    objectFit: 'cover',
+                    objectPosition: 'top center',
+                    border: '2px solid var(--nims-gold)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                    flexShrink: 0
                   }}
-                >
-                  <UserCheck size={20} />
-                </div>
-                <div>
+                />
+                <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--nims-gold)' }}>
                     {head.name}
                   </div>
-                  <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
+                  <div style={{ fontSize: '0.8rem', color: '#cbd5e1', whiteSpace: 'normal' }}>
                     {head.designation} • Direct Helpline: <b style={{ color: '#ffffff' }}>{head.phone}</b>
                   </div>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+              <div className="intl-hero-actions">
                 <button
                   type="button"
                   onClick={scrollToForm}
@@ -381,33 +398,19 @@ export default function MedicalTourism({ onOpenBooking }) {
         style={{
           background: '#ffffff',
           borderBottom: '1px solid #e2e8f0',
-          padding: '2rem 0',
+          padding: '1.75rem 0',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
           position: 'relative',
           zIndex: 3
         }}
       >
         <div className="container">
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))',
-              gap: '1.5rem',
-              alignItems: 'center'
-            }}
-          >
+          <div className="intl-stats-grid">
             {medicalTourismData.stats.map((st, i) => (
-              <div
-                key={i}
-                style={{
-                  textAlign: 'center',
-                  padding: '0.75rem 1rem',
-                  borderRight: i < medicalTourismData.stats.length - 1 ? '1px solid #e2e8f0' : 'none'
-                }}
-              >
+              <div key={i} className="intl-stat-item">
                 <div
                   style={{
-                    fontSize: 'clamp(1.8rem, 2.5vw, 2.4rem)',
+                    fontSize: 'clamp(1.6rem, 2.3vw, 2.3rem)',
                     fontWeight: 800,
                     color: 'var(--nims-navy)',
                     lineHeight: 1.1,
@@ -416,10 +419,10 @@ export default function MedicalTourism({ onOpenBooking }) {
                 >
                   {st.value}
                 </div>
-                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--nims-orange)', marginTop: '0.2rem' }}>
+                <div style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--nims-orange)', marginTop: '0.2rem' }}>
                   {st.label}
                 </div>
-                <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.15rem' }}>{st.sub}</div>
+                <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '0.15rem' }}>{st.sub}</div>
               </div>
             ))}
           </div>
@@ -427,22 +430,9 @@ export default function MedicalTourism({ onOpenBooking }) {
       </section>
 
       {/* 3. DEDICATED INTERNATIONAL HEAD / SPOC SHOWCASE CARD */}
-      <section style={{ padding: '3.5rem 0 0', background: '#ffffff' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 4rem) 0 0', background: '#ffffff' }}>
         <div className="container">
-          <div
-            style={{
-              background: 'linear-gradient(135deg, #0f232e 0%, #172a34 100%)',
-              borderRadius: '24px',
-              padding: 'clamp(1.75rem, 3.5vw, 2.75rem)',
-              color: '#ffffff',
-              boxShadow: '0 15px 40px rgba(23, 42, 52, 0.12)',
-              border: '1px solid rgba(229, 182, 74, 0.3)',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '2.5rem',
-              alignItems: 'center'
-            }}
-          >
+          <div className="intl-spoc-card">
             <div>
               <div
                 style={{
@@ -463,19 +453,19 @@ export default function MedicalTourism({ onOpenBooking }) {
                 <span>Single Point of Contact (SPOC) for Global Patients</span>
               </div>
 
-              <h2 style={{ fontSize: 'clamp(1.8rem, 2.6vw, 2.3rem)', fontWeight: 800, margin: '0 0 0.3rem', color: '#ffffff' }}>
+              <h2 style={{ fontSize: 'clamp(1.75rem, 2.5vw, 2.3rem)', fontWeight: 800, margin: '0 0 0.3rem', color: '#ffffff' }}>
                 {head.name}
               </h2>
-              <div style={{ fontSize: '1.05rem', color: 'var(--nims-gold)', fontWeight: 700, marginBottom: '0.85rem' }}>
+              <div style={{ fontSize: '1.02rem', color: 'var(--nims-gold)', fontWeight: 700, marginBottom: '0.85rem' }}>
                 {head.designation}
               </div>
               <p style={{ fontSize: '0.92rem', color: '#cbd5e1', lineHeight: 1.65, marginBottom: '1.5rem' }}>
                 "{head.message}"
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1.75rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.75rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                  <PhoneCall size={16} style={{ color: 'var(--nims-gold)' }} />
+                  <PhoneCall size={16} style={{ color: 'var(--nims-gold)', flexShrink: 0 }} />
                   <span style={{ fontSize: '0.9rem', color: '#e2e8f0' }}>
                     Direct Contact / WhatsApp:{' '}
                     <a href={`tel:${head.phone.replace(/\s+/g, '')}`} style={{ color: '#ffffff', fontWeight: 700, textDecoration: 'none' }}>
@@ -483,24 +473,24 @@ export default function MedicalTourism({ onOpenBooking }) {
                     </a>
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                  <Mail size={16} style={{ color: 'var(--nims-gold)' }} />
-                  <span style={{ fontSize: '0.9rem', color: '#e2e8f0' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem' }}>
+                  <Mail size={16} style={{ color: 'var(--nims-gold)', flexShrink: 0, marginTop: '0.2rem' }} />
+                  <span style={{ fontSize: '0.9rem', color: '#e2e8f0' }} className="intl-break-word">
                     Official Email:{' '}
-                    <a href={`mailto:${head.email}`} style={{ color: '#ffffff', fontWeight: 700, textDecoration: 'none' }}>
+                    <a href={`mailto:${head.email}`} style={{ color: '#ffffff', fontWeight: 700, textDecoration: 'none' }} className="intl-break-word">
                       {head.email}
                     </a>
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                  <MapPin size={16} style={{ color: 'var(--nims-gold)' }} />
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem' }}>
+                  <MapPin size={16} style={{ color: 'var(--nims-gold)', flexShrink: 0, marginTop: '0.2rem' }} />
                   <span style={{ fontSize: '0.9rem', color: '#cbd5e1' }}>
                     International Patient Care Lounge, NIMS Hospital Campus, Jaipur
                   </span>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap' }}>
+              <div className="intl-spoc-actions">
                 <a
                   href={getWhatsAppUrl(`Hello ${head.name}! I would like to connect regarding international treatment at NIMS Hospital Jaipur.`)}
                   target="_blank"
@@ -547,23 +537,89 @@ export default function MedicalTourism({ onOpenBooking }) {
             {/* Right Card with Real Photo */}
             <div
               style={{
-                borderRadius: '18px',
+                position: 'relative',
+                borderRadius: '20px',
                 overflow: 'hidden',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)'
+                border: '1px solid rgba(229, 182, 74, 0.35)',
+                boxShadow: '0 20px 45px rgba(0, 0, 0, 0.45)',
+                background: 'linear-gradient(180deg, #0d2838 0%, #07151e 100%)'
               }}
             >
-              <img
-                src="/assets/international/intl-doctor-opd-consult.jpeg"
-                alt="Dr. Tasleem Jan & NIMS Clinical Consultation"
-                style={{ width: '100%', height: '340px', objectFit: 'cover', display: 'block' }}
-              />
-              <div style={{ background: '#0a171f', padding: '1rem 1.25rem' }}>
-                <div style={{ fontSize: '0.82rem', color: 'var(--nims-gold)', fontWeight: 700, textTransform: 'uppercase' }}>
-                  Direct Doctor Liaison
+              {/* Floating Verified Badge */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '1rem',
+                  right: '1rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  background: 'rgba(7, 21, 30, 0.85)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(229, 182, 74, 0.45)',
+                  color: 'var(--nims-gold)',
+                  padding: '0.4rem 0.85rem',
+                  borderRadius: '50px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  zIndex: 2,
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.4)'
+                }}
+              >
+                <BadgeCheck size={15} style={{ color: 'var(--nims-gold)' }} />
+                <span>Department Head</span>
+              </div>
+
+              <div style={{ position: 'relative', overflow: 'hidden' }}>
+                <img
+                  src={head.image || '/assets/international/dr-taslim-studio.jpg'}
+                  alt="Dr. Tasleem Jan - Head, International Patient Care Department"
+                  style={{
+                    width: '100%',
+                    height: '380px',
+                    objectFit: 'cover',
+                    objectPosition: 'top center',
+                    display: 'block'
+                  }}
+                />
+              </div>
+
+              <div
+                style={{
+                  background: 'linear-gradient(180deg, #0a171f 0%, #050e14 100%)',
+                  padding: '1.15rem 1.4rem',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '0.35rem'
+                  }}
+                >
+                  <div style={{ fontSize: '0.82rem', color: 'var(--nims-gold)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Dr. Tasleem Jan
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '0.72rem',
+                      background: 'rgba(37, 211, 102, 0.15)',
+                      color: '#25D366',
+                      padding: '0.18rem 0.6rem',
+                      borderRadius: '12px',
+                      fontWeight: 700
+                    }}
+                  >
+                    ● Direct Liaison
+                  </div>
                 </div>
                 <div style={{ fontSize: '0.92rem', color: '#ffffff', fontWeight: 600 }}>
                   Personalized Clinical Guidance for Every Overseas Case
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '0.2rem' }}>
+                  Single Point of Contact (SPOC) & 24×7 Bedside Support
                 </div>
               </div>
             </div>
@@ -572,23 +628,18 @@ export default function MedicalTourism({ onOpenBooking }) {
       </section>
 
       {/* 4. ABOUT US & TRUSTED HEALTHCARE PARTNER */}
-      <section className="section" style={{ padding: '4.5rem 0 5rem', background: '#ffffff' }}>
+      <section className="section" style={{ padding: 'clamp(3rem, 6vw, 5rem) 0', background: '#ffffff' }}>
         <div className="container">
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '3.5rem',
-              alignItems: 'center'
-            }}
-          >
+          <div className="intl-about-top-grid">
             {/* Left Content */}
             <MotionFadeIn>
               <div>
                 <span
                   style={{
-                    display: 'inline-block',
-                    fontSize: '0.85rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    fontSize: '0.82rem',
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
@@ -599,55 +650,39 @@ export default function MedicalTourism({ onOpenBooking }) {
                     marginBottom: '0.8rem'
                   }}
                 >
-                  {medicalTourismData.about.badge}
+                  <Globe2 size={14} />
+                  <span>{medicalTourismData.about.badge}</span>
                 </span>
 
                 <h2
                   style={{
-                    fontSize: 'clamp(1.9rem, 3.2vw, 2.6rem)',
+                    fontSize: 'clamp(1.75rem, 2.8vw, 2.4rem)',
                     fontWeight: 800,
                     color: 'var(--nims-navy)',
-                    lineHeight: 1.2,
-                    marginBottom: '1.25rem'
+                    lineHeight: 1.25,
+                    marginBottom: '1rem'
                   }}
                 >
                   {medicalTourismData.about.heading}
                 </h2>
 
-                <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: '#334155', fontWeight: 500, marginBottom: '1rem' }}>
+                <p style={{ fontSize: '0.98rem', lineHeight: 1.65, color: '#334155', fontWeight: 500, marginBottom: '0.75rem' }}>
                   {medicalTourismData.about.lead}
                 </p>
 
-                {medicalTourismData.about.paragraphs.map((p, idx) => (
-                  <p key={idx} style={{ fontSize: '0.95rem', lineHeight: 1.7, color: '#64748b', marginBottom: '1rem' }}>
+                {medicalTourismData.about.subtext && (
+                  <p style={{ fontSize: '0.92rem', lineHeight: 1.6, color: '#64748b', marginBottom: '1.25rem' }}>
+                    {medicalTourismData.about.subtext}
+                  </p>
+                )}
+
+                {medicalTourismData.about.paragraphs?.map((p, idx) => (
+                  <p key={idx} style={{ fontSize: '0.92rem', lineHeight: 1.6, color: '#64748b', marginBottom: '1rem' }}>
                     {p}
                   </p>
                 ))}
 
-                {/* Features checklist */}
-                <div style={{ marginTop: '1.75rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  {medicalTourismData.about.features.map((feat, idx) => (
-                    <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-                      <div
-                        style={{
-                          background: 'rgba(189, 23, 28, 0.1)',
-                          color: 'var(--nims-orange)',
-                          borderRadius: '50%',
-                          padding: '0.25rem',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          marginTop: '0.15rem'
-                        }}
-                      >
-                        <Check size={16} strokeWidth={3} />
-                      </div>
-                      <span style={{ fontSize: '0.92rem', color: '#1e293b', fontWeight: 600 }}>{feat}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div style={{ marginTop: '2.25rem' }}>
+                <div className="intl-about-actions">
                   <button
                     type="button"
                     onClick={scrollToForm}
@@ -658,40 +693,55 @@ export default function MedicalTourism({ onOpenBooking }) {
                       background: 'var(--nims-navy)',
                       color: '#ffffff',
                       fontWeight: 600,
-                      padding: '0.8rem 1.6rem',
+                      padding: '0.75rem 1.5rem',
                       borderRadius: '50px',
                       border: 'none',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 15px rgba(23, 42, 52, 0.15)',
+                      transition: 'all 0.25s ease'
                     }}
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
                   >
                     <span>Connect with International Desk</span>
                     <ChevronRight size={16} />
                   </button>
+
+                  <a
+                    href={getWhatsAppUrl('Hello Dr. Tasleem Jan! I would like to inquire about international patient care at NIMS Hospital.')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.45rem',
+                      background: '#25D366',
+                      color: '#ffffff',
+                      fontWeight: 600,
+                      fontSize: '0.9rem',
+                      padding: '0.75rem 1.35rem',
+                      borderRadius: '50px',
+                      textDecoration: 'none',
+                      boxShadow: '0 4px 15px rgba(37, 211, 102, 0.22)',
+                      transition: 'all 0.25s ease'
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+                  >
+                    <MessageSquare size={16} />
+                    <span>WhatsApp Desk</span>
+                  </a>
                 </div>
               </div>
             </MotionFadeIn>
 
             {/* Right Visual Card with Real Authentic Photo */}
             <MotionFadeIn delay={0.15}>
-              <div
-                style={{
-                  position: 'relative',
-                  borderRadius: '24px',
-                  overflow: 'hidden',
-                  boxShadow: '0 20px 45px rgba(23, 42, 52, 0.14)',
-                  border: '1px solid #e2e8f0',
-                  background: '#ffffff'
-                }}
-              >
+              <div className="intl-about-img-card">
                 <img
                   src="/assets/international/intl-safaa-family-discharge.jpeg"
                   alt="International Patient Recovery and Discharge at NIMS Hospital"
-                  style={{
-                    width: '100%',
-                    height: '420px',
-                    objectFit: 'cover',
-                    display: 'block'
-                  }}
+                  className="intl-about-img"
                 />
 
                 <div
@@ -702,7 +752,7 @@ export default function MedicalTourism({ onOpenBooking }) {
                     right: 0,
                     background: 'linear-gradient(180deg, transparent 0%, rgba(15, 35, 46, 0.95) 100%)',
                     color: '#ffffff',
-                    padding: '2rem 1.5rem 1.5rem'
+                    padding: '2rem 1.5rem 1.25rem'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
@@ -721,6 +771,97 @@ export default function MedicalTourism({ onOpenBooking }) {
               </div>
             </MotionFadeIn>
           </div>
+
+          {/* Bottom row: Feature Highlights below! ("jo bullet points hai unko neeche dedo") */}
+          <MotionFadeIn delay={0.2}>
+            <div style={{ marginTop: '2.75rem', paddingTop: '2.5rem', borderTop: '1px solid #e2e8f0' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '0.75rem',
+                  marginBottom: '1.5rem'
+                }}
+              >
+                <div>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      fontSize: '0.78rem',
+                      fontWeight: 800,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      color: 'var(--nims-orange)',
+                      marginBottom: '0.2rem'
+                    }}
+                  >
+                    Hospital Infrastructure & Care Highlights
+                  </span>
+                  <h3
+                    style={{
+                      fontSize: 'clamp(1.2rem, 2.2vw, 1.55rem)',
+                      fontWeight: 800,
+                      color: 'var(--nims-navy)',
+                      margin: 0
+                    }}
+                  >
+                    Why International Patients Choose NIMS Hospital
+                  </h3>
+                </div>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    background: '#f1f5f9',
+                    color: '#475569',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    padding: '0.35rem 0.85rem',
+                    borderRadius: '20px'
+                  }}
+                >
+                  <ShieldCheck size={15} style={{ color: 'var(--nims-orange)' }} />
+                  <span>NABH & NABL Accredited Standards</span>
+                </div>
+              </div>
+
+              <div className="intl-features-grid">
+                {medicalTourismData.about.features.map((feat, idx) => (
+                  <div key={idx} className="intl-feature-card">
+                    <div className="intl-feature-icon">
+                      {feat.icon === 'UserCheck' && <UserCheck size={20} strokeWidth={2.3} />}
+                      {feat.icon === 'ShieldCheck' && <ShieldCheck size={20} strokeWidth={2.3} />}
+                      {feat.icon === 'Users' && <Users size={20} strokeWidth={2.3} />}
+                      {feat.icon === 'Clock' && <Clock size={20} strokeWidth={2.3} />}
+                      {feat.icon === 'Video' && <Video size={20} strokeWidth={2.3} />}
+                      {!['UserCheck', 'ShieldCheck', 'Users', 'Clock', 'Video'].includes(feat.icon) && (
+                        <Check size={20} strokeWidth={2.5} />
+                      )}
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <div
+                        style={{
+                          fontSize: '0.94rem',
+                          fontWeight: 700,
+                          color: 'var(--nims-navy)',
+                          marginBottom: '0.35rem',
+                          lineHeight: 1.3
+                        }}
+                      >
+                        {feat.title}
+                      </div>
+                      <div style={{ fontSize: '0.82rem', color: '#64748b', lineHeight: 1.5 }}>
+                        {feat.desc}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </MotionFadeIn>
         </div>
       </section>
 
@@ -998,7 +1139,7 @@ export default function MedicalTourism({ onOpenBooking }) {
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
                 gap: '2rem'
               }}
             >
@@ -1142,7 +1283,7 @@ export default function MedicalTourism({ onOpenBooking }) {
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
                 gap: '1.75rem'
               }}
             >
@@ -1306,7 +1447,7 @@ export default function MedicalTourism({ onOpenBooking }) {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
               gap: '1.75rem',
               marginBottom: '4rem'
             }}
@@ -1370,7 +1511,7 @@ export default function MedicalTourism({ onOpenBooking }) {
               <p style={{ color: '#94a3b8', fontSize: '0.95rem' }}>{medicalTourismData.jaipurAdvantage.lead}</p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.5rem' }}>
               {medicalTourismData.jaipurAdvantage.points.map((pt, idx) => (
                 <div key={idx} style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '1.25rem', borderRadius: '16px' }}>
                   <h4 style={{ color: '#ffffff', fontSize: '1rem', fontWeight: 700, marginBottom: '0.35rem' }}>
@@ -1428,7 +1569,7 @@ export default function MedicalTourism({ onOpenBooking }) {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
               gap: '1.5rem'
             }}
           >
@@ -1739,7 +1880,7 @@ export default function MedicalTourism({ onOpenBooking }) {
                     </div>
                   )}
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
                     <div>
                       <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', color: '#334155', marginBottom: '0.4rem' }}>
                         Patient Full Name *
@@ -1782,7 +1923,7 @@ export default function MedicalTourism({ onOpenBooking }) {
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
                     <div>
                       <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', color: '#334155', marginBottom: '0.4rem' }}>
                         Country of Residence *
@@ -1847,7 +1988,7 @@ export default function MedicalTourism({ onOpenBooking }) {
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
                     <div>
                       <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', color: '#334155', marginBottom: '0.4rem' }}>
                         Medical Specialty Required *

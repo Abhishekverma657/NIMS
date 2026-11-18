@@ -85,11 +85,11 @@ export default function LoyaltyCard({ onOpenBooking }) {
       {/* Dynamic Page Banner */}
       <section
         style={{
-          background: '#757575',
-          color: '#ffffff',
-          padding: '3.75rem 0 3rem',
-          borderBottom: '4px solid var(--nims-orange)',
           position: 'relative',
+          padding: 'clamp(3.5rem, 6vw, 4.75rem) 0 3.5rem',
+          color: '#ffffff',
+          background: 'linear-gradient(90deg, rgba(15, 35, 46, 0.94) 0%, rgba(15, 35, 46, 0.82) 48%, rgba(15, 35, 46, 0.52) 100%), url("/assets/images/banner/about-banner.jpeg") right center / cover no-repeat',
+          borderBottom: '4px solid var(--nims-orange)',
           overflow: 'hidden'
         }}
       >

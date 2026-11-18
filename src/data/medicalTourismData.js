@@ -19,6 +19,7 @@ export const medicalTourismData = {
     phoneRaw: "919622211187",
     email: "tasleem.jan@hospital.nimsuniversity.org",
     role: "Single Point of Contact (SPOC) for Global Patients",
+    image: "/assets/international/dr-taslim-studio.jpg",
     message:
       "We understand the sensitivity and urgency of traveling abroad for specialized medical procedures. My team and I ensure personalized clinical coordination, official visa invitation letters within 24 to 48 hours, free airport reception, and constant bedside support throughout your stay in Jaipur.",
     badge: "Official International Liaison & Desk In-charge"
@@ -35,17 +36,35 @@ export const medicalTourismData = {
   about: {
     badge: "About International Patient Care",
     heading: "Your Trusted Healthcare Partner in India",
-    lead: "At NIMS Hospital, Jaipur, we understand that traveling to a foreign country for medical treatment is a significant emotional and financial decision. Under the leadership of Dr. Tasleem Jan and our senior clinical directors, we ensure your healthcare journey is smooth, dignified, and entirely transparent.",
-    paragraphs: [
-      "As a premier multi-super-specialty healthcare institution and an integral unit of NIMS University Rajasthan, NIMS Hospital brings together highly experienced doctors, state-of-the-art diagnostic and surgical technologies, and compassionate international patient coordinators.",
-      "From your first email or WhatsApp message through post-discharge tele-consultations back in your home country, our dedicated team handles every detail—including second opinions, upfront cost estimates, medical visa documentation, airport transfers, attendant accommodations with cooking facilities, and language translation."
-    ],
+    lead: "NIMS Hospital, Jaipur provides world-class quaternary care with 2,400+ beds, 500+ super-specialists, and advanced surgical facilities on the Jaipur-Delhi Expressway.",
+    subtext: "Under the direct leadership of Dr. Tasleem Jan, our International Patient Care department guarantees transparent cost estimates, priority admissions, and compassionate bedside assistance for patients traveling from across the globe.",
+    paragraphs: [],
     features: [
-      "Direct supervision by Dr. Tasleem Jan (Head, International Patient Care)",
-      "NABH & NABL Accredited standards with 2,400 beds on Jaipur-Delhi Expressway",
-      "Dedicated International Patient Lounge with multilingual coordinators",
-      "Zero waiting time for priority diagnostic scans and surgical bookings",
-      "Complete post-treatment telemedicine support after returning to your home country"
+      {
+        icon: "UserCheck",
+        title: "Clinical Leadership",
+        desc: "Direct clinical supervision & 24×7 guidance by Dr. Tasleem Jan (Head, International Care)."
+      },
+      {
+        icon: "ShieldCheck",
+        title: "Accredited Infrastructure",
+        desc: "NABH & NABL accredited tertiary hospital with 2,400 beds on Jaipur-Delhi Expressway."
+      },
+      {
+        icon: "Users",
+        title: "Dedicated SPOC Lounge",
+        desc: "Exclusive International Patient Lounge with multilingual language coordinators."
+      },
+      {
+        icon: "Clock",
+        title: "Zero Waiting Time",
+        desc: "Priority slots for advanced diagnostic imaging, pathology, and OT surgical bookings."
+      },
+      {
+        icon: "Video",
+        title: "Post-Discharge Care",
+        desc: "Continuous tele-consultations and medical follow-ups after returning to your home country."
+      }
     ]
   },
 
