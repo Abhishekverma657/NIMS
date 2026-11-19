@@ -58,7 +58,7 @@ export default function MedicalTourism({ onOpenBooking }) {
     phoneRaw: '919622211187',
     email: 'tasleem.jan@hospital.nimsuniversity.org',
     role: 'Single Point of Contact (SPOC) for Global Patients',
-    image: '/assets/international/dr-taslim-studio.jpg',
+    image: '/assets/international/dr-taslim-doctor-coat.jpg',
     message:
       'We understand the sensitivity and urgency of traveling abroad for specialized medical procedures. My team and I ensure personalized clinical coordination, official visa invitation letters within 24 to 48 hours, free airport reception, and constant bedside support throughout your stay in Jaipur.',
     badge: 'Official International Liaison & Desk In-charge'
@@ -291,7 +291,7 @@ export default function MedicalTourism({ onOpenBooking }) {
                 }}
               >
                 <img
-                  src={head.image || '/assets/international/dr-taslim-studio.jpg'}
+                  src={head.image || '/assets/international/dr-taslim-doctor-coat.jpg'}
                   alt={head.name}
                   style={{
                     width: '40px',
@@ -572,7 +572,7 @@ export default function MedicalTourism({ onOpenBooking }) {
 
               <div style={{ position: 'relative', overflow: 'hidden' }}>
                 <img
-                  src={head.image || '/assets/international/dr-taslim-studio.jpg'}
+                  src={head.image || '/assets/international/dr-taslim-doctor-coat.jpg'}
                   alt="Dr. Tasleem Jan - Head, International Patient Care Department"
                   style={{
                     width: '100%',
@@ -1136,13 +1136,7 @@ export default function MedicalTourism({ onOpenBooking }) {
           </MotionFadeIn>
 
           <MotionStagger>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
-                gap: '2rem'
-              }}
-            >
+            <div className="intl-services-grid">
               {medicalTourismData.services.map((srv, idx) => {
                 const iconMap = {
                   Video: <Video size={24} style={{ color: 'var(--nims-orange)' }} />,

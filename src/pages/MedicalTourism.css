@@ -271,6 +271,27 @@
   transform: scale(1.05);
 }
 
+/* 5. Services Section Grid - 3 cards per row on Web / Desktop, 1 on Mobile */
+.intl-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .intl-services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .intl-services-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
 /* Section Responsive Spacing */
 .intl-section-py {
   padding: clamp(3rem, 6vw, 5.5rem) 0;

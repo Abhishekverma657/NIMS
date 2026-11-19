@@ -19,7 +19,7 @@ export const medicalTourismData = {
     phoneRaw: "919622211187",
     email: "tasleem.jan@hospital.nimsuniversity.org",
     role: "Single Point of Contact (SPOC) for Global Patients",
-    image: "/assets/international/dr-taslim-studio.jpg",
+    image: "/assets/international/dr-taslim-doctor-coat.jpg",
     message:
       "We understand the sensitivity and urgency of traveling abroad for specialized medical procedures. My team and I ensure personalized clinical coordination, official visa invitation letters within 24 to 48 hours, free airport reception, and constant bedside support throughout your stay in Jaipur.",
     badge: "Official International Liaison & Desk In-charge"
